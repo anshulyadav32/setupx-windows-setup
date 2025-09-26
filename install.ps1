@@ -13,6 +13,19 @@ function Install-SetupxComplete {
     Write-ColorOutput "Installing SetupX with all modules and dependencies..." "White"
     Write-ColorOutput ""
     
+    # Check if running as Administrator
+    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
+    
+    if ($isAdmin) {
+        Write-ColorOutput "INFO: Running as Administrator" "Yellow"
+        Write-ColorOutput "NOTE: Some package managers (like Scoop) work better as regular user" "Yellow"
+        Write-ColorOutput "For best results, consider running as regular user for package manager installation" "Cyan"
+        Write-ColorOutput ""
+    } else {
+        Write-ColorOutput "INFO: Running as regular user - optimal for package manager installation" "Green"
+        Write-ColorOutput ""
+    }
+    
     $installPath = "C:\setupx"
     $tempDir = Join-Path $env:TEMP "setupx-install"
     
@@ -157,6 +170,28 @@ function Install-SetupxComplete {
     if (Test-Path $tempComponentsDir) {
         Copy-Item -Path "$tempComponentsDir\*" -Destination $componentsDir -Force
         Write-ColorOutput "  SUCCESS: Copied component scripts" "Green"
+    }
+    
+    # Handle package manager installation based on admin status
+    Write-ColorOutput "Setting up package managers..." "Magenta"
+    if ($isAdmin) {
+        Write-ColorOutput "  INFO: Admin mode - using Chocolatey for Scoop installation" "Yellow"
+        # Try to install Scoop via Chocolatey if available
+        if (Get-Command choco -ErrorAction SilentlyContinue) {
+            try {
+                Write-ColorOutput "  Installing Scoop via Chocolatey..." "Yellow"
+                choco install scoop -y
+                Write-ColorOutput "  SUCCESS: Scoop installed via Chocolatey" "Green"
+            } catch {
+                Write-ColorOutput "  WARNING: Failed to install Scoop via Chocolatey" "Yellow"
+                Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
+            }
+        } else {
+            Write-ColorOutput "  WARNING: Chocolatey not available for Scoop installation" "Yellow"
+            Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
+        }
+    } else {
+        Write-ColorOutput "  INFO: Regular user mode - optimal for package manager installation" "Green"
     }
     
     # Create main setupx.ps1 entry point
@@ -353,11 +388,23 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx.ps1" %*
     Write-ColorOutput "`nSetupX installation complete!" "Green"
     Write-ColorOutput "You can now use 'setupx' command from anywhere!" "White"
     Write-ColorOutput ""
+    
+    # Provide specific instructions based on admin status
+    if ($isAdmin) {
+        Write-ColorOutput "IMPORTANT: You ran this as Administrator" "Yellow"
+        Write-ColorOutput "For best package manager experience, also run as regular user:" "Cyan"
+        Write-ColorOutput "  1. Open PowerShell as regular user (not 'Run as Administrator')" "White"
+        Write-ColorOutput "  2. Run: setupx install package-managers" "White"
+        Write-ColorOutput "  3. This will install Scoop properly for regular user" "White"
+        Write-ColorOutput ""
+    }
+    
     Write-ColorOutput "Test your installation:" "Cyan"
     Write-ColorOutput "  setupx -h          # Show help" "White"
     Write-ColorOutput "  setupx list        # List modules" "White"
     Write-ColorOutput "  setupx status      # Show status" "White"
     Write-ColorOutput "  setupx menu        # Interactive menu" "White"
+    Write-ColorOutput "  setupx install package-managers  # Install package managers" "White"
 }
 
 # Execute installation
