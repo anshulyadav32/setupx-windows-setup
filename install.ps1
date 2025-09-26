@@ -109,7 +109,7 @@ function Install-SetupxComplete {
             $moduleJsonPath = Join-Path $moduleDir "module.json"
             Invoke-RestMethod -Uri $moduleJsonUrl -OutFile $moduleJsonPath
             
-            # Download component scripts for package-managers module
+            # Download component scripts for specific modules
             if ($module -eq "package-managers") {
                 $componentsDir = Join-Path $moduleDir "components"
                 if (-not (Test-Path $componentsDir)) {
@@ -121,6 +121,20 @@ function Install-SetupxComplete {
                     try {
                         $scriptUrl = $baseUrl + "src/modules/$module/$script"
                         $scriptPath = Join-Path $componentsDir $script
+                        Invoke-RestMethod -Uri $scriptUrl -OutFile $scriptPath
+                        Write-ColorOutput "    Downloaded $script" "Green"
+                    } catch {
+                        Write-ColorOutput "    WARNING: Failed to download $script" "Yellow"
+                    }
+                }
+            }
+            
+            if ($module -eq "web-development") {
+                $componentScripts = @("nodejs.ps1", "yarn.ps1", "browsers.ps1", "react-tools.ps1", "vue-tools.ps1", "angular-tools.ps1", "webpack-tools.ps1")
+                foreach ($script in $componentScripts) {
+                    try {
+                        $scriptUrl = $baseUrl + "src/modules/$module/$script"
+                        $scriptPath = Join-Path $moduleDir $script
                         Invoke-RestMethod -Uri $scriptUrl -OutFile $scriptPath
                         Write-ColorOutput "    Downloaded $script" "Green"
                     } catch {
