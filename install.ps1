@@ -98,11 +98,16 @@ function Install-SetupxComplete {
             
             # Download component scripts for package-managers module
             if ($module -eq "package-managers") {
+                $componentsDir = Join-Path $moduleDir "components"
+                if (-not (Test-Path $componentsDir)) {
+                    New-Item -ItemType Directory -Path $componentsDir -Force | Out-Null
+                }
+                
                 $componentScripts = @("chocolatey.ps1", "scoop.ps1", "winget.ps1", "npm.ps1")
                 foreach ($script in $componentScripts) {
                     try {
                         $scriptUrl = $baseUrl + "src/modules/$module/$script"
-                        $scriptPath = Join-Path $moduleDir $script
+                        $scriptPath = Join-Path $componentsDir $script
                         Invoke-RestMethod -Uri $scriptUrl -OutFile $scriptPath
                         Write-ColorOutput "    Downloaded $script" "Green"
                     } catch {
