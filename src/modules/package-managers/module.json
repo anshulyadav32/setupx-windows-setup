@@ -35,15 +35,6 @@
       "category": "package-manager",
       "priority": 3,
       "required": false
-    },
-    {
-      "name": "npm",
-      "displayName": "npm (Global Setup)",
-      "description": "Node Package Manager global configuration",
-      "scriptName": "npm.ps1",
-      "category": "package-manager",
-      "priority": 4,
-      "required": false
     }
   ],
   "postInstallMessage": "Package managers are ready! You can now easily install software using choco, scoop, or winget commands.",
