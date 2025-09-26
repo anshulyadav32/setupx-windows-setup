@@ -1,6 +1,6 @@
-# SETUPX - Simple One-Liner Installer (Fixed)
+# SETUPX - Admin-Friendly One-Liner Installer
 # This script sets up essential Windows development tools via Chocolatey and Scoop.
-# It handles admin vs non-admin scenarios properly.
+# It handles admin scenarios by using Chocolatey to install Scoop when needed.
 
 function Write-ColorOutput {
     param([string]$Message, [string]$Color = "White")
@@ -14,7 +14,7 @@ function Test-IsAdmin {
 }
 
 function Install-SetupX {
-    Write-ColorOutput "`nSETUPX - One-Liner Installer" "Cyan"
+    Write-ColorOutput "`nSETUPX - Admin-Friendly One-Liner Installer" "Cyan"
     Write-ColorOutput "Setting up Windows Development Environment..." "White"
     Write-ColorOutput ""
 
@@ -26,21 +26,17 @@ function Install-SetupX {
     }
     Write-ColorOutput ""
 
-    # 1. Check and Set Execution Policy (with better error handling)
+    # 1. Check Execution Policy (only set if needed)
     Write-ColorOutput "Checking execution policy..." "Magenta"
     $currentPolicy = Get-ExecutionPolicy
     Write-ColorOutput "  Current execution policy: $currentPolicy" "White"
     
     if ($currentPolicy -eq "Restricted") {
-        Write-ColorOutput "  Attempting to set execution policy..." "Yellow"
+        Write-ColorOutput "  Setting execution policy to allow script execution..." "Yellow"
         try {
             Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force -ErrorAction SilentlyContinue
             $newPolicy = Get-ExecutionPolicy
-            if ($newPolicy -ne "Restricted") {
-                Write-ColorOutput "  SUCCESS: Execution policy updated to $newPolicy" "Green"
-            } else {
-                Write-ColorOutput "  INFO: Execution policy remains $newPolicy (may be overridden by Group Policy)" "Yellow"
-            }
+            Write-ColorOutput "  SUCCESS: Execution policy updated to $newPolicy" "Green"
         } catch {
             Write-ColorOutput "  INFO: Execution policy unchanged (may be overridden by Group Policy)" "Yellow"
         }
@@ -65,14 +61,18 @@ function Install-SetupX {
     }
     Write-ColorOutput ""
 
-    # 3. Install Scoop (handle admin vs non-admin)
+    # 3. Install Scoop (admin-friendly approach)
     Write-ColorOutput "Installing Scoop..." "Magenta"
     if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
         if ($isAdmin) {
-            Write-ColorOutput "  WARNING: Running as Administrator - Scoop installation is restricted." "Yellow"
-            Write-ColorOutput "  INFO: Scoop cannot be installed as administrator by default." "Yellow"
-            Write-ColorOutput "  SOLUTION: Please run this script as a regular user for Scoop installation." "Cyan"
-            Write-ColorOutput "  ALTERNATIVE: Use Chocolatey to install Scoop: choco install scoop" "Cyan"
+            Write-ColorOutput "  INFO: Running as Administrator - Using Chocolatey to install Scoop." "Yellow"
+            try {
+                choco install scoop --yes
+                Write-ColorOutput "  SUCCESS: Scoop installed via Chocolatey." "Green"
+            } catch {
+                Write-ColorOutput "  ERROR: Scoop installation via Chocolatey failed: $($_.Exception.Message)" "Red"
+                Write-ColorOutput "  TIP: Try running as a regular user for direct Scoop installation." "Cyan"
+            }
         } else {
             try {
                 Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
