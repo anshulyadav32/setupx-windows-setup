@@ -22,23 +22,12 @@ function Install-Scoop {
     if ($isAdmin) {
         Write-Host "WARNING: Running as Administrator - Scoop installation is restricted" -ForegroundColor Yellow
         Write-Host "SOLUTION: Please run this script as a regular user for Scoop installation" -ForegroundColor Cyan
-        Write-Host "ALTERNATIVE: Use Chocolatey to install Scoop: choco install scoop" -ForegroundColor Cyan
-        
-        # Try to install via Chocolatey as fallback
-        if (Get-Command choco -ErrorAction SilentlyContinue) {
-            Write-Host "Attempting to install Scoop via Chocolatey..." -ForegroundColor Yellow
-            try {
-                choco install scoop -y
-                if (Get-Command scoop -ErrorAction SilentlyContinue) {
-                    Write-Host "Scoop installed successfully via Chocolatey!" -ForegroundColor Green
-                    return $true
-                }
-            } catch {
-                Write-Host "Failed to install Scoop via Chocolatey: $($_.Exception.Message)" -ForegroundColor Red
-            }
-        }
+        Write-Host "NOTE: Scoop should be installed per-user, not system-wide" -ForegroundColor Cyan
         
         Write-Host "Scoop installation skipped due to Administrator restrictions" -ForegroundColor Yellow
+        Write-Host "To install Scoop properly, run as regular user:" -ForegroundColor Cyan
+        Write-Host "  1. Open PowerShell as regular user (not 'Run as Administrator')" -ForegroundColor White
+        Write-Host "  2. Run: setupx install package-managers" -ForegroundColor White
         return $false
     }
     

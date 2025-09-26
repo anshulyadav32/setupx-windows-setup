@@ -175,32 +175,12 @@ function Install-SetupxComplete {
     # Handle package manager installation based on admin status
     Write-ColorOutput "Setting up package managers..." "Magenta"
     if ($isAdmin) {
-        Write-ColorOutput "  INFO: Admin mode - using Chocolatey for Scoop installation" "Yellow"
-        # Try to install Scoop via Chocolatey if available
-        if (Get-Command choco -ErrorAction SilentlyContinue) {
-            try {
-                Write-ColorOutput "  Installing Scoop via Chocolatey..." "Yellow"
-                $chocoOutput = choco install scoop -y 2>&1
-                $chocoOutput | ForEach-Object { Write-Host "    $_" }
-                
-                # Check if installation was successful
-                $hasFailure = $chocoOutput -match "not installed|failed|error|0/1 packages|1 packages failed"
-                if ($LASTEXITCODE -eq 0 -and -not $hasFailure) {
-                    Write-ColorOutput "  SUCCESS: Scoop installed via Chocolatey" "Green"
-                } else {
-                    Write-ColorOutput "  WARNING: Scoop installation via Chocolatey failed" "Yellow"
-                    Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
-                }
-            } catch {
-                Write-ColorOutput "  WARNING: Failed to install Scoop via Chocolatey" "Yellow"
-                Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
-            }
-        } else {
-            Write-ColorOutput "  WARNING: Chocolatey not available for Scoop installation" "Yellow"
-            Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
-        }
+        Write-ColorOutput "  INFO: Admin mode - Scoop installation will be skipped" "Yellow"
+        Write-ColorOutput "  NOTE: Scoop should be installed per-user, not system-wide" "Cyan"
+        Write-ColorOutput "  RECOMMENDATION: Run as regular user for complete package manager installation" "Cyan"
     } else {
         Write-ColorOutput "  INFO: Regular user mode - optimal for package manager installation" "Green"
+        Write-ColorOutput "  NOTE: Scoop will be installed per-user (recommended)" "Green"
     }
     
     # Create main setupx.ps1 entry point
