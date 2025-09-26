@@ -7,12 +7,30 @@ function Write-ColorOutput {
 }
 
 function Install-SetupxComplete {
+    param([switch]$Force)
+    
     Write-ColorOutput "`nSETUPX COMPLETE INSTALLER" "Cyan"
     Write-ColorOutput "Installing SetupX with all modules and dependencies..." "White"
     Write-ColorOutput ""
     
     $installPath = "C:\setupx"
     $tempDir = Join-Path $env:TEMP "setupx-install"
+    
+    # Check if C:\setupx already exists
+    if (Test-Path $installPath) {
+        if ($Force) {
+            Write-ColorOutput "INFO: Force mode enabled - overwriting existing installation" "Yellow"
+        } else {
+            Write-ColorOutput "WARNING: SetupX already exists at $installPath" "Yellow"
+            Write-ColorOutput "This will overwrite existing files. Continue? (y/N)" "Yellow"
+            $response = Read-Host
+            if ($response -ne "y" -and $response -ne "Y") {
+                Write-ColorOutput "Installation cancelled." "Red"
+                return
+            }
+        }
+        Write-ColorOutput "Proceeding with installation..." "Green"
+    }
     
     # Create temp directory
     if (Test-Path $tempDir) {
@@ -87,13 +105,19 @@ function Install-SetupxComplete {
     # Install SetupX
     Write-ColorOutput "Installing SetupX..." "Magenta"
     try {
-        $installerPath = Join-Path $tempDir "src\installers\setupx-installer.ps1"
-        if (Test-Path $installerPath) {
-            . $installerPath
-            Install-Setupx -InstallPath $installPath
+        # Create installation directory if it doesn't exist
+        if (-not (Test-Path $installPath)) {
+            New-Item -ItemType Directory -Path $installPath -Force | Out-Null
+            Write-ColorOutput "  SUCCESS: Created installation directory" "Green"
         } else {
-            Write-ColorOutput "  ERROR: Installer not found" "Red"
+            Write-ColorOutput "  INFO: Installation directory already exists" "Yellow"
         }
+        
+        # Copy all files from temp directory
+        Write-ColorOutput "  Copying SetupX files..." "Yellow"
+        Copy-Item -Path "$tempDir\*" -Destination $installPath -Recurse -Force
+        Write-ColorOutput "  SUCCESS: SetupX files copied" "Green"
+        
     } catch {
         Write-ColorOutput "  ERROR: Installation failed - $($_.Exception.Message)" "Red"
     }
@@ -300,4 +324,10 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx.ps1" %*
 }
 
 # Execute installation
-Install-SetupxComplete
+# Check for force parameter
+$Force = $false
+if ($args -contains "-Force" -or $args -contains "--force") {
+    $Force = $true
+}
+
+Install-SetupxComplete -Force:$Force
