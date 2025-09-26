@@ -142,6 +142,23 @@ function Install-SetupxComplete {
         Write-ColorOutput "  ERROR: Installation failed - $($_.Exception.Message)" "Red"
     }
     
+    # Create components directory for package-managers
+    Write-ColorOutput "Setting up component scripts..." "Magenta"
+    $packageManagersDir = Join-Path $installPath "modules\package-managers"
+    $componentsDir = Join-Path $packageManagersDir "components"
+    
+    if (-not (Test-Path $componentsDir)) {
+        New-Item -ItemType Directory -Path $componentsDir -Force | Out-Null
+        Write-ColorOutput "  SUCCESS: Created components directory" "Green"
+    }
+    
+    # Copy component scripts from temp directory if they exist
+    $tempComponentsDir = Join-Path $tempDir "src\modules\package-managers\components"
+    if (Test-Path $tempComponentsDir) {
+        Copy-Item -Path "$tempComponentsDir\*" -Destination $componentsDir -Force
+        Write-ColorOutput "  SUCCESS: Copied component scripts" "Green"
+    }
+    
     # Create main setupx.ps1 entry point
     Write-ColorOutput "Creating main entry point..." "Magenta"
     $mainEntryPoint = @"
