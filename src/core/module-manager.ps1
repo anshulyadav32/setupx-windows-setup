@@ -124,5 +124,4 @@ function Install-Module {
     }
 }
 
-# Export functions for use in other modules
-Export-ModuleMember -Function Get-AvailableModules, Get-ModuleComponents, Test-ModuleExists, Install-Module
+# Functions are available for use in other modules

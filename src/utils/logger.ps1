@@ -41,5 +41,4 @@ function Write-SetupxInfo {
     Write-SetupxLog -Message $Message -Level "INFO" -Color "Cyan"
 }
 
-# Export functions for use in other modules
-Export-ModuleMember -Function Write-SetupxLog, Write-SetupxError, Write-SetupxWarning, Write-SetupxSuccess, Write-SetupxInfo
+# Functions are available for use in other modules

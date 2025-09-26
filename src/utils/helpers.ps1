@@ -104,5 +104,4 @@ function Get-SetupxConfig {
     }
 }
 
-# Export functions for use in other modules
-Export-ModuleMember -Function Test-IsAdmin, Test-CommandExists, Get-CommandVersion, Invoke-SafeCommand, Get-SetupxConfig
+# Functions are available for use in other modules

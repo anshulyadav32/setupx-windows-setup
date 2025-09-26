@@ -65,5 +65,4 @@ powershell -ExecutionPolicy Bypass -File "$InstallPath\setupx.ps1" %*
     Write-SetupxInfo "You can now use 'setupx' command from anywhere"
 }
 
-# Export functions
-Export-ModuleMember -Function Install-Setupx
+# Functions are available for use

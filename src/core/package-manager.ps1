@@ -132,5 +132,4 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocola
     }
 }
 
-# Export functions for use in other modules
-Export-ModuleMember -Function Get-PackageManagerStatus, Show-PackageManagerStatus, Install-PackageManager
+# Functions are available for use in other modules
