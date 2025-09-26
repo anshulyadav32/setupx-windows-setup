@@ -39,11 +39,15 @@ function Install-SetupXComplete {
 
     foreach ($script in $scripts) {
         try {
-            Write-ColorOutput "  Downloading $script..." "Yellow"
-            $url = $baseUrl + $script
             $localPath = Join-Path $setupxDir $script
+            if (Test-Path $localPath) {
+                Write-ColorOutput "  Overwriting existing $script..." "Yellow"
+            } else {
+                Write-ColorOutput "  Downloading $script..." "Yellow"
+            }
+            $url = $baseUrl + $script
             Invoke-RestMethod -Uri $url -OutFile $localPath
-            Write-ColorOutput "    SUCCESS: $script downloaded" "Green"
+            Write-ColorOutput "    SUCCESS: $script downloaded/updated" "Green"
         } catch {
             Write-ColorOutput "    ERROR: Failed to download $script - $($_.Exception.Message)" "Red"
         }
@@ -69,7 +73,6 @@ function Install-SetupXComplete {
 
     foreach ($module in $modules) {
         try {
-            Write-ColorOutput "  Downloading $module module..." "Yellow"
             $moduleDir = Join-Path $modulesDir $module
             if (-not (Test-Path $moduleDir)) {
                 New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
@@ -78,9 +81,16 @@ function Install-SetupXComplete {
             # Download module.json
             $moduleJsonUrl = "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/modules/$module/module.json"
             $moduleJsonPath = Join-Path $moduleDir "module.json"
+            
+            if (Test-Path $moduleJsonPath) {
+                Write-ColorOutput "  Overwriting existing $module module..." "Yellow"
+            } else {
+                Write-ColorOutput "  Downloading $module module..." "Yellow"
+            }
+            
             Invoke-RestMethod -Uri $moduleJsonUrl -OutFile $moduleJsonPath
             
-            Write-ColorOutput "    SUCCESS: $module module downloaded" "Green"
+            Write-ColorOutput "    SUCCESS: $module module downloaded/updated" "Green"
         } catch {
             Write-ColorOutput "    ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
         }
@@ -96,8 +106,13 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx-main.ps1" %*
     
     try {
         $cmdPath = Join-Path $setupxDir "setupx.cmd"
+        if (Test-Path $cmdPath) {
+            Write-ColorOutput "  Overwriting existing setupx.cmd..." "Yellow"
+        } else {
+            Write-ColorOutput "  Creating setupx.cmd..." "Yellow"
+        }
         Set-Content -Path $cmdPath -Value $setupxCmd -Force
-        Write-ColorOutput "  SUCCESS: setupx.cmd created" "Green"
+        Write-ColorOutput "  SUCCESS: setupx.cmd created/updated" "Green"
     } catch {
         Write-ColorOutput "  ERROR: Failed to create setupx.cmd - $($_.Exception.Message)" "Red"
     }
