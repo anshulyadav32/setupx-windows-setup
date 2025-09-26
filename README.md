@@ -98,40 +98,167 @@ Cross-platform mobile development:
 
 ### Command Line Interface
 
-```powershell
-# Show help
-setupx -h
+#### Basic Commands
 
-# List all modules
+```powershell
+# Show help and available commands
+setupx -h
+setupx --help
+
+# List all available modules
 setupx list
 
-# Show system status
+# Show system status and package managers
 setupx status
 
-# List module components
+# Interactive menu (recommended for beginners)
+setupx menu
+```
+
+#### Module Management Commands
+
+```powershell
+# List components in a specific module
+setupx components <module-name>
+
+# Test components in a module
+setupx test <module-name>
+
+# Install a complete module
+setupx install <module-name>
+```
+
+#### Available Modules
+
+```powershell
+# Package Managers Module
 setupx components package-managers
-
-# Test module components
 setupx test package-managers
-
-# Install a module
 setupx install package-managers
 
-# Interactive menu
-setupx menu
+# Common Development Module
+setupx components common-development
+setupx test common-development
+setupx install common-development
+
+# Web Development Module
+setupx components web-development
+setupx test web-development
+setupx install web-development
+
+# Backend Development Module
+setupx components backend-development
+setupx test backend-development
+setupx install backend-development
+
+# Cloud Development Module
+setupx components cloud-development
+setupx test cloud-development
+setupx install cloud-development
+
+# Mobile Development Module
+setupx components mobile-development
+setupx test mobile-development
+setupx install mobile-development
+```
+
+### Complete Command Reference
+
+#### Help Commands
+```powershell
+setupx -h                    # Show help message
+setupx --help               # Show help message
+setupx help                 # Show help message
+```
+
+#### Information Commands
+```powershell
+setupx list                 # List all available modules
+setupx status               # Show system status
+setupx components <module>  # List module components
+```
+
+#### Testing Commands
+```powershell
+setupx test <module>        # Test module components
+setupx test package-managers # Test package managers
+setupx test common-development # Test common tools
+setupx test web-development  # Test web development tools
+setupx test backend-development # Test backend tools
+setupx test cloud-development # Test cloud tools
+setupx test mobile-development # Test mobile tools
+```
+
+#### Installation Commands
+```powershell
+setupx install <module>     # Install a module
+setupx install package-managers # Install package managers
+setupx install common-development # Install common tools
+setupx install web-development # Install web tools
+setupx install backend-development # Install backend tools
+setupx install cloud-development # Install cloud tools
+setupx install mobile-development # Install mobile tools
+```
+
+#### Interactive Commands
+```powershell
+setupx menu                 # Show interactive menu
+setupx                      # Default to interactive menu
 ```
 
 ### Examples
 
+#### Quick Setup Examples
 ```powershell
-# Install package managers
+# Complete development environment setup
 .\setupx-main.ps1 install package-managers
+.\setupx-main.ps1 install common-development
+.\setupx-main.ps1 install web-development
 
-# Test common development tools
+# Test your installation
+.\setupx-main.ps1 test package-managers
 .\setupx-main.ps1 test common-development
 
-# List web development components
+# Check system status
+.\setupx-main.ps1 status
+```
+
+#### Module-Specific Examples
+```powershell
+# Package Managers Setup
+.\setupx-main.ps1 components package-managers
+.\setupx-main.ps1 test package-managers
+.\setupx-main.ps1 install package-managers
+
+# Web Development Setup
 .\setupx-main.ps1 components web-development
+.\setupx-main.ps1 test web-development
+.\setupx-main.ps1 install web-development
+
+# Backend Development Setup
+.\setupx-main.ps1 components backend-development
+.\setupx-main.ps1 test backend-development
+.\setupx-main.ps1 install backend-development
+```
+
+#### Advanced Usage
+```powershell
+# Check what's available
+.\setupx-main.ps1 list
+
+# See system status
+.\setupx-main.ps1 status
+
+# Interactive setup
+.\setupx-main.ps1 menu
+
+# Test everything
+.\setupx-main.ps1 test package-managers
+.\setupx-main.ps1 test common-development
+.\setupx-main.ps1 test web-development
+.\setupx-main.ps1 test backend-development
+.\setupx-main.ps1 test cloud-development
+.\setupx-main.ps1 test mobile-development
 ```
 
 ## 🧪 Testing
