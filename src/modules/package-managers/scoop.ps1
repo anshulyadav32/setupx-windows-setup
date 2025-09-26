@@ -20,45 +20,56 @@ function Install-Scoop {
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
     
     if ($isAdmin) {
-        Write-Host "WARNING: Running as Administrator - Scoop installation is restricted" -ForegroundColor Yellow
-        Write-Host "SOLUTION: Please run this script as a regular user for Scoop installation" -ForegroundColor Cyan
-        Write-Host "ALTERNATIVE: Use Chocolatey to install Scoop: choco install scoop" -ForegroundColor Cyan
-        
-        # Try to install via Chocolatey as fallback
-        if (Get-Command choco -ErrorAction SilentlyContinue) {
-            Write-Host "Attempting to install Scoop via Chocolatey..." -ForegroundColor Yellow
-            try {
-                choco install scoop -y
-                if (Get-Command scoop -ErrorAction SilentlyContinue) {
-                    Write-Host "Scoop installed successfully via Chocolatey!" -ForegroundColor Green
-                    return $true
-                }
-            } catch {
-                Write-Host "Failed to install Scoop via Chocolatey: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "NOTE: Running as Administrator" -ForegroundColor Yellow
+        Write-Host "Attempting Scoop Admin install..." -ForegroundColor Cyan
+
+        try {
+            Invoke-RestMethod -Uri https://get.scoop.sh -OutFile "$env:TEMP\install.ps1"
+            & "$env:TEMP\install.ps1" -RunAsAdmin
+
+            if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                Write-Host "Scoop installed successfully (Admin mode)!" -ForegroundColor Green
+                scoop --version
+                return $true
             }
+        } catch {
+            Write-Host "Failed to install Scoop in Admin mode: $($_.Exception.Message)" -ForegroundColor Red
+
+            # Fallback: Chocolatey
+            if (Get-Command choco -ErrorAction SilentlyContinue) {
+                Write-Host "Attempting Scoop installation via Chocolatey..." -ForegroundColor Yellow
+                try {
+                    choco install scoop -y
+                    if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                        Write-Host "Scoop installed successfully via Chocolatey!" -ForegroundColor Green
+                        return $true
+                    }
+                } catch {
+                    Write-Host "Failed to install Scoop via Chocolatey: $($_.Exception.Message)" -ForegroundColor Red
+                }
+            }
+            return $false
         }
-        
-        Write-Host "Scoop installation skipped due to Administrator restrictions" -ForegroundColor Yellow
-        return $false
-    }
-    
-    try {
-        # Set execution policy
-        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-        
-        # Install Scoop
-        Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-        
-        # Refresh environment
-        refreshenv
-        
-        Write-Host "Scoop installed successfully!" -ForegroundColor Green
-        scoop --version
-        return $true
-    } catch {
-        Write-Host "Failed to install Scoop: $($_.Exception.Message)" -ForegroundColor Red
-        Write-Host "Note: Scoop installation may be restricted when running as Administrator" -ForegroundColor Yellow
-        return $false
+    } else {
+        try {
+            # Set execution policy
+            Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+
+            # Install Scoop (user mode)
+            Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+
+            # Refresh environment if available
+            if (Get-Command refreshenv -ErrorAction SilentlyContinue) {
+                refreshenv
+            }
+
+            Write-Host "Scoop installed successfully (User mode)!" -ForegroundColor Green
+            scoop --version
+            return $true
+        } catch {
+            Write-Host "Failed to install Scoop: $($_.Exception.Message)" -ForegroundColor Red
+            return $false
+        }
     }
 }
 
