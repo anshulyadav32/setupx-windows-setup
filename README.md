@@ -6,7 +6,7 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ### One-Liner Installation
 ```powershell
-Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install-oneliner.ps1 | Invoke-Expression
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | Invoke-Expression
 ```
 
 ### Manual Installation
@@ -22,7 +22,7 @@ cd setupx-windows-setup
 setupx/
 ├── setupx.ps1                    # Main entry point
 ├── install.ps1                  # Local installer
-├── install-oneliner.ps1        # One-liner installer
+├── one-cmd-install.ps1        # One-liner installer
 ├── src/                          # Source code
 │   ├── core/                     # Core functionality
 │   │   ├── module-manager.ps1   # Module management
