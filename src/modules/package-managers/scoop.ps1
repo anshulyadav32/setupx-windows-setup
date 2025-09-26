@@ -20,15 +20,8 @@ function Install-Scoop {
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
     
     if ($isAdmin) {
-        Write-Host "WARNING: Running as Administrator - Scoop installation is restricted" -ForegroundColor Yellow
-        Write-Host "SOLUTION: Please run this script as a regular user for Scoop installation" -ForegroundColor Cyan
-        Write-Host "NOTE: Scoop should be installed per-user, not system-wide" -ForegroundColor Cyan
-        
-        Write-Host "Scoop installation skipped due to Administrator restrictions" -ForegroundColor Yellow
-        Write-Host "To install Scoop properly, run as regular user:" -ForegroundColor Cyan
-        Write-Host "  1. Open PowerShell as regular user (not 'Run as Administrator')" -ForegroundColor White
-        Write-Host "  2. Run: setupx install package-managers" -ForegroundColor White
-        return $false
+        Write-Host "INFO: Running as Administrator - installing Scoop for current user" -ForegroundColor Yellow
+        Write-Host "NOTE: Scoop will be installed per-user (recommended approach)" -ForegroundColor Cyan
     }
     
     try {

@@ -175,9 +175,8 @@ function Install-SetupxComplete {
     # Handle package manager installation based on admin status
     Write-ColorOutput "Setting up package managers..." "Magenta"
     if ($isAdmin) {
-        Write-ColorOutput "  INFO: Admin mode - Scoop installation will be skipped" "Yellow"
-        Write-ColorOutput "  NOTE: Scoop should be installed per-user, not system-wide" "Cyan"
-        Write-ColorOutput "  RECOMMENDATION: Run as regular user for complete package manager installation" "Cyan"
+        Write-ColorOutput "  INFO: Admin mode - installing Scoop for current user" "Yellow"
+        Write-ColorOutput "  NOTE: Scoop will be installed per-user (recommended approach)" "Cyan"
     } else {
         Write-ColorOutput "  INFO: Regular user mode - optimal for package manager installation" "Green"
         Write-ColorOutput "  NOTE: Scoop will be installed per-user (recommended)" "Green"
@@ -380,11 +379,9 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx.ps1" %*
     
     # Provide specific instructions based on admin status
     if ($isAdmin) {
-        Write-ColorOutput "IMPORTANT: You ran this as Administrator" "Yellow"
-        Write-ColorOutput "For best package manager experience, also run as regular user:" "Cyan"
-        Write-ColorOutput "  1. Open PowerShell as regular user (not 'Run as Administrator')" "White"
-        Write-ColorOutput "  2. Run: setupx install package-managers" "White"
-        Write-ColorOutput "  3. This will install Scoop properly for regular user" "White"
+        Write-ColorOutput "INFO: You ran this as Administrator" "Yellow"
+        Write-ColorOutput "Scoop will be installed for your user profile (recommended)" "Cyan"
+        Write-ColorOutput "To install package managers, run: setupx install package-managers" "White"
         Write-ColorOutput ""
     }
     
