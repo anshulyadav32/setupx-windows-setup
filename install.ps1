@@ -172,25 +172,34 @@ function Install-SetupxComplete {
         Write-ColorOutput "  SUCCESS: Copied component scripts" "Green"
     }
     
-    # Handle package manager installation based on admin status
-    Write-ColorOutput "Setting up package managers..." "Magenta"
-    if ($isAdmin) {
-        Write-ColorOutput "  INFO: Admin mode - installing Scoop for current user" "Yellow"
-        Write-ColorOutput "  NOTE: Scoop will be installed per-user (recommended approach)" "Cyan"
-    } else {
-        Write-ColorOutput "  INFO: Regular user mode - optimal for package manager installation" "Green"
-        Write-ColorOutput "  NOTE: Scoop will be installed per-user (recommended)" "Green"
-    }
-    
-    # Refresh environment variables after any PATH changes
-    Write-ColorOutput "Refreshing environment variables..." "Magenta"
-    try {
-        refreshenv
-        Write-ColorOutput "  SUCCESS: Environment variables refreshed" "Green"
-    } catch {
-        Write-ColorOutput "  WARNING: Could not refresh environment variables" "Yellow"
-        Write-ColorOutput "  NOTE: You may need to restart PowerShell for changes to take effect" "Cyan"
-    }
+     # Handle package manager installation based on admin status
+     Write-ColorOutput "Setting up package managers..." "Magenta"
+     if ($isAdmin) {
+         Write-ColorOutput "  INFO: Admin mode - attempting Scoop installation" "Yellow"
+         Write-ColorOutput "  NOTE: Scoop installation may be restricted for admin users" "Cyan"
+         
+         # Try to install Scoop directly (may fail due to admin restrictions)
+         try {
+             Write-ColorOutput "  Attempting direct Scoop installation..." "Yellow"
+             Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+             Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+             
+             # Check if Scoop was actually installed
+             if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                 Write-ColorOutput "  SUCCESS: Scoop installed successfully" "Green"
+             } else {
+                 Write-ColorOutput "  WARNING: Scoop installation may have failed due to admin restrictions" "Yellow"
+                 Write-ColorOutput "  NOTE: Run as regular user for guaranteed Scoop installation" "Cyan"
+             }
+         } catch {
+             Write-ColorOutput "  WARNING: Scoop installation failed: $($_.Exception.Message)" "Yellow"
+             Write-ColorOutput "  NOTE: This is expected when running as Administrator" "Cyan"
+             Write-ColorOutput "  SOLUTION: Run as regular user for proper Scoop installation" "Cyan"
+         }
+     } else {
+         Write-ColorOutput "  INFO: Regular user mode - optimal for package manager installation" "Green"
+         Write-ColorOutput "  NOTE: Scoop will install properly for regular users" "Green"
+     }
     
     # Create main setupx.ps1 entry point
     Write-ColorOutput "Creating main entry point..." "Magenta"
@@ -367,16 +376,35 @@ switch (`$Command) {
     Set-Content -Path $mainPath -Value $mainEntryPoint -Force
     Write-ColorOutput "  SUCCESS: Main entry point created" "Green"
     
-    # Update setupx.cmd wrapper
-    Write-ColorOutput "Updating command wrapper..." "Magenta"
-    $cmdPath = Join-Path $installPath "setupx.cmd"
-    $cmdContent = @"
+     # Update setupx.cmd wrapper
+     Write-ColorOutput "Updating command wrapper..." "Magenta"
+     $cmdPath = Join-Path $installPath "setupx.cmd"
+     $cmdContent = @"
 @echo off
 powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx.ps1" %*
 "@
-    
-    Set-Content -Path $cmdPath -Value $cmdContent -Force
-    Write-ColorOutput "  SUCCESS: Command wrapper updated" "Green"
+     
+     Set-Content -Path $cmdPath -Value $cmdContent -Force
+     Write-ColorOutput "  SUCCESS: Command wrapper updated" "Green"
+     
+     # Add SetupX to system PATH
+     Write-ColorOutput "Adding SetupX to system PATH..." "Magenta"
+     try {
+         $currentPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+         if ($currentPath -notlike "*$installPath*") {
+             [Environment]::SetEnvironmentVariable("PATH", "$currentPath;$installPath", "Machine")
+             Write-ColorOutput "  SUCCESS: Added SetupX to system PATH" "Green"
+         } else {
+             Write-ColorOutput "  INFO: SetupX already in system PATH" "Yellow"
+         }
+         
+         # Refresh current session PATH
+         $env:PATH = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+         Write-ColorOutput "  SUCCESS: Refreshed current session PATH" "Green"
+     } catch {
+         Write-ColorOutput "  WARNING: Could not update system PATH (may need admin privileges)" "Yellow"
+         Write-ColorOutput "  NOTE: You can manually add C:\setupx to your PATH" "Cyan"
+     }
     
     # Cleanup
     Write-ColorOutput "Cleaning up temporary files..." "Magenta"
@@ -389,9 +417,11 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx.ps1" %*
     
     # Provide specific instructions based on admin status
     if ($isAdmin) {
-        Write-ColorOutput "INFO: You ran this as Administrator" "Yellow"
-        Write-ColorOutput "Scoop will be installed for your user profile (recommended)" "Cyan"
-        Write-ColorOutput "To install package managers, run: setupx install package-managers" "White"
+        Write-ColorOutput "IMPORTANT: You ran this as Administrator" "Yellow"
+        Write-ColorOutput "For best package manager experience, also run as regular user:" "Cyan"
+        Write-ColorOutput "  1. Open PowerShell as regular user (not 'Run as Administrator')" "White"
+        Write-ColorOutput "  2. Run: setupx install package-managers" "White"
+        Write-ColorOutput "  3. This will install Scoop properly for regular user" "White"
         Write-ColorOutput ""
     }
     

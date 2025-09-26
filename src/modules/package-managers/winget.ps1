@@ -12,14 +12,7 @@ function Install-WinGet {
     # Check if WinGet is already installed
     if (Get-Command winget -ErrorAction SilentlyContinue) {
         Write-Host "WinGet is already installed" -ForegroundColor Green
-        try {
-            $wingetVersion = winget --version 2>$null
-            if ($wingetVersion) {
-                Write-Host "WinGet version: $wingetVersion" -ForegroundColor Green
-            }
-        } catch {
-            Write-Host "WinGet is installed but may need elevation to run" -ForegroundColor Yellow
-        }
+        winget --version
         return $true
     }
     
@@ -74,10 +67,5 @@ function Update-WinGet {
 
 # Execute installation when script is run directly
 if ($MyInvocation.InvocationName -ne '.') {
-    $result = Install-WinGet
-    if ($result) {
-        exit 0
-    } else {
-        exit 1
-    }
+    Install-WinGet
 }

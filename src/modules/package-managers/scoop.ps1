@@ -20,8 +20,26 @@ function Install-Scoop {
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
     
     if ($isAdmin) {
-        Write-Host "INFO: Running as Administrator - installing Scoop for current user" -ForegroundColor Yellow
-        Write-Host "NOTE: Scoop will be installed per-user (recommended approach)" -ForegroundColor Cyan
+        Write-Host "WARNING: Running as Administrator - Scoop installation is restricted" -ForegroundColor Yellow
+        Write-Host "SOLUTION: Please run this script as a regular user for Scoop installation" -ForegroundColor Cyan
+        Write-Host "ALTERNATIVE: Use Chocolatey to install Scoop: choco install scoop" -ForegroundColor Cyan
+        
+        # Try to install via Chocolatey as fallback
+        if (Get-Command choco -ErrorAction SilentlyContinue) {
+            Write-Host "Attempting to install Scoop via Chocolatey..." -ForegroundColor Yellow
+            try {
+                choco install scoop -y
+                if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                    Write-Host "Scoop installed successfully via Chocolatey!" -ForegroundColor Green
+                    return $true
+                }
+            } catch {
+                Write-Host "Failed to install Scoop via Chocolatey: $($_.Exception.Message)" -ForegroundColor Red
+            }
+        }
+        
+        Write-Host "Scoop installation skipped due to Administrator restrictions" -ForegroundColor Yellow
+        return $false
     }
     
     try {
@@ -79,10 +97,5 @@ function Update-Scoop {
 
 # Execute installation when script is run directly
 if ($MyInvocation.InvocationName -ne '.') {
-    $result = Install-Scoop
-    if ($result) {
-        exit 0
-    } else {
-        exit 1
-    }
+    Install-Scoop
 }

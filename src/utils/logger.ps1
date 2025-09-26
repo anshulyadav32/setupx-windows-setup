@@ -1,0 +1,44 @@
+# SetupX Logger Module
+# Provides consistent logging functionality across all SetupX components
+
+function Write-SetupxLog {
+    param(
+        [string]$Message,
+        [string]$Level = "INFO",
+        [string]$Color = "White"
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $prefix = switch ($Level) {
+        "ERROR" { "[ERROR]" }
+        "WARN"  { "[WARN]" }
+        "SUCCESS" { "[SUCCESS]" }
+        "INFO"  { "[INFO]" }
+        default { "[LOG]" }
+    }
+    
+    $logMessage = "[$timestamp] $prefix $Message"
+    Write-Host $logMessage -ForegroundColor $Color
+}
+
+function Write-SetupxError {
+    param([string]$Message)
+    Write-SetupxLog -Message $Message -Level "ERROR" -Color "Red"
+}
+
+function Write-SetupxWarning {
+    param([string]$Message)
+    Write-SetupxLog -Message $Message -Level "WARN" -Color "Yellow"
+}
+
+function Write-SetupxSuccess {
+    param([string]$Message)
+    Write-SetupxLog -Message $Message -Level "SUCCESS" -Color "Green"
+}
+
+function Write-SetupxInfo {
+    param([string]$Message)
+    Write-SetupxLog -Message $Message -Level "INFO" -Color "Cyan"
+}
+
+# Functions are available for use in other modules

@@ -34,19 +34,7 @@ function Get-CommandVersion {
     try {
         # Special handling for Scoop
         if ($CommandName -eq "scoop") {
-            try {
-                $scoopOutput = & $CommandName --version 2>$null
-                if ($scoopOutput -and $scoopOutput -match "Current Scoop version:") {
-                    $versionLine = $scoopOutput | Where-Object { $_ -match "Current Scoop version:" }
-                    if ($versionLine) {
-                        $version = $versionLine -replace "Current Scoop version:\s*", ""
-                        return $version.Trim()
-                    }
-                }
-                return "Installed"
-            } catch {
-                return "Installed"
-            }
+            return "Installed"
         }
         
         $version = & $CommandName --version 2>$null
