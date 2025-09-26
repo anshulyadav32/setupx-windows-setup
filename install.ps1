@@ -18,16 +18,16 @@ function Install-Setupx {
     # Create installation directory
     if (-not (Test-Path $InstallPath)) {
         New-Item -ItemType Directory -Path $InstallPath -Force | Out-Null
-        Write-ColorOutput "✅ Created installation directory: $InstallPath" "Green"
+        Write-ColorOutput "SUCCESS: Created installation directory: $InstallPath" "Green"
     } else {
-        Write-ColorOutput "ℹ️ Installation directory already exists: $InstallPath" "Yellow"
+        Write-ColorOutput "INFO: Installation directory already exists: $InstallPath" "Yellow"
     }
     
     # Copy source files
     $sourceDir = $PSScriptRoot
-    Write-ColorOutput "📁 Copying SetupX files..." "Magenta"
+    Write-ColorOutput "Copying SetupX files..." "Magenta"
     Copy-Item -Path "$sourceDir\*" -Destination $InstallPath -Recurse -Force
-    Write-ColorOutput "✅ SetupX files copied successfully" "Green"
+    Write-ColorOutput "SUCCESS: SetupX files copied successfully" "Green"
     
     # Create setupx.cmd wrapper
     $cmdPath = Join-Path $InstallPath "setupx.cmd"
@@ -37,28 +37,28 @@ powershell -ExecutionPolicy Bypass -File "$InstallPath\setupx.ps1" %*
 "@
     
     Set-Content -Path $cmdPath -Value $cmdContent -Force
-    Write-ColorOutput "✅ Created setupx.cmd wrapper" "Green"
+    Write-ColorOutput "SUCCESS: Created setupx.cmd wrapper" "Green"
     
     # Add to PATH
-    Write-ColorOutput "🔧 Adding SetupX to system PATH..." "Magenta"
+    Write-ColorOutput "Adding SetupX to system PATH..." "Magenta"
     try {
         $currentPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
         if ($currentPath -notlike "*$InstallPath*") {
             $newPath = $currentPath + ";" + $InstallPath
             [Environment]::SetEnvironmentVariable("PATH", $newPath, "Machine")
-            Write-ColorOutput "✅ Added $InstallPath to system PATH" "Green"
+            Write-ColorOutput "SUCCESS: Added $InstallPath to system PATH" "Green"
         } else {
-            Write-ColorOutput "ℹ️ $InstallPath already in system PATH" "Yellow"
+            Write-ColorOutput "INFO: $InstallPath already in system PATH" "Yellow"
         }
     } catch {
-        Write-ColorOutput "⚠️ Could not modify system PATH: $($_.Exception.Message)" "Yellow"
+        Write-ColorOutput "WARNING: Could not modify system PATH: $($_.Exception.Message)" "Yellow"
     }
     
     # Refresh current session PATH
     $env:PATH = [Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [Environment]::GetEnvironmentVariable("PATH", "User")
-    Write-ColorOutput "✅ Refreshed current session PATH" "Green"
+    Write-ColorOutput "SUCCESS: Refreshed current session PATH" "Green"
     
-    Write-ColorOutput "`n🎉 SetupX installation completed successfully!" "Green"
+    Write-ColorOutput "`nSetupX installation completed successfully!" "Green"
     Write-ColorOutput "You can now use 'setupx' command from anywhere!" "White"
     Write-ColorOutput ""
     Write-ColorOutput "Test your installation:" "Cyan"

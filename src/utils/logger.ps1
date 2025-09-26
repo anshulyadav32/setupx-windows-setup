@@ -10,11 +10,11 @@ function Write-SetupxLog {
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $prefix = switch ($Level) {
-        "ERROR" { "❌" }
-        "WARN"  { "⚠️" }
-        "SUCCESS" { "✅" }
-        "INFO"  { "ℹ️" }
-        default { "📝" }
+        "ERROR" { "[ERROR]" }
+        "WARN"  { "[WARN]" }
+        "SUCCESS" { "[SUCCESS]" }
+        "INFO"  { "[INFO]" }
+        default { "[LOG]" }
     }
     
     $logMessage = "[$timestamp] $prefix $Message"

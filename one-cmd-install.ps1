@@ -20,7 +20,7 @@ function Install-SetupxFromWeb {
     }
     New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
     
-    Write-ColorOutput "📥 Downloading SetupX..." "Magenta"
+    Write-ColorOutput "Downloading SetupX..." "Magenta"
     
     # Download main files
     $files = @(
@@ -38,7 +38,7 @@ function Install-SetupxFromWeb {
     
     foreach ($file in $files) {
         try {
-            Write-ColorOutput "  📥 Downloading $file..." "Yellow"
+            Write-ColorOutput "  Downloading $file..." "Yellow"
             $url = $baseUrl + $file
             $localPath = Join-Path $tempDir $file
             $fileDir = Split-Path $localPath -Parent
@@ -48,14 +48,14 @@ function Install-SetupxFromWeb {
             }
             
             Invoke-RestMethod -Uri $url -OutFile $localPath
-            Write-ColorOutput "    ✅ SUCCESS: $file downloaded" "Green"
+            Write-ColorOutput "    SUCCESS: $file downloaded" "Green"
         } catch {
-            Write-ColorOutput "    ❌ ERROR: Failed to download $file - $($_.Exception.Message)" "Red"
+            Write-ColorOutput "    ERROR: Failed to download $file - $($_.Exception.Message)" "Red"
         }
     }
     
     # Download modules
-    Write-ColorOutput "📦 Downloading SetupX modules..." "Magenta"
+    Write-ColorOutput "Downloading SetupX modules..." "Magenta"
     $modules = @(
         "package-managers",
         "web-development", 
@@ -67,7 +67,7 @@ function Install-SetupxFromWeb {
     
     foreach ($module in $modules) {
         try {
-            Write-ColorOutput "  📦 Downloading $module module..." "Yellow"
+            Write-ColorOutput "  Downloading $module module..." "Yellow"
             $moduleDir = Join-Path $tempDir "src\modules\$module"
             if (-not (Test-Path $moduleDir)) {
                 New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
@@ -78,32 +78,32 @@ function Install-SetupxFromWeb {
             $moduleJsonPath = Join-Path $moduleDir "module.json"
             Invoke-RestMethod -Uri $moduleJsonUrl -OutFile $moduleJsonPath
             
-            Write-ColorOutput "    ✅ SUCCESS: $module module downloaded" "Green"
+            Write-ColorOutput "    SUCCESS: $module module downloaded" "Green"
         } catch {
-            Write-ColorOutput "    ❌ ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
+            Write-ColorOutput "    ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
         }
     }
     
     # Install SetupX
-    Write-ColorOutput "🚀 Installing SetupX..." "Magenta"
+    Write-ColorOutput "Installing SetupX..." "Magenta"
     try {
         $installerPath = Join-Path $tempDir "src\installers\setupx-installer.ps1"
         if (Test-Path $installerPath) {
             . $installerPath
             Install-Setupx -InstallPath $installPath
         } else {
-            Write-ColorOutput "  ❌ ERROR: Installer not found" "Red"
+            Write-ColorOutput "  ERROR: Installer not found" "Red"
         }
     } catch {
-        Write-ColorOutput "  ❌ ERROR: Installation failed - $($_.Exception.Message)" "Red"
+        Write-ColorOutput "  ERROR: Installation failed - $($_.Exception.Message)" "Red"
     }
     
     # Cleanup
-    Write-ColorOutput "🧹 Cleaning up temporary files..." "Magenta"
+    Write-ColorOutput "Cleaning up temporary files..." "Magenta"
     Remove-Item -Path $tempDir -Recurse -Force
-    Write-ColorOutput "  ✅ SUCCESS: Cleanup completed" "Green"
+    Write-ColorOutput "  SUCCESS: Cleanup completed" "Green"
     
-    Write-ColorOutput "`n🎉 SetupX installation complete!" "Green"
+    Write-ColorOutput "`nSetupX installation complete!" "Green"
     Write-ColorOutput "You can now use 'setupx' command from anywhere!" "White"
     Write-ColorOutput ""
     Write-ColorOutput "Test your installation:" "Cyan"
