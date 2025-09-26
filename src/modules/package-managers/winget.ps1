@@ -22,10 +22,15 @@ function Install-WinGet {
         Write-Host "WinGet should be available on Windows 10/11" -ForegroundColor Yellow
         Write-Host "If not available, install from Microsoft Store: 'App Installer'" -ForegroundColor Yellow
         
-        # Try to run winget
-        winget --version
-        Write-Host "WinGet is working!" -ForegroundColor Green
-        return $true
+        # Try to run winget with proper error handling
+        $wingetOutput = winget --version 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "WinGet is working!" -ForegroundColor Green
+            return $true
+        } else {
+            Write-Host "WinGet is not available. Please install 'App Installer' from Microsoft Store" -ForegroundColor Red
+            return $false
+        }
     } catch {
         Write-Host "WinGet is not available. Please install 'App Installer' from Microsoft Store" -ForegroundColor Red
         return $false

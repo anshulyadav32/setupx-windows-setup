@@ -11,11 +11,11 @@ $ComponentConfig = @{
     executableNames = @("winget.exe", "winget")
 
     # Version commands
-    versionCommands = @("winget --version")
+    versionCommands = @("winget --version 2>&1")
 
     # Test commands
     testCommands = @(
-        "winget --version",
+        "winget --version 2>&1",
         "winget search notepad --count 1",
         "winget list --count 1"
     )
@@ -237,7 +237,7 @@ function Update-WinGet {
 
         # Check for WinGet itself updates (it's usually auto-updated via Microsoft Store)
         Write-SetupxOutput "Checking WinGet version..." $Global:SetupxColors.White
-        $version = winget --version
+        $version = winget --version 2>&1
         Write-SetupxOutput "Current WinGet version: $version" $Global:SetupxColors.Gray
 
         # Update all applications
@@ -261,7 +261,7 @@ function Get-WinGetInfo {
 
     try {
         # Show version
-        $version = winget --version 2>$null
+        $version = winget --version 2>&1 2>$null
         Write-SetupxOutput "📝 Version: $version" $Global:SetupxColors.White
 
         # Show sources
