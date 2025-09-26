@@ -32,6 +32,11 @@ function Get-CommandVersion {
     Gets the version of a command if it exists
     #>
     try {
+        # Special handling for Scoop
+        if ($CommandName -eq "scoop") {
+            return "Installed"
+        }
+        
         $version = & $CommandName --version 2>$null
         if ($version) {
             return $version

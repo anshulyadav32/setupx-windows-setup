@@ -67,4 +67,7 @@ function Update-Chocolatey {
     }
 }
 
-# Functions are available for use
+# Execute installation when script is run directly
+if ($MyInvocation.InvocationName -ne '.') {
+    Install-Chocolatey
+}

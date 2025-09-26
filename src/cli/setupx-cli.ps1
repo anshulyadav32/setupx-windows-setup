@@ -100,37 +100,57 @@ function Show-SetupxComponents {
 }
 
 function Show-SetupxMenu {
-    Show-SetupxBanner
-    Write-Host "Interactive SetupX Menu" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "1. List all modules" -ForegroundColor White
-    Write-Host "2. Show system status" -ForegroundColor White
-    Write-Host "3. Install package managers" -ForegroundColor White
-    Write-Host "4. Install specific module" -ForegroundColor White
-    Write-Host "5. Show help" -ForegroundColor White
-    Write-Host "0. Exit" -ForegroundColor White
-    Write-Host ""
-    
-    $choice = Read-Host "Enter your choice (0-5)"
-    
-    switch ($choice) {
-        "1" { Show-SetupxList }
-        "2" { Show-SetupxStatus }
-        "3" { Install-Module "package-managers" }
-        "4" {
-            $moduleName = Read-Host "Enter module name"
-            Install-Module $moduleName
+    do {
+        Show-SetupxBanner
+        Write-Host "Interactive SetupX Menu" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "1. List all modules" -ForegroundColor White
+        Write-Host "2. Show system status" -ForegroundColor White
+        Write-Host "3. Install package managers" -ForegroundColor White
+        Write-Host "4. Install specific module" -ForegroundColor White
+        Write-Host "5. Show help" -ForegroundColor White
+        Write-Host "0. Exit" -ForegroundColor White
+        Write-Host ""
+        
+        $choice = Read-Host "Enter your choice (0-5)"
+        
+        switch ($choice) {
+            "1" { 
+                Show-SetupxList
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "2" { 
+                Show-SetupxStatus
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "3" { 
+                Install-Module "package-managers"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "4" {
+                $moduleName = Read-Host "Enter module name"
+                Install-Module $moduleName
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "5" { 
+                Show-SetupxHelp
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "0" { 
+                Write-Host "Goodbye!" -ForegroundColor Green
+                return
+            }
+            default {
+                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
+                Write-Host ""
+            }
         }
-        "5" { Show-SetupxHelp }
-        "0" { 
-            Write-Host "Goodbye!" -ForegroundColor Green
-            exit
-        }
-        default {
-            Write-Host "Invalid choice. Please try again." -ForegroundColor Red
-            Show-SetupxMenu
-        }
-    }
+    } while ($true)
 }
 
 # Main CLI logic

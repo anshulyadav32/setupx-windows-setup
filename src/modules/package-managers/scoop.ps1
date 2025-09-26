@@ -69,4 +69,7 @@ function Update-Scoop {
     }
 }
 
-# Functions are available for use
+# Execute installation when script is run directly
+if ($MyInvocation.InvocationName -ne '.') {
+    Install-Scoop
+}

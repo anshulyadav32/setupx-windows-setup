@@ -65,4 +65,7 @@ function Update-WinGet {
     }
 }
 
-# Functions are available for use
+# Execute installation when script is run directly
+if ($MyInvocation.InvocationName -ne '.') {
+    Install-WinGet
+}
