@@ -50,7 +50,44 @@ function Install-SetupXComplete {
     }
     Write-ColorOutput ""
 
-    # 3. Create setupx.cmd wrapper
+    # 3. Download modules directory
+    Write-ColorOutput "Downloading SetupX modules..." "Magenta"
+    $modulesDir = Join-Path $setupxDir "modules"
+    if (-not (Test-Path $modulesDir)) {
+        New-Item -ItemType Directory -Path $modulesDir -Force | Out-Null
+    }
+
+    # Download module.json files for each module
+    $modules = @(
+        "package-managers",
+        "web-development", 
+        "mobile-development",
+        "backend-development",
+        "cloud-development",
+        "common-development"
+    )
+
+    foreach ($module in $modules) {
+        try {
+            Write-ColorOutput "  Downloading $module module..." "Yellow"
+            $moduleDir = Join-Path $modulesDir $module
+            if (-not (Test-Path $moduleDir)) {
+                New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
+            }
+            
+            # Download module.json
+            $moduleJsonUrl = "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/modules/$module/module.json"
+            $moduleJsonPath = Join-Path $moduleDir "module.json"
+            Invoke-RestMethod -Uri $moduleJsonUrl -OutFile $moduleJsonPath
+            
+            Write-ColorOutput "    SUCCESS: $module module downloaded" "Green"
+        } catch {
+            Write-ColorOutput "    ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
+        }
+    }
+    Write-ColorOutput ""
+
+    # 4. Create setupx.cmd wrapper
     Write-ColorOutput "Creating setupx.cmd wrapper..." "Magenta"
     $setupxCmd = @"
 @echo off
@@ -66,7 +103,7 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx-main.ps1" %*
     }
     Write-ColorOutput ""
 
-    # 4. Add to PATH
+    # 5. Add to PATH
     Write-ColorOutput "Adding SetupX to PATH..." "Magenta"
     try {
         $currentPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
@@ -83,13 +120,13 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx-main.ps1" %*
     }
     Write-ColorOutput ""
 
-    # 5. Refresh current session PATH
+    # 6. Refresh current session PATH
     Write-ColorOutput "Refreshing current session PATH..." "Magenta"
     $env:PATH = [Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [Environment]::GetEnvironmentVariable("PATH", "User")
     Write-ColorOutput "  SUCCESS: PATH refreshed for current session" "Green"
     Write-ColorOutput ""
 
-    # 6. Test installation
+    # 7. Test installation
     Write-ColorOutput "Testing SetupX installation..." "Magenta"
     try {
         $setupxTest = Get-Command setupx -ErrorAction SilentlyContinue
