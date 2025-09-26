@@ -175,27 +175,10 @@ function Install-SetupxComplete {
      # Handle package manager installation based on admin status
      Write-ColorOutput "Setting up package managers..." "Magenta"
      if ($isAdmin) {
-         Write-ColorOutput "  INFO: Admin mode - attempting Scoop installation" "Yellow"
-         Write-ColorOutput "  NOTE: Scoop installation may be restricted for admin users" "Cyan"
-         
-         # Try to install Scoop directly (may fail due to admin restrictions)
-         try {
-             Write-ColorOutput "  Attempting direct Scoop installation..." "Yellow"
-             Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-             Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-             
-             # Check if Scoop was actually installed
-             if (Get-Command scoop -ErrorAction SilentlyContinue) {
-                 Write-ColorOutput "  SUCCESS: Scoop installed successfully" "Green"
-             } else {
-                 Write-ColorOutput "  WARNING: Scoop installation may have failed due to admin restrictions" "Yellow"
-                 Write-ColorOutput "  NOTE: Run as regular user for guaranteed Scoop installation" "Cyan"
-             }
-         } catch {
-             Write-ColorOutput "  WARNING: Scoop installation failed: $($_.Exception.Message)" "Yellow"
-             Write-ColorOutput "  NOTE: This is expected when running as Administrator" "Cyan"
-             Write-ColorOutput "  SOLUTION: Run as regular user for proper Scoop installation" "Cyan"
-         }
+         Write-ColorOutput "  INFO: Admin mode - Scoop installation will be skipped" "Yellow"
+         Write-ColorOutput "  REASON: Scoop installation is disabled for Administrator users" "Cyan"
+         Write-ColorOutput "  SOLUTION: Run as regular user to install Scoop properly" "Cyan"
+         Write-ColorOutput "  ALTERNATIVE: Use 'setupx install package-managers' as regular user" "Cyan"
      } else {
          Write-ColorOutput "  INFO: Regular user mode - optimal for package manager installation" "Green"
          Write-ColorOutput "  NOTE: Scoop will install properly for regular users" "Green"
@@ -434,10 +417,22 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx.ps1" %*
 }
 
 # Execute installation
-# Check for force parameter
+# Check for force parameter from command line or pipeline
 $Force = $false
+
+# Check command line arguments
 if ($args -contains "-Force" -or $args -contains "--force") {
     $Force = $true
+}
+
+# Check if script was called with -Force parameter
+if ($MyInvocation.Line -like "*-Force*") {
+    $Force = $true
+}
+
+# Check for force parameter in the calling context
+if ($PSBoundParameters.ContainsKey('Force')) {
+    $Force = $PSBoundParameters.Force
 }
 
 Install-SetupxComplete -Force:$Force
