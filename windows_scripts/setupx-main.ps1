@@ -308,18 +308,39 @@ function Install-Module {
         $installedComponents = 0
         
         foreach ($component in $module.Components) {
-            Write-Output "Installing $($component.name)..." "White"
+            Write-Output "Installing $($component.displayName)..." "White"
             
-            # For demo purposes, just show what would be installed
-            Write-Output "  Package: $($component.package)" "Gray"
-            Write-Output "  Manager: $($component.manager)" "Gray"
-            Write-Output "  Status: Would install via $($component.manager)" "Green"
-            $installedComponents++
+            # Get the component script path
+            $componentScript = Join-Path $PSScriptRoot "modules\$ModuleName\components\$($component.scriptName)"
+            
+            if (Test-Path $componentScript) {
+                try {
+                    Write-Output "  Running installation script..." "Gray"
+                    
+                    # Execute the component installation script
+                    & $componentScript
+                    
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-Output "  Status: Installed successfully" "Green"
+                        $installedComponents++
+                    } else {
+                        Write-Output "  Status: Installation failed" "Red"
+                    }
+                }
+                catch {
+                    Write-Output "  Status: Installation error - $($_.Exception.Message)" "Red"
+                }
+            } else {
+                Write-Output "  Status: Installation script not found" "Yellow"
+            }
+            
+            Write-Output ""
         }
         
-        Write-Output ""
         Write-Output "Installation Results:" "Magenta"
         Write-Output "  Components processed: $installedComponents/$totalComponents" "White"
+        $percentage = [math]::Round(($installedComponents / $totalComponents) * 100, 1)
+        Write-Output "  Success rate: $percentage%" "White"
     }
     else {
         Write-Output "  No components to install" "Yellow"
