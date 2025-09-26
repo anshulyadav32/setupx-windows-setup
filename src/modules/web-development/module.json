@@ -4,6 +4,7 @@
   "description": "Complete web development environment with Node.js, browsers, and modern frameworks",
   "version": "1.0.0",
   "category": "development",
+  "priority": 2,
   "supportsAutoInstall": true,
   "requiresAdmin": true,
   "estimatedInstallTime": "15-20 minutes",

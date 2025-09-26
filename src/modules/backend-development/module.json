@@ -4,6 +4,7 @@
   "description": "Server-side development tools including Python, .NET, databases, and runtime environments",
   "version": "1.0.0",
   "category": "development",
+  "priority": 4,
   "supportsAutoInstall": true,
   "requiresAdmin": true,
   "estimatedInstallTime": "20-25 minutes",

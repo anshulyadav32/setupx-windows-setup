@@ -4,6 +4,7 @@
   "description": "Essential Windows package managers: Chocolatey, Scoop, and WinGet configuration",
   "version": "1.0.0",
   "category": "foundation",
+  "priority": 1,
   "supportsAutoInstall": true,
   "requiresAdmin": true,
   "estimatedInstallTime": "5-10 minutes",

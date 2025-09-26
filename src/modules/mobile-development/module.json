@@ -4,6 +4,7 @@
   "description": "Cross-platform mobile development with Flutter, React Native, and Android tools",
   "version": "1.0.0",
   "category": "development",
+  "priority": 3,
   "supportsAutoInstall": true,
   "requiresAdmin": true,
   "estimatedInstallTime": "25-30 minutes",

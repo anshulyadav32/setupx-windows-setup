@@ -4,6 +4,7 @@
   "description": "Essential development tools used across all programming languages and frameworks",
   "version": "1.0.0",
   "category": "development",
+  "priority": 6,
   "supportsAutoInstall": true,
   "requiresAdmin": true,
   "estimatedInstallTime": "15-25 minutes",

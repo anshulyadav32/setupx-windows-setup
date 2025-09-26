@@ -4,6 +4,7 @@
   "description": "Cloud development tools for AWS, Azure, Google Cloud, and Kubernetes",
   "version": "1.0.0",
   "category": "development",
+  "priority": 5,
   "supportsAutoInstall": true,
   "requiresAdmin": true,
   "estimatedInstallTime": "10-15 minutes",
