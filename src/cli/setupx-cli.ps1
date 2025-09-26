@@ -129,13 +129,18 @@ function Show-SetupxMenu {
         Write-Host ""
         Write-Host "1. List all modules" -ForegroundColor White
         Write-Host "2. Show system status" -ForegroundColor White
-        Write-Host "3. Install package managers" -ForegroundColor White
-        Write-Host "4. Install specific module" -ForegroundColor White
-        Write-Host "5. Show help" -ForegroundColor White
+        Write-Host "3. Install package managers (Priority 1)" -ForegroundColor White
+        Write-Host "4. Install web development (Priority 2)" -ForegroundColor White
+        Write-Host "5. Install mobile development (Priority 3)" -ForegroundColor White
+        Write-Host "6. Install backend development (Priority 4)" -ForegroundColor White
+        Write-Host "7. Install cloud development (Priority 5)" -ForegroundColor White
+        Write-Host "8. Install common development (Priority 6)" -ForegroundColor White
+        Write-Host "9. Install specific module" -ForegroundColor White
+        Write-Host "10. Show help" -ForegroundColor White
         Write-Host "0. Exit" -ForegroundColor White
         Write-Host ""
         
-        $choice = Read-Host "Enter your choice (0-5)"
+        $choice = Read-Host "Enter your choice (0-10)"
         
         switch ($choice) {
             "1" { 
@@ -153,13 +158,38 @@ function Show-SetupxMenu {
                 Write-Host ""
                 Read-Host "Press Enter to continue"
             }
-            "4" {
+            "4" { 
+                Install-Module "web-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "5" { 
+                Install-Module "mobile-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "6" { 
+                Install-Module "backend-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "7" { 
+                Install-Module "cloud-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "8" { 
+                Install-Module "common-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "9" {
                 $moduleName = Read-Host "Enter module name"
                 Install-Module $moduleName
                 Write-Host ""
                 Read-Host "Press Enter to continue"
             }
-            "5" { 
+            "10" { 
                 Show-SetupxHelp
                 Write-Host ""
                 Read-Host "Press Enter to continue"
