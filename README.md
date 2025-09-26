@@ -1,412 +1,112 @@
-# SetupX Windows Development Environment Setup
+# SetupX - Modular Windows Development Setup
 
-A comprehensive modular Windows development environment setup tool that automates the installation and configuration of development tools, package managers, and frameworks.
+A clean, modular PowerShell tool for setting up Windows development environments.
 
-## 🚀 Features
+## 🚀 Quick Start
 
-- **Modular Design**: 6 development modules with 43+ components
-- **Package Manager Support**: WinGet, Chocolatey, and Scoop integration
-- **CLI Interface**: Command-line interface for easy automation
-- **Component Testing**: Automated testing and verification
-- **Cross-Platform**: Flutter-based GUI with PowerShell backend
+### One-Liner Installation
+```powershell
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install-oneliner.ps1 | Invoke-Expression
+```
+
+### Manual Installation
+```powershell
+git clone https://github.com/anshulyadav32/setupx-windows-setup.git
+cd setupx-windows-setup
+.\install.ps1
+```
+
+## 📁 Clean Structure
+
+```
+setupx/
+├── setupx.ps1                    # Main entry point
+├── install.ps1                  # Local installer
+├── install-oneliner.ps1        # One-liner installer
+├── src/                          # Source code
+│   ├── core/                     # Core functionality
+│   │   ├── module-manager.ps1   # Module management
+│   │   └── package-manager.ps1  # Package manager operations
+│   ├── cli/                      # Command line interface
+│   │   └── setupx-cli.ps1       # Main CLI
+│   ├── utils/                    # Utilities
+│   │   ├── logger.ps1           # Logging
+│   │   └── helpers.ps1          # Helper functions
+│   ├── installers/               # Installation logic
+│   │   └── setupx-installer.ps1 # SetupX installer
+│   ├── config/                   # Configuration
+│   │   └── setupx.json          # Main config
+│   └── modules/                  # Development modules
+│       ├── package-managers/     # Package managers
+│       ├── web-development/      # Web dev tools
+│       ├── mobile-development/  # Mobile dev tools
+│       ├── backend-development/ # Backend dev tools
+│       ├── cloud-development/   # Cloud dev tools
+│       └── common-development/  # Common tools
+└── README.md                     # This file
+```
+
+## 🎯 Usage
+
+```powershell
+# Show help
+setupx -h
+
+# List all modules
+setupx list
+
+# Show system status
+setupx status
+
+# Install a module
+setupx install package-managers
+
+# Show module components
+setupx components package-managers
+
+# Interactive menu
+setupx menu
+```
 
 ## 📦 Available Modules
 
-### 1. Package Managers
-Essential Windows package managers for software installation:
-- **Chocolatey** - Community package manager
-- **Scoop** - Portable application installer  
-- **WinGet** - Microsoft official package manager
-- **NPM** - Node Package Manager
+- **package-managers**: WinGet, Chocolatey, Scoop, NPM
+- **web-development**: Node.js, Browsers, VS Code
+- **mobile-development**: Flutter, Android Studio, Xcode
+- **backend-development**: Python, Node.js, Docker, PostgreSQL
+- **cloud-development**: AWS CLI, Azure CLI, Docker, Kubernetes
+- **common-development**: Git, VS Code, PowerShell, Terminal
 
-### 2. Common Development
-Essential development tools used across all programming languages:
-- **Git** - Version control system
-- **VSCode** - Source code editor
-- **PowerShell** - Automation and configuration
-- **Terminal** - Modern terminal application
-- **Docker** - Containerization platform
-- **Postman** - API development and testing
-- **Compression Tools** - 7-Zip and WinRAR
-- **Fonts** - Programming fonts (Fira Code, JetBrains Mono)
+## 🔧 Features
 
-### 3. Web Development
-Complete web development environment:
-- **Node.js** - JavaScript runtime
-- **Yarn** - Fast package manager
-- **Browsers** - Chrome, Firefox, Edge
-- **React Tools** - Create React App, DevTools
-- **Vue Tools** - Vue CLI, DevTools
-- **Angular Tools** - Angular CLI
-- **Webpack Tools** - Modern build tools
+- ✅ **Modular Architecture**: Clean, organized code structure
+- ✅ **Package Manager Support**: WinGet, Chocolatey, Scoop, NPM
+- ✅ **Development Modules**: Web, Mobile, Backend, Cloud, Common
+- ✅ **Status Checking**: Comprehensive system status
+- ✅ **Interactive Menu**: User-friendly interface
+- ✅ **Error Handling**: Robust error handling and logging
+- ✅ **One-Liner Install**: Easy installation from web
 
-### 4. Backend Development
-Server-side development tools:
-- **Python** - Programming language with pip
-- **.NET** - Microsoft development framework
-- **Node.js Backend** - Backend-specific packages
-- **Go** - Google's programming language
-- **Rust** - Systems programming language
-- **PostgreSQL** - Advanced relational database
-- **MySQL** - Popular relational database
-- **MongoDB** - NoSQL document database
-- **Redis** - In-memory data store
+## 🏗️ Architecture
 
-### 5. Cloud Development
-Cloud platform tools and SDKs:
-- **AWS CLI** - Amazon Web Services
-- **Azure CLI** - Microsoft Azure
-- **Google Cloud** - Google Cloud Platform
-- **Kubernetes** - Container orchestration
-- **Docker** - Containerization
-- **Terraform** - Infrastructure as Code
-- **Helm** - Kubernetes package manager
+### Core Modules
+- **Module Manager**: Discovers and manages development modules
+- **Package Manager**: Handles package manager operations
+- **CLI**: Command-line interface with all commands
+- **Logger**: Consistent logging across all components
+- **Helpers**: Common utility functions
 
-### 6. Mobile Development
-Cross-platform mobile development:
-- **Flutter** - Google's UI toolkit
-- **Dart** - Flutter programming language
-- **Android Studio** - Android development IDE
-- **Android SDK** - Android development kit
-- **ADB** - Android debugging bridge
-- **React Native** - Cross-platform framework
-- **Expo CLI** - React Native development tools
-- **Java JDK** - Android development runtime
+### Benefits
+- **Separation of Concerns**: Each module has a single responsibility
+- **Reusability**: Utility functions shared across modules
+- **Maintainability**: Easy to maintain and debug
+- **Scalability**: Easy to add new modules and features
 
-## 🛠️ Installation
+## 📋 Requirements
 
-### Prerequisites
 - Windows 10/11
 - PowerShell 5.1 or later
-- Administrator privileges (for some installations)
-
-### Quick Start
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/anshulyadav32/setupx-windows-setup.git
-   cd setupx-windows-setup
-   ```
-
-2. **Run the setup:**
-   ```powershell
-   cd windows_scripts
-   .\setupx-main.ps1 -h
-   ```
-
-### 🚀 One-Liner Installation
-
-**Complete SetupX installation with global access:**
-
-```powershell
-# Install SetupX to C:\setupx with PATH setup (RECOMMENDED)
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-auto-install.ps1" | Invoke-Expression
-```
-
-**Alternative - Package managers only:**
-```powershell
-# Install package managers only (no SetupX CLI)
-Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
-```
-
-**What the complete one-liner does:**
-- ✅ Downloads SetupX to C:\setupx directory
-- ✅ Creates setupx.cmd wrapper for global access
-- ✅ Adds C:\setupx to system PATH automatically
-- ✅ Enables setupx command to work from anywhere
-- ✅ Installs Chocolatey, Scoop, and checks WinGet
-- ✅ Solves all path and access issues
-
-**What the package managers one-liner does:**
-- ✅ Sets execution policy for script execution
-- ✅ Installs Chocolatey package manager
-- ✅ Installs Scoop package manager  
-- ✅ Checks WinGet availability
-- ✅ Provides usage instructions
-
-## 📋 Usage
-
-### 🚀 SetupX Command Access
-
-**After running the one-liner installer, use these commands to access SetupX:**
-
-```powershell
-# Immediate SetupX access (recommended)
-.\setupx-now.ps1 -h          # Show help
-.\setupx-now.ps1 list        # List modules
-.\setupx-now.ps1 status      # Show status
-.\setupx-now.ps1 menu        # Interactive menu
-
-# Alternative access methods
-.\setupx-main.ps1 -h         # Direct SetupX script
-.\quick-setupx.ps1 list      # Quick access
-.\install-setupx-command.ps1 # Install global 'setupx' command
-```
-
-**Note:** The one-liner installer sets up package managers but doesn't install SetupX as a global command. Use the commands above to access SetupX functionality.
-
-### Command Line Interface
-
-#### Basic Commands
-
-```powershell
-# Show help and available commands
-.\setupx-now.ps1 -h
-.\setupx-now.ps1 --help
-
-# List all available modules
-.\setupx-now.ps1 list
-
-# Show system status and package managers
-.\setupx-now.ps1 status
-
-# Interactive menu (recommended for beginners)
-.\setupx-now.ps1 menu
-```
-
-#### Module Management Commands
-
-```powershell
-# List components in a specific module
-setupx components <module-name>
-
-# Test components in a module
-setupx test <module-name>
-
-# Install a complete module
-setupx install <module-name>
-```
-
-#### Available Modules
-
-```powershell
-# Package Managers Module
-setupx components package-managers
-setupx test package-managers
-setupx install package-managers
-
-# Common Development Module
-setupx components common-development
-setupx test common-development
-setupx install common-development
-
-# Web Development Module
-setupx components web-development
-setupx test web-development
-setupx install web-development
-
-# Backend Development Module
-setupx components backend-development
-setupx test backend-development
-setupx install backend-development
-
-# Cloud Development Module
-setupx components cloud-development
-setupx test cloud-development
-setupx install cloud-development
-
-# Mobile Development Module
-setupx components mobile-development
-setupx test mobile-development
-setupx install mobile-development
-```
-
-### Complete Command Reference
-
-#### Help Commands
-```powershell
-setupx -h                    # Show help message
-setupx --help               # Show help message
-setupx help                 # Show help message
-```
-
-#### Information Commands
-```powershell
-setupx list                 # List all available modules
-setupx status               # Show system status
-setupx components <module>  # List module components
-```
-
-#### Testing Commands
-```powershell
-setupx test <module>        # Test module components
-setupx test package-managers # Test package managers
-setupx test common-development # Test common tools
-setupx test web-development  # Test web development tools
-setupx test backend-development # Test backend tools
-setupx test cloud-development # Test cloud tools
-setupx test mobile-development # Test mobile tools
-```
-
-#### Installation Commands
-```powershell
-setupx install <module>     # Install a module
-setupx install package-managers # Install package managers
-setupx install common-development # Install common tools
-setupx install web-development # Install web tools
-setupx install backend-development # Install backend tools
-setupx install cloud-development # Install cloud tools
-setupx install mobile-development # Install mobile tools
-```
-
-#### Interactive Commands
-```powershell
-setupx menu                 # Show interactive menu
-setupx                      # Default to interactive menu
-```
-
-### Examples
-
-#### One-Liner Installation
-```powershell
-# Complete SetupX installation with global access (RECOMMENDED)
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-auto-install.ps1" | Invoke-Expression
-
-# Package managers only (no SetupX CLI)
-Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
-```
-
-#### Quick Setup Examples
-```powershell
-# Complete development environment setup
-.\setupx-now.ps1 install package-managers
-.\setupx-now.ps1 install common-development
-.\setupx-now.ps1 install web-development
-
-# Test your installation
-.\setupx-now.ps1 test package-managers
-.\setupx-now.ps1 test common-development
-
-# Check system status
-.\setupx-now.ps1 status
-```
-
-#### Module-Specific Examples
-```powershell
-# Package Managers Setup
-.\setupx-now.ps1 components package-managers
-.\setupx-now.ps1 test package-managers
-.\setupx-now.ps1 install package-managers
-
-# Web Development Setup
-.\setupx-now.ps1 components web-development
-.\setupx-now.ps1 test web-development
-.\setupx-now.ps1 install web-development
-
-# Backend Development Setup
-.\setupx-now.ps1 components backend-development
-.\setupx-now.ps1 test backend-development
-.\setupx-now.ps1 install backend-development
-```
-
-#### Advanced Usage
-```powershell
-# Check what's available
-.\setupx-main.ps1 list
-
-# See system status
-.\setupx-main.ps1 status
-
-# Interactive setup
-.\setupx-main.ps1 menu
-
-# Test everything
-.\setupx-main.ps1 test package-managers
-.\setupx-main.ps1 test common-development
-.\setupx-main.ps1 test web-development
-.\setupx-main.ps1 test backend-development
-.\setupx-main.ps1 test cloud-development
-.\setupx-main.ps1 test mobile-development
-```
-
-## 🧪 Testing
-
-The setupx tool includes comprehensive testing capabilities:
-
-```powershell
-# Test all components in a module
-setupx test package-managers
-
-# Test results show:
-# - Installation status
-# - Version information
-# - Completion percentage
-```
-
-## 📊 System Status
-
-Check your system status:
-
-```powershell
-setupx status
-```
-
-Shows:
-- Package manager availability
-- Module configuration status
-- System requirements
-- Installation progress
-
-## 🔧 Configuration
-
-### Module Configuration
-Each module has a `module.json` configuration file:
-
-```json
-{
-  "name": "package-managers",
-  "description": "Essential Windows package managers",
-  "version": "1.0.0",
-  "components": [
-    {
-      "name": "chocolatey",
-      "description": "Windows package manager",
-      "package": "chocolatey",
-      "manager": "winget",
-      "testCommand": "choco --version"
-    }
-  ]
-}
-```
-
-### Component Scripts
-Each component has its own PowerShell script for installation and testing.
-
-## 🎯 Flutter GUI
-
-The project includes a Flutter-based GUI for visual management:
-
-```bash
-# Run Flutter app
-flutter run
-```
-
-Features:
-- Module selection interface
-- Component status dashboard
-- Installation progress tracking
-- System status monitoring
-
-## 📁 Project Structure
-
-```
-setupx-windows-setup/
-├── windows_scripts/          # PowerShell scripts
-│   ├── setupx-main.ps1      # Main CLI interface
-│   ├── modules/              # Development modules
-│   │   ├── package-managers/
-│   │   ├── common-development/
-│   │   ├── web-development/
-│   │   ├── backend-development/
-│   │   ├── cloud-development/
-│   │   └── mobile-development/
-│   └── shared/               # Shared utilities
-├── lib/                      # Flutter app source
-├── android/                  # Android app files
-├── ios/                      # iOS app files
-├── windows/                  # Windows app files
-└── README.md                 # This file
-```
+- Internet connection for installation
 
 ## 🤝 Contributing
 
@@ -418,22 +118,14 @@ setupx-windows-setup/
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - see LICENSE file for details
 
 ## 🆘 Support
 
-- **Issues**: Report bugs and request features
-- **Documentation**: Check the wiki for detailed guides
-- **Community**: Join discussions in GitHub Discussions
-
-## 🎉 Acknowledgments
-
-- Microsoft for WinGet
-- Chocolatey community
-- Scoop developers
-- Flutter team
-- All contributors
+- **Issues**: [GitHub Issues](https://github.com/anshulyadav32/setupx-windows-setup/issues)
+- **Documentation**: [GitHub Wiki](https://github.com/anshulyadav32/setupx-windows-setup/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/anshulyadav32/setupx-windows-setup/discussions)
 
 ---
 
-**SetupX** - Making Windows development environment setup simple and automated! 🚀
+**SetupX** - Making Windows development setup simple and modular! 🚀

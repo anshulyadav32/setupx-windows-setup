@@ -1,18 +1,18 @@
-# SetupX Modular Auto-Install
-# Downloads and installs SetupX with modular structure
+# SetupX One-Liner Installer
+# Downloads and installs SetupX in one command
 
 function Write-ColorOutput {
     param([string]$Message, [string]$Color = "White")
     Write-Host $Message -ForegroundColor $Color
 }
 
-function Install-SetupxModular {
-    Write-ColorOutput "`nSETUPX MODULAR INSTALLER" "Cyan"
-    Write-ColorOutput "Installing SetupX with modular structure..." "White"
+function Install-SetupxFromWeb {
+    Write-ColorOutput "`nSETUPX ONE-LINER INSTALLER" "Cyan"
+    Write-ColorOutput "Downloading and installing SetupX..." "White"
     Write-ColorOutput ""
     
     $installPath = "C:\setupx"
-    $tempDir = Join-Path $env:TEMP "setupx-modular"
+    $tempDir = Join-Path $env:TEMP "setupx-install"
     
     # Create temp directory
     if (Test-Path $tempDir) {
@@ -20,7 +20,7 @@ function Install-SetupxModular {
     }
     New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
     
-    Write-ColorOutput "Downloading SetupX modular structure..." "Magenta"
+    Write-ColorOutput "📥 Downloading SetupX..." "Magenta"
     
     # Download main files
     $files = @(
@@ -38,7 +38,7 @@ function Install-SetupxModular {
     
     foreach ($file in $files) {
         try {
-            Write-ColorOutput "  Downloading $file..." "Yellow"
+            Write-ColorOutput "  📥 Downloading $file..." "Yellow"
             $url = $baseUrl + $file
             $localPath = Join-Path $tempDir $file
             $fileDir = Split-Path $localPath -Parent
@@ -48,14 +48,14 @@ function Install-SetupxModular {
             }
             
             Invoke-RestMethod -Uri $url -OutFile $localPath
-            Write-ColorOutput "    SUCCESS: $file downloaded" "Green"
+            Write-ColorOutput "    ✅ SUCCESS: $file downloaded" "Green"
         } catch {
-            Write-ColorOutput "    ERROR: Failed to download $file - $($_.Exception.Message)" "Red"
+            Write-ColorOutput "    ❌ ERROR: Failed to download $file - $($_.Exception.Message)" "Red"
         }
     }
     
     # Download modules
-    Write-ColorOutput "Downloading SetupX modules..." "Magenta"
+    Write-ColorOutput "📦 Downloading SetupX modules..." "Magenta"
     $modules = @(
         "package-managers",
         "web-development", 
@@ -67,7 +67,7 @@ function Install-SetupxModular {
     
     foreach ($module in $modules) {
         try {
-            Write-ColorOutput "  Downloading $module module..." "Yellow"
+            Write-ColorOutput "  📦 Downloading $module module..." "Yellow"
             $moduleDir = Join-Path $tempDir "src\modules\$module"
             if (-not (Test-Path $moduleDir)) {
                 New-Item -ItemType Directory -Path $moduleDir -Force | Out-Null
@@ -78,32 +78,32 @@ function Install-SetupxModular {
             $moduleJsonPath = Join-Path $moduleDir "module.json"
             Invoke-RestMethod -Uri $moduleJsonUrl -OutFile $moduleJsonPath
             
-            Write-ColorOutput "    SUCCESS: $module module downloaded" "Green"
+            Write-ColorOutput "    ✅ SUCCESS: $module module downloaded" "Green"
         } catch {
-            Write-ColorOutput "    ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
+            Write-ColorOutput "    ❌ ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
         }
     }
     
     # Install SetupX
-    Write-ColorOutput "Installing SetupX..." "Magenta"
+    Write-ColorOutput "🚀 Installing SetupX..." "Magenta"
     try {
         $installerPath = Join-Path $tempDir "src\installers\setupx-installer.ps1"
         if (Test-Path $installerPath) {
             . $installerPath
             Install-Setupx -InstallPath $installPath
         } else {
-            Write-ColorOutput "  ERROR: Installer not found" "Red"
+            Write-ColorOutput "  ❌ ERROR: Installer not found" "Red"
         }
     } catch {
-        Write-ColorOutput "  ERROR: Installation failed - $($_.Exception.Message)" "Red"
+        Write-ColorOutput "  ❌ ERROR: Installation failed - $($_.Exception.Message)" "Red"
     }
     
     # Cleanup
-    Write-ColorOutput "Cleaning up temporary files..." "Magenta"
+    Write-ColorOutput "🧹 Cleaning up temporary files..." "Magenta"
     Remove-Item -Path $tempDir -Recurse -Force
-    Write-ColorOutput "  SUCCESS: Cleanup completed" "Green"
+    Write-ColorOutput "  ✅ SUCCESS: Cleanup completed" "Green"
     
-    Write-ColorOutput "`nSetupX Modular Installation Complete!" "Green"
+    Write-ColorOutput "`n🎉 SetupX installation complete!" "Green"
     Write-ColorOutput "You can now use 'setupx' command from anywhere!" "White"
     Write-ColorOutput ""
     Write-ColorOutput "Test your installation:" "Cyan"
@@ -114,4 +114,4 @@ function Install-SetupxModular {
 }
 
 # Execute installation
-Install-SetupxModular
+Install-SetupxFromWeb
