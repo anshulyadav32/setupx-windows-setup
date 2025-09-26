@@ -4,7 +4,7 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ## 🚀 Quick Start
 
-### One-Liner Installation
+### One-Command Installation
 ```powershell
 Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | Invoke-Expression
 ```
@@ -14,6 +14,15 @@ Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-wi
 git clone https://github.com/anshulyadav32/setupx-windows-setup.git
 cd setupx-windows-setup
 .\install.ps1
+```
+
+### Alternative Installation Methods
+```powershell
+# Direct download and run
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | iex
+
+# Using curl (if available)
+curl -sSL https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | powershell
 ```
 
 ## 📁 Clean Structure
@@ -85,7 +94,9 @@ setupx menu
 - ✅ **Status Checking**: Comprehensive system status
 - ✅ **Interactive Menu**: User-friendly interface
 - ✅ **Error Handling**: Robust error handling and logging
-- ✅ **One-Liner Install**: Easy installation from web
+- ✅ **One-Command Install**: Easy installation from web
+- ✅ **Multiple Installation Methods**: Flexible installation options
+- ✅ **Clean Structure**: Minimal, maintainable codebase
 
 ## 🏗️ Architecture
 
