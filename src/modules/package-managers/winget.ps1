@@ -25,6 +25,10 @@ function Install-WinGet {
         # Try to run winget with proper error handling
         $wingetOutput = winget --version 2>&1
         if ($LASTEXITCODE -eq 0) {
+            # Refresh environment if available
+            if (Get-Command refreshenv -ErrorAction SilentlyContinue) {
+                refreshenv
+            }
             Write-Host "WinGet is working!" -ForegroundColor Green
             return $true
         } else {

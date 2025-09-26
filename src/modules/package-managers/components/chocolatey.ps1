@@ -79,6 +79,9 @@ function Install-Chocolatey {
 
         # Refresh environment
         $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+        if (Get-Command refreshenv -ErrorAction SilentlyContinue) {
+            refreshenv
+        }
         Start-Sleep -Seconds 3
 
         # Configure Chocolatey features

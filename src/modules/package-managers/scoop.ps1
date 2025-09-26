@@ -28,6 +28,10 @@ function Install-Scoop {
             & "$env:TEMP\install.ps1" -RunAsAdmin
 
             if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                # Refresh environment if available
+                if (Get-Command refreshenv -ErrorAction SilentlyContinue) {
+                    refreshenv
+                }
                 Write-Host "Scoop installed successfully (Admin mode)!" -ForegroundColor Green
                 scoop --version
                 return $true
@@ -41,6 +45,10 @@ function Install-Scoop {
                 try {
                     choco install scoop -y
                     if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                        # Refresh environment if available
+                        if (Get-Command refreshenv -ErrorAction SilentlyContinue) {
+                            refreshenv
+                        }
                         Write-Host "Scoop installed successfully via Chocolatey!" -ForegroundColor Green
                         return $true
                     }
