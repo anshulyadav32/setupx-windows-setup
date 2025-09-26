@@ -94,6 +94,28 @@ Cross-platform mobile development:
    .\setupx-main.ps1 -h
    ```
 
+### 🚀 One-Liner Installation
+
+**Quick setup with a single command:**
+
+```powershell
+# Install SetupX and package managers in one line
+Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
+```
+
+**Alternative one-liner:**
+```powershell
+# Download and execute SetupX
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1" | Invoke-Expression
+```
+
+**What the one-liner does:**
+- ✅ Sets execution policy for script execution
+- ✅ Installs Chocolatey package manager
+- ✅ Installs Scoop package manager  
+- ✅ Checks WinGet availability
+- ✅ Provides usage instructions
+
 ## 📋 Usage
 
 ### Command Line Interface
@@ -207,6 +229,15 @@ setupx                      # Default to interactive menu
 ```
 
 ### Examples
+
+#### One-Liner Installation
+```powershell
+# Install everything with a single command
+Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
+
+# Alternative one-liner
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1" | Invoke-Expression
+```
 
 #### Quick Setup Examples
 ```powershell
