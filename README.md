@@ -84,7 +84,7 @@ Cross-platform mobile development:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/setupx-windows-setup.git
+   git clone https://github.com/anshulyadav32/setupx-windows-setup.git
    cd setupx-windows-setup
    ```
 

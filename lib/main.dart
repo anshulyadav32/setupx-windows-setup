@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:window_manager/window_manager.dart';
-import 'dart:io';
-import 'package:path/path.dart' as path;
 
 // Import page components
 import 'pages/dashboard_page.dart';
@@ -129,7 +125,7 @@ class _MainScreenState extends State<MainScreen> {
             color: fluent.FluentTheme.of(context).acrylicBackgroundColor,
             border: Border(
               bottom: BorderSide(
-                color: Colors.grey.withOpacity(0.3),
+                color: Colors.grey.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
