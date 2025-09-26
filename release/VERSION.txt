@@ -1,0 +1,26 @@
+SetupX Flutter Application
+Version: 1.0.0
+Build: Release
+Platform: Windows x64
+Flutter: 3.35.1
+Build Date: 2025-01-26
+Git Commit: 7eb7996
+Repository: https://github.com/anshulyadav32/setupx-windows-setup
+
+Features:
+- Modern Fluent UI interface
+- Package manager integration
+- Development environment setup
+- Interactive CLI system
+- Cross-platform compatibility
+
+System Requirements:
+- Windows 10/11 (64-bit)
+- Visual C++ Redistributable
+- .NET Framework 4.7.2+
+
+Files:
+- setupx.exe (Main application)
+- flutter_windows.dll (Flutter runtime)
+- data/ (Application assets)
+- Plugin DLLs (Native Windows plugins)
