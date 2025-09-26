@@ -11,7 +11,7 @@ Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-wi
 
 ### Force Installation (No Prompts)
 ```powershell
-Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression -Force
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
 ```
 
 ### Manual Installation
@@ -155,6 +155,47 @@ setupx menu
 ## 📄 License
 
 MIT License - see LICENSE file for details
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**❌ "404: Not Found" Error**
+- **Problem**: Using old `one-cmd-install.ps1` URL
+- **Solution**: Use the new `install.ps1` URL:
+  ```powershell
+  Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression
+  ```
+
+**❌ "setupx command not found"**
+- **Problem**: PATH not updated in current session
+- **Solution**: Restart PowerShell or run:
+  ```powershell
+  refreshenv
+  ```
+
+**❌ "Module not found" after installation**
+- **Problem**: Installation didn't complete properly
+- **Solution**: Reinstall with force mode:
+  ```powershell
+  iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+  ```
+
+**❌ Emoji parsing errors**
+- **Problem**: PowerShell version compatibility
+- **Solution**: Use the latest `install.ps1` (emoji-free version)
+
+### Installation Methods
+
+**✅ Recommended (Latest)**
+```powershell
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+```
+
+**✅ Force Installation (No Prompts)**
+```powershell
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+```
 
 ## 🆘 Support
 
