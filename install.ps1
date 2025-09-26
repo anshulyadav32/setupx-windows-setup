@@ -96,6 +96,21 @@ function Install-SetupxComplete {
             $moduleJsonPath = Join-Path $moduleDir "module.json"
             Invoke-RestMethod -Uri $moduleJsonUrl -OutFile $moduleJsonPath
             
+            # Download component scripts for package-managers module
+            if ($module -eq "package-managers") {
+                $componentScripts = @("chocolatey.ps1", "scoop.ps1", "winget.ps1", "npm.ps1")
+                foreach ($script in $componentScripts) {
+                    try {
+                        $scriptUrl = $baseUrl + "src/modules/$module/$script"
+                        $scriptPath = Join-Path $moduleDir $script
+                        Invoke-RestMethod -Uri $scriptUrl -OutFile $scriptPath
+                        Write-ColorOutput "    Downloaded $script" "Green"
+                    } catch {
+                        Write-ColorOutput "    WARNING: Failed to download $script" "Yellow"
+                    }
+                }
+            }
+            
             Write-ColorOutput "    SUCCESS: $module module downloaded" "Green"
         } catch {
             Write-ColorOutput "    ERROR: Failed to download $module module - $($_.Exception.Message)" "Red"
