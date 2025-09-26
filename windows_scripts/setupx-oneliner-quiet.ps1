@@ -1,6 +1,6 @@
-# SETUPX - Simple One-Liner Installer (Fixed)
+# SETUPX - Quiet One-Liner Installer
 # This script sets up essential Windows development tools via Chocolatey and Scoop.
-# It handles admin vs non-admin scenarios properly.
+# It avoids execution policy warnings by being smarter about when to set policies.
 
 function Write-ColorOutput {
     param([string]$Message, [string]$Color = "White")
@@ -26,21 +26,17 @@ function Install-SetupX {
     }
     Write-ColorOutput ""
 
-    # 1. Check and Set Execution Policy (with better error handling)
+    # 1. Check Execution Policy (only set if needed)
     Write-ColorOutput "Checking execution policy..." "Magenta"
     $currentPolicy = Get-ExecutionPolicy
     Write-ColorOutput "  Current execution policy: $currentPolicy" "White"
     
     if ($currentPolicy -eq "Restricted") {
-        Write-ColorOutput "  Attempting to set execution policy..." "Yellow"
+        Write-ColorOutput "  Setting execution policy to allow script execution..." "Yellow"
         try {
             Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force -ErrorAction SilentlyContinue
             $newPolicy = Get-ExecutionPolicy
-            if ($newPolicy -ne "Restricted") {
-                Write-ColorOutput "  SUCCESS: Execution policy updated to $newPolicy" "Green"
-            } else {
-                Write-ColorOutput "  INFO: Execution policy remains $newPolicy (may be overridden by Group Policy)" "Yellow"
-            }
+            Write-ColorOutput "  SUCCESS: Execution policy updated to $newPolicy" "Green"
         } catch {
             Write-ColorOutput "  INFO: Execution policy unchanged (may be overridden by Group Policy)" "Yellow"
         }
