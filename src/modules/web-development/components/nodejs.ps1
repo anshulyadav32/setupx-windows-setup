@@ -126,4 +126,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-NodeJS, Test-NodeJS, Update-NodeJS
+# Functions are available for use

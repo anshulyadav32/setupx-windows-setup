@@ -149,4 +149,4 @@ if ($MyInvocation.InvocationName -ne '.') {
     }
 }
 
-Export-ModuleMember -Function Install-Postman, Test-Postman, Update-Postman
+# Functions are available for use

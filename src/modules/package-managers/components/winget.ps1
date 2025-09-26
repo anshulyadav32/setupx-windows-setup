@@ -329,4 +329,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-WinGet, Test-WinGet, Update-WinGet, Get-WinGetInfo
+# Functions are available for use

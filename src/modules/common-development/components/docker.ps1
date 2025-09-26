@@ -329,4 +329,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-Docker, Test-Docker, Update-Docker
+# Functions are available for use

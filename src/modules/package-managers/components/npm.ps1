@@ -320,4 +320,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-NPM, Test-NPM, Update-NPM, Get-NPMInfo
+# Functions are available for use

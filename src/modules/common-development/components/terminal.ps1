@@ -276,4 +276,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-Terminal, Test-Terminal, Update-Terminal
+# Functions are available for use

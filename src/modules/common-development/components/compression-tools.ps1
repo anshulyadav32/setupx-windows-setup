@@ -148,4 +148,4 @@ if ($MyInvocation.InvocationName -ne '.') {
     }
 }
 
-Export-ModuleMember -Function Install-CompressionTools, Test-CompressionTools, Update-CompressionTools
+# Functions are available for use

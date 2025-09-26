@@ -276,4 +276,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-VSCode, Test-VSCode, Update-VSCode
+# Functions are available for use

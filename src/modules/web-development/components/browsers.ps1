@@ -356,4 +356,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-Browsers, Test-Browsers, Update-Browsers
+# Functions are available for use

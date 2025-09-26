@@ -276,4 +276,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-PowerShell, Test-PowerShell, Update-PowerShell
+# Functions are available for use

@@ -258,4 +258,4 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 # Export functions for module use
-Export-ModuleMember -Function Install-Scoop, Test-Scoop, Update-Scoop, Get-ScoopInfo
+# Functions are available for use
