@@ -180,8 +180,16 @@ function Install-SetupxComplete {
         if (Get-Command choco -ErrorAction SilentlyContinue) {
             try {
                 Write-ColorOutput "  Installing Scoop via Chocolatey..." "Yellow"
-                choco install scoop -y
-                Write-ColorOutput "  SUCCESS: Scoop installed via Chocolatey" "Green"
+                $chocoOutput = choco install scoop -y 2>&1
+                $chocoOutput | ForEach-Object { Write-Host "    $_" }
+                
+                # Check if installation was successful
+                if ($LASTEXITCODE -eq 0 -and $chocoOutput -notmatch "not installed|failed|error") {
+                    Write-ColorOutput "  SUCCESS: Scoop installed via Chocolatey" "Green"
+                } else {
+                    Write-ColorOutput "  WARNING: Scoop installation via Chocolatey failed" "Yellow"
+                    Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
+                }
             } catch {
                 Write-ColorOutput "  WARNING: Failed to install Scoop via Chocolatey" "Yellow"
                 Write-ColorOutput "  NOTE: Run as regular user for direct Scoop installation" "Cyan"
