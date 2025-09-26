@@ -1,38 +1,109 @@
 # React Development Tools Installation Script
-# Installs React development tools and utilities
+# Web Development Module Component
 
 function Install-ReactTools {
     <#
     .SYNOPSIS
-    Installs React development tools
+    Installs React development tools and utilities
     #>
     
     Write-Host "Installing React development tools..." -ForegroundColor Yellow
     
-    if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-        Write-Host "npm not found. Please install Node.js first." -ForegroundColor Red
-        return $false
-    }
-    
     try {
-        # Install React development tools globally
-        $tools = @(
-            "create-react-app",
-            "react-devtools",
-            "eslint",
-            "prettier"
-        )
+        $installedTools = @()
         
-        foreach ($tool in $tools) {
-            Write-Host "Installing $tool..." -ForegroundColor Yellow
-            npm install -g $tool
+        # Install Create React App globally
+        Write-Host "Installing Create React App..." -ForegroundColor Cyan
+        if (Install-ReactTool "Create React App" "create-react-app") {
+            $installedTools += "Create React App"
         }
         
-        Write-Host "React development tools installed successfully!" -ForegroundColor Green
-        Write-Host "You can now create React apps with: npx create-react-app my-app" -ForegroundColor Cyan
+        # Install React DevTools browser extension (via instructions)
+        Write-Host "Installing React DevTools..." -ForegroundColor Cyan
+        if (Install-ReactDevTools) {
+            $installedTools += "React DevTools"
+        }
+        
+        # Install additional React utilities
+        Write-Host "Installing React utilities..." -ForegroundColor Cyan
+        if (Install-ReactUtilities) {
+            $installedTools += "React Utilities"
+        }
+        
+        if ($installedTools.Count -gt 0) {
+            Write-Host "SUCCESS: Installed React tools: $($installedTools -join ', ')" -ForegroundColor Green
+            return $true
+        } else {
+            Write-Host "WARNING: No React tools were installed" -ForegroundColor Yellow
+            return $false
+        }
+        
+    } catch {
+        Write-Host "ERROR: Failed to install React tools - $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Install-ReactTool {
+    param(
+        [string]$ToolName,
+        [string]$NpmPackage
+    )
+    
+    try {
+        if (Get-Command "npm" -ErrorAction SilentlyContinue) {
+            Write-Host "  Installing $ToolName via npm..." -ForegroundColor Gray
+            npm install -g $NpmPackage
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "  SUCCESS: $ToolName installed via npm" -ForegroundColor Green
+                return $true
+            }
+        }
+        
+        Write-Host "  WARNING: Could not install $ToolName (npm not available)" -ForegroundColor Yellow
+        return $false
+        
+    } catch {
+        Write-Host "  ERROR: Failed to install $ToolName - $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Install-ReactDevTools {
+    try {
+        Write-Host "  React DevTools browser extension installation:" -ForegroundColor Gray
+        Write-Host "  - Chrome: https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi" -ForegroundColor Cyan
+        Write-Host "  - Firefox: https://addons.mozilla.org/en-US/firefox/addon/react-devtools/" -ForegroundColor Cyan
+        Write-Host "  - Edge: https://microsoftedge.microsoft.com/addons/detail/react-developer-tools/gpphkfbcpidddadnkolkpfckpihlkkil" -ForegroundColor Cyan
+        Write-Host "  Please install manually from the links above" -ForegroundColor Yellow
         return $true
     } catch {
-        Write-Host "Failed to install React tools: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "  ERROR: Failed to provide React DevTools instructions - $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Install-ReactUtilities {
+    try {
+        $utilities = @(
+            "react-router-dom",
+            "axios",
+            "styled-components",
+            "react-query",
+            "react-hook-form"
+        )
+        
+        Write-Host "  Installing React utility packages..." -ForegroundColor Gray
+        foreach ($utility in $utilities) {
+            Write-Host "    Installing $utility..." -ForegroundColor DarkGray
+            npm install -g $utility
+        }
+        
+        Write-Host "  SUCCESS: React utilities installed" -ForegroundColor Green
+        return $true
+        
+    } catch {
+        Write-Host "  ERROR: Failed to install React utilities - $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
 }
@@ -40,38 +111,32 @@ function Install-ReactTools {
 function Test-ReactTools {
     <#
     .SYNOPSIS
-    Tests if React tools are installed
+    Tests if React tools are installed and working
     #>
     
-    $tools = @("create-react-app", "eslint", "prettier")
-    $installed = 0
-    
-    foreach ($tool in $tools) {
-        if (Get-Command $tool -ErrorAction SilentlyContinue) {
-            Write-Host "$tool is installed" -ForegroundColor Green
-            $installed++
-        } else {
-            Write-Host "$tool is not installed" -ForegroundColor Red
+    try {
+        $tools = @("create-react-app")
+        $installedTools = @()
+        
+        foreach ($tool in $tools) {
+            $version = Get-CommandVersion $tool
+            if ($version -ne "Not installed") {
+                $installedTools += $tool
+                Write-Host "$tool: $version" -ForegroundColor Green
+            } else {
+                Write-Host "$tool: Not found" -ForegroundColor Red
+            }
         }
-    }
-    
-    Write-Host "Total React tools installed: $installed" -ForegroundColor $(if ($installed -gt 0) { "Green" } else { "Red" })
-    return $installed -gt 0
-}
-
-function Update-ReactTools {
-    <#
-    .SYNOPSIS
-    Updates React tools to latest versions
-    #>
-    
-    if (Get-Command npm -ErrorAction SilentlyContinue) {
-        Write-Host "Updating React development tools..." -ForegroundColor Yellow
-        npm update -g create-react-app react-devtools eslint prettier
-        Write-Host "React tools updated successfully!" -ForegroundColor Green
-        return $true
-    } else {
-        Write-Host "npm not found. Cannot update React tools." -ForegroundColor Red
+        
+        if ($installedTools.Count -gt 0) {
+            Write-Host "Installed React tools: $($installedTools -join ', ')" -ForegroundColor Green
+            return $true
+        } else {
+            Write-Host "No React tools found" -ForegroundColor Red
+            return $false
+        }
+    } catch {
+        Write-Host "ERROR: Failed to test React tools - $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
 }

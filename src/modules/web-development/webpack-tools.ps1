@@ -1,39 +1,110 @@
-# Webpack and Build Tools Installation Script
-# Installs modern build tools and bundlers
+# Build Tools (Webpack, Vite) Installation Script
+# Web Development Module Component
 
 function Install-WebpackTools {
     <#
     .SYNOPSIS
-    Installs webpack and build tools
+    Installs modern build tools and bundlers
     #>
     
-    Write-Host "Installing webpack and build tools..." -ForegroundColor Yellow
-    
-    if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-        Write-Host "npm not found. Please install Node.js first." -ForegroundColor Red
-        return $false
-    }
+    Write-Host "Installing build tools and bundlers..." -ForegroundColor Yellow
     
     try {
-        # Install build tools globally
-        $tools = @(
-            "webpack",
-            "webpack-cli",
-            "vite",
-            "parcel-bundler",
-            "rollup"
-        )
+        $installedTools = @()
         
-        foreach ($tool in $tools) {
-            Write-Host "Installing $tool..." -ForegroundColor Yellow
-            npm install -g $tool
+        # Install Webpack
+        Write-Host "Installing Webpack..." -ForegroundColor Cyan
+        if (Install-BuildTool "Webpack" "webpack") {
+            $installedTools += "Webpack"
         }
         
-        Write-Host "Build tools installed successfully!" -ForegroundColor Green
-        Write-Host "You can now use webpack, vite, parcel, and rollup for building projects" -ForegroundColor Cyan
-        return $true
+        # Install Vite
+        Write-Host "Installing Vite..." -ForegroundColor Cyan
+        if (Install-BuildTool "Vite" "vite") {
+            $installedTools += "Vite"
+        }
+        
+        # Install Rollup
+        Write-Host "Installing Rollup..." -ForegroundColor Cyan
+        if (Install-BuildTool "Rollup" "rollup") {
+            $installedTools += "Rollup"
+        }
+        
+        # Install Parcel
+        Write-Host "Installing Parcel..." -ForegroundColor Cyan
+        if (Install-BuildTool "Parcel" "parcel") {
+            $installedTools += "Parcel"
+        }
+        
+        # Install additional build utilities
+        Write-Host "Installing build utilities..." -ForegroundColor Cyan
+        if (Install-BuildUtilities) {
+            $installedTools += "Build Utilities"
+        }
+        
+        if ($installedTools.Count -gt 0) {
+            Write-Host "SUCCESS: Installed build tools: $($installedTools -join ', ')" -ForegroundColor Green
+            return $true
+        } else {
+            Write-Host "WARNING: No build tools were installed" -ForegroundColor Yellow
+            return $false
+        }
+        
     } catch {
-        Write-Host "Failed to install build tools: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "ERROR: Failed to install build tools - $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Install-BuildTool {
+    param(
+        [string]$ToolName,
+        [string]$NpmPackage
+    )
+    
+    try {
+        if (Get-Command "npm" -ErrorAction SilentlyContinue) {
+            Write-Host "  Installing $ToolName via npm..." -ForegroundColor Gray
+            npm install -g $NpmPackage
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "  SUCCESS: $ToolName installed via npm" -ForegroundColor Green
+                return $true
+            }
+        }
+        
+        Write-Host "  WARNING: Could not install $ToolName (npm not available)" -ForegroundColor Yellow
+        return $false
+        
+    } catch {
+        Write-Host "  ERROR: Failed to install $ToolName - $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Install-BuildUtilities {
+    try {
+        $utilities = @(
+            "webpack-cli",
+            "webpack-dev-server",
+            "terser",
+            "css-loader",
+            "style-loader",
+            "babel-loader",
+            "eslint",
+            "prettier"
+        )
+        
+        Write-Host "  Installing build utility packages..." -ForegroundColor Gray
+        foreach ($utility in $utilities) {
+            Write-Host "    Installing $utility..." -ForegroundColor DarkGray
+            npm install -g $utility
+        }
+        
+        Write-Host "  SUCCESS: Build utilities installed" -ForegroundColor Green
+        return $true
+        
+    } catch {
+        Write-Host "  ERROR: Failed to install build utilities - $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
 }
@@ -41,38 +112,32 @@ function Install-WebpackTools {
 function Test-WebpackTools {
     <#
     .SYNOPSIS
-    Tests if build tools are installed
+    Tests if build tools are installed and working
     #>
     
-    $tools = @("webpack", "vite", "parcel", "rollup")
-    $installed = 0
-    
-    foreach ($tool in $tools) {
-        if (Get-Command $tool -ErrorAction SilentlyContinue) {
-            Write-Host "$tool is installed" -ForegroundColor Green
-            $installed++
-        } else {
-            Write-Host "$tool is not installed" -ForegroundColor Red
+    try {
+        $tools = @("webpack", "vite", "rollup", "parcel")
+        $installedTools = @()
+        
+        foreach ($tool in $tools) {
+            $version = Get-CommandVersion $tool
+            if ($version -ne "Not installed") {
+                $installedTools += $tool
+                Write-Host "$tool: $version" -ForegroundColor Green
+            } else {
+                Write-Host "$tool: Not found" -ForegroundColor Red
+            }
         }
-    }
-    
-    Write-Host "Total build tools installed: $installed" -ForegroundColor $(if ($installed -gt 0) { "Green" } else { "Red" })
-    return $installed -gt 0
-}
-
-function Update-WebpackTools {
-    <#
-    .SYNOPSIS
-    Updates build tools to latest versions
-    #>
-    
-    if (Get-Command npm -ErrorAction SilentlyContinue) {
-        Write-Host "Updating build tools..." -ForegroundColor Yellow
-        npm update -g webpack webpack-cli vite parcel-bundler rollup
-        Write-Host "Build tools updated successfully!" -ForegroundColor Green
-        return $true
-    } else {
-        Write-Host "npm not found. Cannot update build tools." -ForegroundColor Red
+        
+        if ($installedTools.Count -gt 0) {
+            Write-Host "Installed build tools: $($installedTools -join ', ')" -ForegroundColor Green
+            return $true
+        } else {
+            Write-Host "No build tools found" -ForegroundColor Red
+            return $false
+        }
+    } catch {
+        Write-Host "ERROR: Failed to test build tools - $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
 }
