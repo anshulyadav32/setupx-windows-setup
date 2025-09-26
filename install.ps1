@@ -184,7 +184,8 @@ function Install-SetupxComplete {
                 $chocoOutput | ForEach-Object { Write-Host "    $_" }
                 
                 # Check if installation was successful
-                if ($LASTEXITCODE -eq 0 -and $chocoOutput -notmatch "not installed|failed|error") {
+                $hasFailure = $chocoOutput -match "not installed|failed|error|0/1 packages|1 packages failed"
+                if ($LASTEXITCODE -eq 0 -and -not $hasFailure) {
                     Write-ColorOutput "  SUCCESS: Scoop installed via Chocolatey" "Green"
                 } else {
                     Write-ColorOutput "  WARNING: Scoop installation via Chocolatey failed" "Yellow"
