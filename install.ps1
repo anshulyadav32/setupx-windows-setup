@@ -19,7 +19,7 @@ function Install-SetupxComplete {
     if ($isAdmin) {
         Write-ColorOutput "INFO: Running as Administrator" "Yellow"
         Write-ColorOutput "NOTE: Some package managers (like Scoop) work better as regular user" "Yellow"
-        Write-ColorOutput "For best results, consider running as regular user for package manager installation" "Cyan"
+        Write-ColorOutput "For best results, consider run ning as regular user for package manager installation" "Cyan"
         Write-ColorOutput ""
     } else {
         Write-ColorOutput "INFO: Running as regular user - optimal for package manager installation" "Green"
