@@ -6,7 +6,12 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ### One-Command Installation
 ```powershell
-Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | Invoke-Expression
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression
+```
+
+### Force Installation (No Prompts)
+```powershell
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression -Force
 ```
 
 ### Manual Installation
@@ -19,10 +24,13 @@ cd setupx-windows-setup
 ### Alternative Installation Methods
 ```powershell
 # Direct download and run
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | iex
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+
+# Force installation (overwrites existing)
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
 
 # Using curl (if available)
-curl -sSL https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/one-cmd-install.ps1 | powershell
+curl -sSL https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | powershell
 ```
 
 ## 📁 Clean Structure
@@ -30,8 +38,7 @@ curl -sSL https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/m
 ```
 setupx/
 ├── setupx.ps1                    # Main entry point
-├── install.ps1                  # Local installer
-├── one-cmd-install.ps1        # One-liner installer
+├── install.ps1                  # Complete installer (downloads everything)
 ├── src/                          # Source code
 │   ├── core/                     # Core functionality
 │   │   ├── module-manager.ps1   # Module management
@@ -94,8 +101,9 @@ setupx menu
 - ✅ **Status Checking**: Comprehensive system status
 - ✅ **Interactive Menu**: User-friendly interface
 - ✅ **Error Handling**: Robust error handling and logging
-- ✅ **One-Command Install**: Easy installation from web
-- ✅ **Multiple Installation Methods**: Flexible installation options
+- ✅ **One-Command Install**: Single `install.ps1` downloads everything
+- ✅ **Force Mode**: `-Force` parameter for automated installations
+- ✅ **Existing File Detection**: Handles `C:\setupx` conflicts gracefully
 - ✅ **Clean Structure**: Minimal, maintainable codebase
 
 ## 🏗️ Architecture
@@ -112,6 +120,23 @@ setupx menu
 - **Reusability**: Utility functions shared across modules
 - **Maintainability**: Easy to maintain and debug
 - **Scalability**: Easy to add new modules and features
+
+## ⚙️ Installation Options
+
+### Standard Installation
+- Downloads all files from GitHub
+- Asks for confirmation if `C:\setupx` exists
+- Safe for first-time installations
+
+### Force Installation
+- Downloads all files from GitHub
+- Overwrites existing installation without prompts
+- Perfect for automated scripts and updates
+
+### Local Installation
+- Clone repository and run `install.ps1`
+- Useful for development and customization
+- Full control over installation process
 
 ## 📋 Requirements
 
