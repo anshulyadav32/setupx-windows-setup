@@ -126,6 +126,16 @@ powershell -ExecutionPolicy Bypass -File "C:\setupx\setupx-main.ps1" %*
     Write-ColorOutput "  SUCCESS: PATH refreshed for current session" "Green"
     Write-ColorOutput ""
 
+    # 6.5. Run refreshenv if available
+    Write-ColorOutput "Running refreshenv..." "Magenta"
+    try {
+        refreshenv
+        Write-ColorOutput "  SUCCESS: refreshenv completed" "Green"
+    } catch {
+        Write-ColorOutput "  INFO: refreshenv not available (this is normal)" "Yellow"
+    }
+    Write-ColorOutput ""
+
     # 7. Test installation
     Write-ColorOutput "Testing SetupX installation..." "Magenta"
     try {
