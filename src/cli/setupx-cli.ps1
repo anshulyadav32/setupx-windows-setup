@@ -31,6 +31,14 @@ function Show-SetupxHelp {
     Write-Host "  setupx test package-managers" -ForegroundColor White
     Write-Host "  setupx components package-managers" -ForegroundColor White
     Write-Host ""
+    Write-Host "MODULE PRIORITIES:" -ForegroundColor Yellow
+    Write-Host "  1. Package Managers (Foundation)" -ForegroundColor White
+    Write-Host "  2. Web Development" -ForegroundColor White
+    Write-Host "  3. Mobile Development" -ForegroundColor White
+    Write-Host "  4. Backend Development" -ForegroundColor White
+    Write-Host "  5. Cloud Development" -ForegroundColor White
+    Write-Host "  6. Common Development" -ForegroundColor White
+    Write-Host ""
     Write-Host "PACKAGE MANAGERS:" -ForegroundColor Yellow
     Write-Host "  WinGet (Microsoft Official)" -ForegroundColor White
     Write-Host "  Chocolatey (Community)" -ForegroundColor White
@@ -40,7 +48,7 @@ function Show-SetupxHelp {
 
 function Show-SetupxList {
     Show-SetupxBanner
-    Write-Host "Available Development Modules:" -ForegroundColor Yellow
+    Write-Host "Available Development Modules (by priority):" -ForegroundColor Yellow
     Write-Host ""
     
     $modules = Get-AvailableModules
@@ -48,13 +56,28 @@ function Show-SetupxList {
         Write-Host "Total modules: 0" -ForegroundColor Red
         Write-Host "No modules found. Check your installation." -ForegroundColor Yellow
     } else {
-        foreach ($module in $modules) {
-            Write-Host "Module: $($module.DisplayName)" -ForegroundColor White
+        # Sort modules by priority
+        $sortedModules = $modules | Sort-Object { if ($_.Priority) { $_.Priority } else { 999 } }
+        
+        foreach ($module in $sortedModules) {
+            $priority = if ($module.Priority) { $module.Priority } else { "?" }
+            $category = if ($module.Category) { $module.Category } else { "unknown" }
+            
+            Write-Host "[$priority] $($module.DisplayName)" -ForegroundColor White
+            Write-Host "  Category: $category" -ForegroundColor Gray
             Write-Host "  Description: $($module.Description)" -ForegroundColor Gray
             Write-Host "  Components: $($module.Components.Count)" -ForegroundColor Gray
             Write-Host ""
         }
         Write-Host "Total modules: $($modules.Count)" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "Installation Order:" -ForegroundColor Cyan
+        Write-Host "  1. Package Managers (Foundation)" -ForegroundColor White
+        Write-Host "  2. Web Development" -ForegroundColor White
+        Write-Host "  3. Mobile Development" -ForegroundColor White
+        Write-Host "  4. Backend Development" -ForegroundColor White
+        Write-Host "  5. Cloud Development" -ForegroundColor White
+        Write-Host "  6. Common Development" -ForegroundColor White
     }
 }
 

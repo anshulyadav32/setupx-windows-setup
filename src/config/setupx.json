@@ -11,31 +11,43 @@
     "package-managers": {
       "name": "Package Managers",
       "description": "Install and manage Windows package managers",
-      "components": ["chocolatey", "scoop", "winget", "npm"]
+      "priority": 1,
+      "category": "foundation",
+      "components": ["chocolatey", "scoop", "winget"]
     },
     "web-development": {
       "name": "Web Development",
       "description": "Tools for web development",
+      "priority": 2,
+      "category": "development",
       "components": ["nodejs", "browsers", "vscode"]
     },
     "mobile-development": {
       "name": "Mobile Development", 
       "description": "Tools for mobile app development",
-      "components": ["flutter", "android-studio", "xcode"]
+      "priority": 3,
+      "category": "development",
+      "components": ["flutter", "android-studio", "react-native"]
     },
     "backend-development": {
       "name": "Backend Development",
       "description": "Backend development tools and frameworks",
+      "priority": 4,
+      "category": "development",
       "components": ["python", "nodejs", "docker", "postgresql"]
     },
     "cloud-development": {
       "name": "Cloud Development",
       "description": "Cloud development and deployment tools",
+      "priority": 5,
+      "category": "development",
       "components": ["aws-cli", "azure-cli", "docker", "kubernetes"]
     },
     "common-development": {
       "name": "Common Development",
       "description": "Common development tools and utilities",
+      "priority": 6,
+      "category": "development",
       "components": ["git", "vscode", "powershell", "terminal"]
     }
   }
