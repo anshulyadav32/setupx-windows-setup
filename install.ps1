@@ -221,6 +221,14 @@ function Show-SetupxHelp {
     Write-Host "  setupx test package-managers" -ForegroundColor White
     Write-Host "  setupx components package-managers" -ForegroundColor White
     Write-Host ""
+    Write-Host "MODULE PRIORITIES:" -ForegroundColor Yellow
+    Write-Host "  1. Package Managers (Foundation)" -ForegroundColor White
+    Write-Host "  2. Web Development" -ForegroundColor White
+    Write-Host "  3. Mobile Development" -ForegroundColor White
+    Write-Host "  4. Backend Development" -ForegroundColor White
+    Write-Host "  5. Cloud Development" -ForegroundColor White
+    Write-Host "  6. Common Development" -ForegroundColor White
+    Write-Host ""
     Write-Host "PACKAGE MANAGERS:" -ForegroundColor Yellow
     Write-Host "  WinGet (Microsoft Official)" -ForegroundColor White
     Write-Host "  Chocolatey (Community)" -ForegroundColor White
@@ -230,7 +238,7 @@ function Show-SetupxHelp {
 
 function Show-SetupxList {
     Show-SetupxBanner
-    Write-Host "Available Development Modules:" -ForegroundColor Yellow
+    Write-Host "Available Development Modules (by priority):" -ForegroundColor Yellow
     Write-Host ""
     
     `$modules = Get-AvailableModules
@@ -238,13 +246,28 @@ function Show-SetupxList {
         Write-Host "Total modules: 0" -ForegroundColor Red
         Write-Host "No modules found. Check your installation." -ForegroundColor Yellow
     } else {
-        foreach (`$module in `$modules) {
-            Write-Host "Module: `$(`$module.DisplayName)" -ForegroundColor White
+        # Sort modules by priority
+        `$sortedModules = `$modules | Sort-Object { if (`$_.Priority) { `$_.Priority } else { 999 } }
+        
+        foreach (`$module in `$sortedModules) {
+            `$priority = if (`$module.Priority) { `$module.Priority } else { "?" }
+            `$category = if (`$module.Category) { `$module.Category } else { "unknown" }
+            
+            Write-Host "[`$priority] `$(`$module.DisplayName)" -ForegroundColor White
+            Write-Host "  Category: `$category" -ForegroundColor Gray
             Write-Host "  Description: `$(`$module.Description)" -ForegroundColor Gray
             Write-Host "  Components: `$(`$module.Components.Count)" -ForegroundColor Gray
             Write-Host ""
         }
         Write-Host "Total modules: `$(`$modules.Count)" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "Installation Order:" -ForegroundColor Cyan
+        Write-Host "  1. Package Managers (Foundation)" -ForegroundColor White
+        Write-Host "  2. Web Development" -ForegroundColor White
+        Write-Host "  3. Mobile Development" -ForegroundColor White
+        Write-Host "  4. Backend Development" -ForegroundColor White
+        Write-Host "  5. Cloud Development" -ForegroundColor White
+        Write-Host "  6. Common Development" -ForegroundColor White
     }
 }
 
@@ -290,37 +313,87 @@ function Show-SetupxComponents {
 }
 
 function Show-SetupxMenu {
-    Show-SetupxBanner
-    Write-Host "Interactive SetupX Menu" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "1. List all modules" -ForegroundColor White
-    Write-Host "2. Show system status" -ForegroundColor White
-    Write-Host "3. Install package managers" -ForegroundColor White
-    Write-Host "4. Install specific module" -ForegroundColor White
-    Write-Host "5. Show help" -ForegroundColor White
-    Write-Host "0. Exit" -ForegroundColor White
-    Write-Host ""
-    
-    `$choice = Read-Host "Enter your choice (0-5)"
-    
-    switch (`$choice) {
-        "1" { Show-SetupxList }
-        "2" { Show-SetupxStatus }
-        "3" { Install-Module "package-managers" }
-        "4" {
-            `$moduleName = Read-Host "Enter module name"
-            Install-Module `$moduleName
+    do {
+        Show-SetupxBanner
+        Write-Host "Interactive SetupX Menu" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "1. List all modules" -ForegroundColor White
+        Write-Host "2. Show system status" -ForegroundColor White
+        Write-Host "3. Install package managers (Priority 1)" -ForegroundColor White
+        Write-Host "4. Install web development (Priority 2)" -ForegroundColor White
+        Write-Host "5. Install mobile development (Priority 3)" -ForegroundColor White
+        Write-Host "6. Install backend development (Priority 4)" -ForegroundColor White
+        Write-Host "7. Install cloud development (Priority 5)" -ForegroundColor White
+        Write-Host "8. Install common development (Priority 6)" -ForegroundColor White
+        Write-Host "9. Install specific module" -ForegroundColor White
+        Write-Host "10. Show help" -ForegroundColor White
+        Write-Host "0. Exit" -ForegroundColor White
+        Write-Host ""
+        
+        `$choice = Read-Host "Enter your choice (0-10)"
+        
+        switch (`$choice) {
+            "1" { 
+                Show-SetupxList
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "2" { 
+                Show-SetupxStatus
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "3" { 
+                Install-Module "package-managers"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "4" { 
+                Install-Module "web-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "5" { 
+                Install-Module "mobile-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "6" { 
+                Install-Module "backend-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "7" { 
+                Install-Module "cloud-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "8" { 
+                Install-Module "common-development"
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "9" {
+                `$moduleName = Read-Host "Enter module name"
+                Install-Module `$moduleName
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "10" { 
+                Show-SetupxHelp
+                Write-Host ""
+                Read-Host "Press Enter to continue"
+            }
+            "0" { 
+                Write-Host "Goodbye!" -ForegroundColor Green
+                return
+            }
+            default {
+                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
+                Write-Host ""
+            }
         }
-        "5" { Show-SetupxHelp }
-        "0" { 
-            Write-Host "Goodbye!" -ForegroundColor Green
-            exit
-        }
-        default {
-            Write-Host "Invalid choice. Please try again." -ForegroundColor Red
-            Show-SetupxMenu
-        }
-    }
+    } while (`$true)
 }
 
 # Handle commands
