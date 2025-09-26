@@ -96,20 +96,28 @@ Cross-platform mobile development:
 
 ### 🚀 One-Liner Installation
 
-**Quick setup with a single command:**
+**Complete SetupX installation with global access:**
 
 ```powershell
-# Install SetupX and package managers in one line
+# Install SetupX to C:\setupx with PATH setup (RECOMMENDED)
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-auto-install.ps1" | Invoke-Expression
+```
+
+**Alternative - Package managers only:**
+```powershell
+# Install package managers only (no SetupX CLI)
 Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
 ```
 
-**Alternative one-liner:**
-```powershell
-# Download and execute SetupX
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1" | Invoke-Expression
-```
+**What the complete one-liner does:**
+- ✅ Downloads SetupX to C:\setupx directory
+- ✅ Creates setupx.cmd wrapper for global access
+- ✅ Adds C:\setupx to system PATH automatically
+- ✅ Enables setupx command to work from anywhere
+- ✅ Installs Chocolatey, Scoop, and checks WinGet
+- ✅ Solves all path and access issues
 
-**What the one-liner does:**
+**What the package managers one-liner does:**
 - ✅ Sets execution policy for script execution
 - ✅ Installs Chocolatey package manager
 - ✅ Installs Scoop package manager  
@@ -251,11 +259,11 @@ setupx                      # Default to interactive menu
 
 #### One-Liner Installation
 ```powershell
-# Install everything with a single command
-Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
+# Complete SetupX installation with global access (RECOMMENDED)
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-auto-install.ps1" | Invoke-Expression
 
-# Alternative one-liner
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1" | Invoke-Expression
+# Package managers only (no SetupX CLI)
+Invoke-Expression (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/windows_scripts/setupx-simple-oneliner.ps1")
 ```
 
 #### Quick Setup Examples
