@@ -1,0 +1,42 @@
+{
+  "name": "SetupX",
+  "version": "2.0.0",
+  "description": "Modular Windows Development Environment Setup Tool",
+  "author": "anshulyadav32",
+  "repository": "https://github.com/anshulyadav32/setupx-windows-setup",
+  "installPath": "C:\\setupx",
+  "logLevel": "INFO",
+  "autoUpdate": true,
+  "modules": {
+    "package-managers": {
+      "name": "Package Managers",
+      "description": "Install and manage Windows package managers",
+      "components": ["chocolatey", "scoop", "winget", "npm"]
+    },
+    "web-development": {
+      "name": "Web Development",
+      "description": "Tools for web development",
+      "components": ["nodejs", "browsers", "vscode"]
+    },
+    "mobile-development": {
+      "name": "Mobile Development", 
+      "description": "Tools for mobile app development",
+      "components": ["flutter", "android-studio", "xcode"]
+    },
+    "backend-development": {
+      "name": "Backend Development",
+      "description": "Backend development tools and frameworks",
+      "components": ["python", "nodejs", "docker", "postgresql"]
+    },
+    "cloud-development": {
+      "name": "Cloud Development",
+      "description": "Cloud development and deployment tools",
+      "components": ["aws-cli", "azure-cli", "docker", "kubernetes"]
+    },
+    "common-development": {
+      "name": "Common Development",
+      "description": "Common development tools and utilities",
+      "components": ["git", "vscode", "powershell", "terminal"]
+    }
+  }
+}

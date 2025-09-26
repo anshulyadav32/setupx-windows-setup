@@ -1,0 +1,95 @@
+{
+  "name": "mobile-development",
+  "displayName": "Mobile Development",
+  "description": "Cross-platform mobile development with Flutter, React Native, and Android tools",
+  "version": "1.0.0",
+  "category": "development",
+  "supportsAutoInstall": true,
+  "requiresAdmin": true,
+  "estimatedInstallTime": "25-30 minutes",
+  "dependencies": [
+    "package-managers",
+    "web-development"
+  ],
+  "components": [
+    {
+      "name": "flutter",
+      "displayName": "Flutter SDK",
+      "description": "Google's UI toolkit for cross-platform development",
+      "scriptName": "flutter.ps1",
+      "category": "framework",
+      "priority": 1,
+      "required": true
+    },
+    {
+      "name": "dart",
+      "displayName": "Dart Language",
+      "description": "Programming language for Flutter development",
+      "scriptName": "dart.ps1",
+      "category": "language",
+      "priority": 2,
+      "required": true
+    },
+    {
+      "name": "android-studio",
+      "displayName": "Android Studio",
+      "description": "Official IDE for Android development",
+      "scriptName": "android-studio.ps1",
+      "category": "ide",
+      "priority": 3,
+      "required": true
+    },
+    {
+      "name": "android-sdk",
+      "displayName": "Android SDK",
+      "description": "Android Software Development Kit",
+      "scriptName": "android-sdk.ps1",
+      "category": "sdk",
+      "priority": 4,
+      "required": true
+    },
+    {
+      "name": "adb",
+      "displayName": "Android Debug Bridge",
+      "description": "Command-line tool for Android debugging",
+      "scriptName": "adb.ps1",
+      "category": "tools",
+      "priority": 5,
+      "required": true
+    },
+    {
+      "name": "react-native",
+      "displayName": "React Native CLI",
+      "description": "Framework for building native mobile apps with React",
+      "scriptName": "react-native.ps1",
+      "category": "framework",
+      "priority": 6,
+      "required": false
+    },
+    {
+      "name": "expo-cli",
+      "displayName": "Expo CLI",
+      "description": "Tools for React Native development with Expo",
+      "scriptName": "expo-cli.ps1",
+      "category": "tools",
+      "priority": 7,
+      "required": false
+    },
+    {
+      "name": "java-jdk",
+      "displayName": "Java JDK",
+      "description": "Java Development Kit for Android development",
+      "scriptName": "java-jdk.ps1",
+      "category": "runtime",
+      "priority": 8,
+      "required": true
+    }
+  ],
+  "postInstallMessage": "Mobile development environment is ready! You can now create cross-platform mobile apps with Flutter or React Native.",
+  "nextSteps": [
+    "Run 'flutter doctor' to verify your Flutter installation",
+    "Create a new Flutter project with 'flutter create my_app'",
+    "Set up an Android emulator in Android Studio",
+    "Install VS Code Flutter and Dart extensions"
+  ]
+}
