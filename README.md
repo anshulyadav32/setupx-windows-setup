@@ -118,23 +118,42 @@ Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-w
 
 ## 📋 Usage
 
+### 🚀 SetupX Command Access
+
+**After running the one-liner installer, use these commands to access SetupX:**
+
+```powershell
+# Immediate SetupX access (recommended)
+.\setupx-now.ps1 -h          # Show help
+.\setupx-now.ps1 list        # List modules
+.\setupx-now.ps1 status      # Show status
+.\setupx-now.ps1 menu        # Interactive menu
+
+# Alternative access methods
+.\setupx-main.ps1 -h         # Direct SetupX script
+.\quick-setupx.ps1 list      # Quick access
+.\install-setupx-command.ps1 # Install global 'setupx' command
+```
+
+**Note:** The one-liner installer sets up package managers but doesn't install SetupX as a global command. Use the commands above to access SetupX functionality.
+
 ### Command Line Interface
 
 #### Basic Commands
 
 ```powershell
 # Show help and available commands
-setupx -h
-setupx --help
+.\setupx-now.ps1 -h
+.\setupx-now.ps1 --help
 
 # List all available modules
-setupx list
+.\setupx-now.ps1 list
 
 # Show system status and package managers
-setupx status
+.\setupx-now.ps1 status
 
 # Interactive menu (recommended for beginners)
-setupx menu
+.\setupx-now.ps1 menu
 ```
 
 #### Module Management Commands
@@ -242,34 +261,34 @@ Invoke-RestMethod -Uri "https://raw.githubusercontent.com/anshulyadav32/setupx-w
 #### Quick Setup Examples
 ```powershell
 # Complete development environment setup
-.\setupx-main.ps1 install package-managers
-.\setupx-main.ps1 install common-development
-.\setupx-main.ps1 install web-development
+.\setupx-now.ps1 install package-managers
+.\setupx-now.ps1 install common-development
+.\setupx-now.ps1 install web-development
 
 # Test your installation
-.\setupx-main.ps1 test package-managers
-.\setupx-main.ps1 test common-development
+.\setupx-now.ps1 test package-managers
+.\setupx-now.ps1 test common-development
 
 # Check system status
-.\setupx-main.ps1 status
+.\setupx-now.ps1 status
 ```
 
 #### Module-Specific Examples
 ```powershell
 # Package Managers Setup
-.\setupx-main.ps1 components package-managers
-.\setupx-main.ps1 test package-managers
-.\setupx-main.ps1 install package-managers
+.\setupx-now.ps1 components package-managers
+.\setupx-now.ps1 test package-managers
+.\setupx-now.ps1 install package-managers
 
 # Web Development Setup
-.\setupx-main.ps1 components web-development
-.\setupx-main.ps1 test web-development
-.\setupx-main.ps1 install web-development
+.\setupx-now.ps1 components web-development
+.\setupx-now.ps1 test web-development
+.\setupx-now.ps1 install web-development
 
 # Backend Development Setup
-.\setupx-main.ps1 components backend-development
-.\setupx-main.ps1 test backend-development
-.\setupx-main.ps1 install backend-development
+.\setupx-now.ps1 components backend-development
+.\setupx-now.ps1 test backend-development
+.\setupx-now.ps1 install backend-development
 ```
 
 #### Advanced Usage
