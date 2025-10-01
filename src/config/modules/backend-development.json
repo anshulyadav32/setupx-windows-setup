@@ -1,7 +1,7 @@
 {
   "name": "backend-development",
   "displayName": "Backend Development",
-  "description": "Server-side development tools including Python, Docker, and databases",
+  "description": "Server-side development tools including Python, Docker, and MongoDB",
   "category": "development",
   "priority": 4,
   "status": "fully-working",
@@ -40,23 +40,6 @@
         "verify": "docker info",
         "test": "docker run hello-world",
         "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
-      }
-    },
-    "postgresql": {
-      "name": "postgresql",
-      "displayName": "PostgreSQL",
-      "description": "Advanced open source relational database",
-      "installMethod": "chocolatey",
-      "website": "https://postgresql.org",
-      "status": "working",
-      "category": "backend-development",
-      "commands": {
-        "install": "choco install postgresql -y",
-        "remove": "choco uninstall postgresql -y",
-        "update": "choco upgrade postgresql -y",
-        "check": "psql --version",
-        "verify": "pg_config --version",
-        "test": "psql --help"
       }
     },
     "mongodb": {
