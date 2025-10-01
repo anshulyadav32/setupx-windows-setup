@@ -1,0 +1,222 @@
+{
+    "Timestamp":  {
+                      "value":  "\/Date(1759307860766)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "01 October 2025 08:37:40"
+                  },
+    "TotalTests":  21,
+    "PassedTests":  20,
+    "FailedTests":  null,
+    "Results":  [
+                    {
+                        "TestName":  "Has name property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307854815)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:34"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has displayName property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307854828)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:34"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has commands property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307854834)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:34"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has install command",
+                        "Passed":  true,
+                        "Message":  "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(\u0027https://community.chocolatey.org/install.ps1\u0027))",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307854854)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:34"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has check command",
+                        "Passed":  true,
+                        "Message":  "choco --version",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307854854)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:34"
+                                      }
+                    },
+                    {
+                        "TestName":  "Installation check",
+                        "Passed":  true,
+                        "Message":  "Installed: True",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307856830)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:36"
+                                      }
+                    },
+                    {
+                        "TestName":  "Version check executed",
+                        "Passed":  true,
+                        "Message":  "2.5.1",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307858807)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:38"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has name property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307858820)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:38"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has displayName property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307858822)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:38"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has commands property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307858824)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:38"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has install command",
+                        "Passed":  true,
+                        "Message":  "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex (New-Object System.Net.WebClient).DownloadString(\u0027https://get.scoop.sh\u0027)",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307858826)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:38"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has check command",
+                        "Passed":  true,
+                        "Message":  "scoop --version",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307858830)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:38"
+                                      }
+                    },
+                    {
+                        "TestName":  "Installation check",
+                        "Passed":  true,
+                        "Message":  "Installed: True",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859194)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Version check executed",
+                        "Passed":  true,
+                        "Message":  "b588a06e chore(release): Bump to version 0.5.3 (resync) (#6436) 45476fac7 terraform-provider-ibm: Update to version 1.83.1 d5e0b8d828 zed: Update to version 0.205.9",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859558)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has name property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859572)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has displayName property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859574)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has commands property",
+                        "Passed":  true,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859575)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has install command",
+                        "Passed":  false,
+                        "Message":  "",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859585)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Has check command",
+                        "Passed":  true,
+                        "Message":  "winget --version",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307859586)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:39"
+                                      }
+                    },
+                    {
+                        "TestName":  "Installation check",
+                        "Passed":  true,
+                        "Message":  "Installed: True",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307860247)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:40"
+                                      }
+                    },
+                    {
+                        "TestName":  "Version check executed",
+                        "Passed":  true,
+                        "Message":  "v1.11.430",
+                        "Timestamp":  {
+                                          "value":  "\/Date(1759307860643)\/",
+                                          "DisplayHint":  2,
+                                          "DateTime":  "01 October 2025 08:37:40"
+                                      }
+                    }
+                ]
+}

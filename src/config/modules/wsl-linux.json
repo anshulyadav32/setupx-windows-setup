@@ -1,0 +1,61 @@
+{
+  "name": "wsl-linux",
+  "displayName": "WSL Linux Development",
+  "description": "Windows Subsystem for Linux setup with Ubuntu and Linux tools",
+  "category": "development",
+  "priority": 9,
+  "status": "fully-working",
+  "components": {
+    "wsl": {
+      "name": "wsl",
+      "displayName": "WSL 2",
+      "description": "Windows Subsystem for Linux 2",
+      "installMethod": "powershell",
+      "website": "https://docs.microsoft.com/en-us/windows/wsl",
+      "status": "working",
+      "category": "wsl-linux",
+      "commands": {
+        "install": "wsl --install",
+        "remove": "wsl --unregister Ubuntu",
+        "update": "wsl --update",
+        "check": "wsl --version",
+        "verify": "wsl --list",
+        "test": "wsl --status"
+      }
+    },
+    "ubuntu": {
+      "name": "ubuntu",
+      "displayName": "Ubuntu on WSL",
+      "description": "Ubuntu Linux distribution for WSL",
+      "installMethod": "powershell",
+      "website": "https://ubuntu.com/wsl",
+      "status": "working",
+      "category": "wsl-linux",
+      "commands": {
+        "install": "wsl --install -d Ubuntu",
+        "remove": "wsl --unregister Ubuntu",
+        "check": "wsl --list | Select-String Ubuntu",
+        "verify": "wsl -d Ubuntu -- uname -a",
+        "test": "wsl -d Ubuntu -- cat /etc/os-release"
+      }
+    },
+    "docker-desktop": {
+      "name": "docker-desktop",
+      "displayName": "Docker Desktop with WSL2",
+      "description": "Docker Desktop with WSL 2 backend",
+      "installMethod": "chocolatey",
+      "website": "https://docs.docker.com/desktop/windows/wsl",
+      "status": "working",
+      "category": "wsl-linux",
+      "commands": {
+        "install": "choco install docker-desktop -y",
+        "remove": "choco uninstall docker-desktop -y",
+        "update": "choco upgrade docker-desktop -y",
+        "check": "docker --version",
+        "verify": "docker info",
+        "test": "docker run hello-world"
+      }
+    }
+  }
+}
+

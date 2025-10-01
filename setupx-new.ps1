@@ -440,14 +440,9 @@ switch ($Command) {
     "list-module" { Invoke-ListModule -ModuleName $Arguments[0] }
     "search" { Invoke-Search -Query $Arguments[0] }
     "version" {
-        $configPath = Join-Path $PSScriptRoot "config.json"
-        $config = Get-Content $configPath -Raw | ConvertFrom-Json
-        
         Show-Banner
-        Write-Host "SetupX Version: $($config.version)" -ForegroundColor Green
-        Write-Host "Architecture: $($config.cli.banner.description)" -ForegroundColor Cyan
-        Write-Host "Author: $($config.author)" -ForegroundColor Gray
-        Write-Host "Repository: $($config.repository)" -ForegroundColor Gray
+        Write-Host "SetupX Version: 2.0.0" -ForegroundColor Green
+        Write-Host "JSON-Driven Architecture" -ForegroundColor Cyan
     }
     default {
         if ([string]::IsNullOrEmpty($Command)) {

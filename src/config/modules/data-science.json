@@ -1,0 +1,79 @@
+{
+  "name": "data-science",
+  "displayName": "Data Science Tools",
+  "description": "Complete data science and machine learning environment",
+  "category": "development",
+  "priority": 7,
+  "status": "fully-working",
+  "components": {
+    "jupyter": {
+      "name": "jupyter",
+      "displayName": "Jupyter Notebook",
+      "description": "Interactive computing environment for data science",
+      "installMethod": "pip",
+      "website": "https://jupyter.org",
+      "status": "working",
+      "category": "data-science",
+      "commands": {
+        "install": "pip install jupyter",
+        "remove": "pip uninstall jupyter -y",
+        "update": "pip install --upgrade jupyter",
+        "check": "jupyter --version",
+        "verify": "jupyter notebook --version",
+        "test": "jupyter --help"
+      }
+    },
+    "tensorflow": {
+      "name": "tensorflow",
+      "displayName": "TensorFlow",
+      "description": "Machine learning framework",
+      "installMethod": "pip",
+      "website": "https://tensorflow.org",
+      "status": "working",
+      "category": "data-science",
+      "commands": {
+        "install": "pip install tensorflow",
+        "remove": "pip uninstall tensorflow -y",
+        "update": "pip install --upgrade tensorflow",
+        "check": "python -c \"import tensorflow as tf; print(tf.__version__)\"",
+        "verify": "python -c \"import tensorflow as tf; print('TensorFlow version:', tf.__version__)\"",
+        "test": "python -c \"import tensorflow as tf; print(tf.constant([1, 2, 3]))\""
+      }
+    },
+    "pytorch": {
+      "name": "pytorch",
+      "displayName": "PyTorch",
+      "description": "Machine learning framework",
+      "installMethod": "pip",
+      "website": "https://pytorch.org",
+      "status": "working",
+      "category": "data-science",
+      "commands": {
+        "install": "pip install torch torchvision torchaudio",
+        "remove": "pip uninstall torch torchvision torchaudio -y",
+        "update": "pip install --upgrade torch torchvision torchaudio",
+        "check": "python -c \"import torch; print(torch.__version__)\"",
+        "verify": "python -c \"import torch; print('PyTorch version:', torch.__version__)\"",
+        "test": "python -c \"import torch; print(torch.cuda.is_available())\""
+      }
+    },
+    "pandas": {
+      "name": "pandas",
+      "displayName": "Pandas",
+      "description": "Data manipulation and analysis library",
+      "installMethod": "pip",
+      "website": "https://pandas.pydata.org",
+      "status": "working",
+      "category": "data-science",
+      "commands": {
+        "install": "pip install pandas",
+        "remove": "pip uninstall pandas -y",
+        "update": "pip install --upgrade pandas",
+        "check": "python -c \"import pandas as pd; print(pd.__version__)\"",
+        "verify": "python -c \"import pandas as pd; print('Pandas version:', pd.__version__)\"",
+        "test": "python -c \"import pandas as pd; df = pd.DataFrame({'A': [1, 2, 3]}); print(df)\""
+      }
+    }
+  }
+}
+

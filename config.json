@@ -1,0 +1,57 @@
+{
+  "name": "SetupX",
+  "version": "2.0.0",
+  "description": "Modular Windows Development Environment Setup Tool - JSON-Driven Architecture",
+  "author": "anshulyadav32",
+  "repository": "https://github.com/anshulyadav32/setupx-windows-setup",
+  "installPath": "C:\\setupx",
+  "logLevel": "INFO",
+  "autoUpdate": true,
+  
+  "cli": {
+    "name": "setupx",
+    "aliases": ["wsx"],
+    "banner": {
+      "enabled": true,
+      "title": "SetupX",
+      "subtitle": "Modular Windows Development Setup Tool",
+      "description": "JSON-Driven Architecture"
+    }
+  },
+  
+  "paths": {
+    "modules": "src/config/modules",
+    "core": "src/core",
+    "utils": "src/utils"
+  },
+  
+  "statusCheck": {
+    "commonTools": [
+      "chocolatey",
+      "scoop",
+      "winget",
+      "git",
+      "nodejs",
+      "python",
+      "docker",
+      "vscode"
+    ]
+  },
+  
+  "installation": {
+    "installPath": "C:\\tools\\setupx",
+    "executablePath": "C:\\tools\\setupx\\setupx.ps1",
+    "pathVariable": "C:\\tools\\setupx",
+    "quickInstall": {
+      "description": "One-command SetupX installation",
+      "command": "Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1' | Invoke-Expression"
+    }
+  },
+  
+  "support": {
+    "issues": "https://github.com/anshulyadav32/setupx-windows-setup/issues",
+    "documentation": "https://github.com/anshulyadav32/setupx-windows-setup/wiki",
+    "discussions": "https://github.com/anshulyadav32/setupx-windows-setup/discussions"
+  }
+}
+

@@ -1,0 +1,63 @@
+{
+  "name": "package-managers",
+  "displayName": "Package Managers",
+  "description": "Essential Windows package managers: Chocolatey, Scoop, and WinGet",
+  "category": "foundation",
+  "priority": 1,
+  "status": "fully-working",
+  "components": {
+    "chocolatey": {
+      "name": "chocolatey",
+      "displayName": "Chocolatey",
+      "description": "Community package manager for Windows",
+      "installMethod": "powershell",
+      "website": "https://chocolatey.org",
+      "status": "working",
+      "category": "package-manager",
+      "commands": {
+        "install": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+        "remove": "Remove-Item -Path \"$env:ChocolateyInstall\" -Recurse -Force",
+        "update": "choco upgrade chocolatey -y",
+        "check": "choco --version",
+        "verify": "choco list --local-only",
+        "test": "choco search git --limit-output",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "scoop": {
+      "name": "scoop",
+      "displayName": "Scoop",
+      "description": "Portable applications manager for development tools",
+      "installMethod": "powershell",
+      "website": "https://scoop.sh",
+      "status": "working",
+      "category": "package-manager",
+      "commands": {
+        "install": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')",
+        "remove": "scoop uninstall scoop",
+        "update": "scoop update",
+        "check": "scoop --version",
+        "verify": "scoop list",
+        "test": "scoop search git",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "winget": {
+      "name": "winget",
+      "displayName": "WinGet",
+      "description": "Microsoft's official Windows package manager",
+      "installMethod": "microsoft-store",
+      "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
+      "status": "working",
+      "category": "package-manager",
+      "commands": {
+        "check": "winget --version",
+        "verify": "winget list",
+        "test": "winget search git",
+        "update": "winget upgrade --all",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    }
+  }
+}
+

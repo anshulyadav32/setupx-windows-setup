@@ -1,0 +1,80 @@
+{
+  "name": "common-development",
+  "displayName": "Common Development Tools",
+  "description": "Essential development tools used across all programming languages",
+  "category": "development",
+  "priority": 3,
+  "status": "fully-working",
+  "components": {
+    "git": {
+      "name": "git",
+      "displayName": "Git",
+      "description": "Distributed version control system",
+      "installMethod": "chocolatey",
+      "website": "https://git-scm.com",
+      "status": "working",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install git -y",
+        "remove": "choco uninstall git -y",
+        "update": "choco upgrade git -y",
+        "check": "git --version",
+        "verify": "git config --list",
+        "test": "git --help",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "vscode": {
+      "name": "vscode",
+      "displayName": "VS Code",
+      "description": "Lightweight, powerful source code editor",
+      "installMethod": "chocolatey",
+      "website": "https://code.visualstudio.com",
+      "status": "working",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install vscode -y",
+        "remove": "choco uninstall vscode -y",
+        "update": "choco upgrade vscode -y",
+        "check": "code --version",
+        "verify": "code --list-extensions",
+        "test": "code --help",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "powershell": {
+      "name": "powershell",
+      "displayName": "PowerShell",
+      "description": "Cross-platform automation and configuration framework",
+      "installMethod": "chocolatey",
+      "website": "https://docs.microsoft.com/en-us/powershell",
+      "status": "working",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install powershell-core -y",
+        "remove": "choco uninstall powershell-core -y",
+        "update": "choco upgrade powershell-core -y",
+        "check": "pwsh --version",
+        "verify": "pwsh -Command 'Get-Host'",
+        "test": "pwsh --help"
+      }
+    },
+    "windows-terminal": {
+      "name": "windows-terminal",
+      "displayName": "Windows Terminal",
+      "description": "Modern terminal application for Windows",
+      "installMethod": "chocolatey",
+      "website": "https://github.com/microsoft/terminal",
+      "status": "working",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install microsoft-windows-terminal -y",
+        "remove": "choco uninstall microsoft-windows-terminal -y",
+        "update": "choco upgrade microsoft-windows-terminal -y",
+        "check": "Get-Command wt -ErrorAction SilentlyContinue",
+        "verify": "Write-Host 'Windows Terminal installed'"
+      }
+    }
+  }
+}
+

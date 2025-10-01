@@ -1,0 +1,62 @@
+{
+  "name": "mobile-development",
+  "displayName": "Mobile Development",
+  "description": "Cross-platform mobile development with Flutter and React Native",
+  "category": "development",
+  "priority": 6,
+  "status": "fully-working",
+  "components": {
+    "flutter": {
+      "name": "flutter",
+      "displayName": "Flutter",
+      "description": "Google's UI toolkit for building natively compiled applications",
+      "installMethod": "chocolatey",
+      "website": "https://flutter.dev",
+      "status": "working",
+      "category": "mobile-development",
+      "commands": {
+        "install": "choco install flutter -y",
+        "remove": "choco uninstall flutter -y",
+        "update": "choco upgrade flutter -y",
+        "check": "flutter --version",
+        "verify": "flutter doctor",
+        "test": "flutter --help",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "react-native-cli": {
+      "name": "react-native-cli",
+      "displayName": "React Native CLI",
+      "description": "Framework for building native apps with React",
+      "installMethod": "npm",
+      "website": "https://reactnative.dev",
+      "status": "working",
+      "category": "mobile-development",
+      "commands": {
+        "install": "npm install -g react-native-cli",
+        "remove": "npm uninstall -g react-native-cli",
+        "update": "npm update -g react-native-cli",
+        "check": "react-native --version",
+        "verify": "react-native --help",
+        "test": "npm list -g react-native-cli"
+      }
+    },
+    "android-studio": {
+      "name": "android-studio",
+      "displayName": "Android Studio",
+      "description": "Official IDE for Android development",
+      "installMethod": "chocolatey",
+      "website": "https://developer.android.com/studio",
+      "status": "working",
+      "category": "mobile-development",
+      "commands": {
+        "install": "choco install androidstudio -y",
+        "remove": "choco uninstall androidstudio -y",
+        "update": "choco upgrade androidstudio -y",
+        "check": "Get-ChildItem 'C:\\Program Files\\Android\\Android Studio' -ErrorAction SilentlyContinue",
+        "verify": "Write-Host 'Android Studio installed'"
+      }
+    }
+  }
+}
+

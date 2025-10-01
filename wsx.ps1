@@ -1,17 +1,21 @@
-# WSX - Windows Setup X (Short Alias)
-# Simplified wrapper for setupx.ps1
+# WSX - Alias for SetupX CLI
+# This is a shorter alternative command name for SetupX
 
 param(
     [Parameter(Position=0)]
     [string]$Command,
     
-    [Parameter(Position=1)]
-    [string]$Component,
-    
-    [switch]$All,
-    [switch]$Force
+    [Parameter(Position=1, ValueFromRemainingArguments=$true)]
+    [string[]]$Arguments
 )
 
-# Execute setupx.ps1 with all parameters
-& "$PSScriptRoot\setupx.ps1" $Command $Component -All:$All -Force:$Force
+# Call the main SetupX CLI with all arguments
+$setupxPath = Join-Path $PSScriptRoot "setupx.ps1"
 
+if (Test-Path $setupxPath) {
+    & $setupxPath $Command @Arguments
+}
+else {
+    Write-Host "Error: setupx.ps1 not found in $PSScriptRoot" -ForegroundColor Red
+    Write-Host "Please ensure SetupX is properly installed." -ForegroundColor Yellow
+}

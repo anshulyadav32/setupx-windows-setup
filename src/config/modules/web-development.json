@@ -1,0 +1,130 @@
+{
+  "name": "web-development",
+  "displayName": "Web Development",
+  "description": "Complete web development environment with Node.js, browsers, and modern frameworks",
+  "category": "development",
+  "priority": 2,
+  "status": "fully-working",
+  "components": {
+    "nodejs": {
+      "name": "nodejs",
+      "displayName": "Node.js & npm",
+      "description": "JavaScript runtime and package manager",
+      "installMethod": "chocolatey",
+      "website": "https://nodejs.org",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "choco install nodejs -y",
+        "remove": "choco uninstall nodejs -y",
+        "update": "choco upgrade nodejs -y",
+        "check": "node --version",
+        "verify": "npm --version",
+        "test": "node -e \"console.log('Node.js is working!')\"",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "yarn": {
+      "name": "yarn",
+      "displayName": "Yarn Package Manager",
+      "description": "Fast, reliable, and secure dependency management",
+      "installMethod": "npm",
+      "website": "https://yarnpkg.com",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "npm install -g yarn",
+        "remove": "npm uninstall -g yarn",
+        "update": "npm update -g yarn",
+        "check": "yarn --version",
+        "verify": "yarn --version",
+        "test": "yarn --help"
+      }
+    },
+    "browsers": {
+      "name": "browsers",
+      "displayName": "Modern Browsers",
+      "description": "Chrome, Firefox, and Edge for testing",
+      "installMethod": "chocolatey",
+      "website": "https://www.google.com/chrome",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "choco install googlechrome firefox -y",
+        "remove": "choco uninstall googlechrome firefox -y",
+        "update": "choco upgrade googlechrome firefox -y",
+        "check": "Get-Command chrome -ErrorAction SilentlyContinue",
+        "verify": "Write-Host 'Browsers installed'"
+      }
+    },
+    "react-tools": {
+      "name": "react-tools",
+      "displayName": "React Development Tools",
+      "description": "Create React App and React utilities",
+      "installMethod": "npm",
+      "website": "https://reactjs.org",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "npm install -g create-react-app",
+        "remove": "npm uninstall -g create-react-app",
+        "update": "npm update -g create-react-app",
+        "check": "create-react-app --version",
+        "verify": "create-react-app --help",
+        "test": "npm list -g create-react-app"
+      }
+    },
+    "vue-tools": {
+      "name": "vue-tools",
+      "displayName": "Vue.js Development Tools",
+      "description": "Vue CLI and Vue utilities",
+      "installMethod": "npm",
+      "website": "https://vuejs.org",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "npm install -g @vue/cli",
+        "remove": "npm uninstall -g @vue/cli",
+        "update": "npm update -g @vue/cli",
+        "check": "vue --version",
+        "verify": "vue --help",
+        "test": "npm list -g @vue/cli"
+      }
+    },
+    "angular-tools": {
+      "name": "angular-tools",
+      "displayName": "Angular Development Tools",
+      "description": "Angular CLI and Angular utilities",
+      "installMethod": "npm",
+      "website": "https://angular.io",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "npm install -g @angular/cli",
+        "remove": "npm uninstall -g @angular/cli",
+        "update": "npm update -g @angular/cli",
+        "check": "ng version",
+        "verify": "ng --help",
+        "test": "npm list -g @angular/cli"
+      }
+    },
+    "vite": {
+      "name": "vite",
+      "displayName": "Vite",
+      "description": "Next generation frontend tooling",
+      "installMethod": "npm",
+      "website": "https://vitejs.dev",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "npm install -g vite",
+        "remove": "npm uninstall -g vite",
+        "update": "npm update -g vite",
+        "check": "vite --version",
+        "verify": "vite --help",
+        "test": "npm list -g vite"
+      }
+    }
+  }
+}
+

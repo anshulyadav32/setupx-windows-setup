@@ -1,0 +1,81 @@
+{
+  "name": "backend-development",
+  "displayName": "Backend Development",
+  "description": "Server-side development tools including Python, Docker, and databases",
+  "category": "development",
+  "priority": 4,
+  "status": "fully-working",
+  "components": {
+    "python": {
+      "name": "python",
+      "displayName": "Python",
+      "description": "Python programming language and pip package manager",
+      "installMethod": "chocolatey",
+      "website": "https://python.org",
+      "status": "working",
+      "category": "backend-development",
+      "commands": {
+        "install": "choco install python -y",
+        "remove": "choco uninstall python -y",
+        "update": "choco upgrade python -y",
+        "check": "python --version",
+        "verify": "pip --version",
+        "test": "python -c \"print('Python is working!')\"",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "docker": {
+      "name": "docker",
+      "displayName": "Docker Desktop",
+      "description": "Containerization platform for applications",
+      "installMethod": "chocolatey",
+      "website": "https://docker.com",
+      "status": "working",
+      "category": "backend-development",
+      "commands": {
+        "install": "choco install docker-desktop -y",
+        "remove": "choco uninstall docker-desktop -y",
+        "update": "choco upgrade docker-desktop -y",
+        "check": "docker --version",
+        "verify": "docker info",
+        "test": "docker run hello-world",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "postgresql": {
+      "name": "postgresql",
+      "displayName": "PostgreSQL",
+      "description": "Advanced open source relational database",
+      "installMethod": "chocolatey",
+      "website": "https://postgresql.org",
+      "status": "working",
+      "category": "backend-development",
+      "commands": {
+        "install": "choco install postgresql -y",
+        "remove": "choco uninstall postgresql -y",
+        "update": "choco upgrade postgresql -y",
+        "check": "psql --version",
+        "verify": "pg_config --version",
+        "test": "psql --help"
+      }
+    },
+    "mongodb": {
+      "name": "mongodb",
+      "displayName": "MongoDB",
+      "description": "NoSQL document database",
+      "installMethod": "chocolatey",
+      "website": "https://mongodb.com",
+      "status": "working",
+      "category": "backend-development",
+      "commands": {
+        "install": "choco install mongodb -y",
+        "remove": "choco uninstall mongodb -y",
+        "update": "choco upgrade mongodb -y",
+        "check": "mongo --version",
+        "verify": "mongod --version",
+        "test": "mongo --help"
+      }
+    }
+  }
+}
+
