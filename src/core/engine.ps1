@@ -48,10 +48,20 @@ function Invoke-ComponentCommand {
                 # Refresh PATH from registry without external commands
                 $machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
                 $userPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
-                $env:PATH = $machinePath + ";" + $userPath
+                if ($machinePath -and $userPath) {
+                    $env:PATH = $machinePath + ";" + $userPath
+                } elseif ($machinePath) {
+                    $env:PATH = $machinePath
+                } elseif ($userPath) {
+                    $env:PATH = $userPath
+                }
                 
                 # Refresh other common environment variables
-                $env:PYTHONPATH = [System.Environment]::GetEnvironmentVariable("PYTHONPATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PYTHONPATH", "User")
+                $pythonPathMachine = [System.Environment]::GetEnvironmentVariable("PYTHONPATH", "Machine")
+                $pythonPathUser = [System.Environment]::GetEnvironmentVariable("PYTHONPATH", "User")
+                if ($pythonPathMachine -or $pythonPathUser) {
+                    $env:PYTHONPATH = ($pythonPathMachine + ";" + $pythonPathUser).TrimStart(';').TrimEnd(';')
+                }
             }
             catch {
                 Write-Host "Warning: Could not refresh environment variables: $_" -ForegroundColor Yellow
@@ -349,6 +359,7 @@ function Test-ComponentInstalled {
         }
         catch {
             # If check command fails, try alternative detection methods
+            Write-Host "Check command failed for $($Component.displayName), trying alternative detection..." -ForegroundColor Yellow
         }
     }
     
@@ -419,6 +430,47 @@ function Test-ComponentInstalled {
                         return $true
                     }
                 }
+            }
+        }
+    }
+    
+    # Check for common development tools
+    if ($componentName -eq "git") {
+        $gitPaths = @(
+            "C:\Program Files\Git\bin\git.exe",
+            "C:\Program Files (x86)\Git\bin\git.exe",
+            "$env:USERPROFILE\AppData\Local\Programs\Git\bin\git.exe"
+        )
+        foreach ($gitPath in $gitPaths) {
+            if (Test-Path $gitPath) {
+                return $true
+            }
+        }
+    }
+    
+    # Check for VS Code
+    if ($componentName -eq "vscode") {
+        $vscodePaths = @(
+            "C:\Program Files\Microsoft VS Code\Code.exe",
+            "C:\Program Files (x86)\Microsoft VS Code\Code.exe",
+            "$env:USERPROFILE\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+        )
+        foreach ($vscodePath in $vscodePaths) {
+            if (Test-Path $vscodePath) {
+                return $true
+            }
+        }
+    }
+    
+    # Check for PowerShell
+    if ($componentName -eq "powershell") {
+        $pwshPaths = @(
+            "C:\Program Files\PowerShell\7\pwsh.exe",
+            "C:\Program Files (x86)\PowerShell\7\pwsh.exe"
+        )
+        foreach ($pwshPath in $pwshPaths) {
+            if (Test-Path $pwshPath) {
+                return $true
             }
         }
     }

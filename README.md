@@ -4,26 +4,23 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ## 🚀 Quick Start
 
-### Install SetupX to C:\tools\setup
+### One-Command Installation
+```powershell
+# Install SetupX with one command
+iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+```
+
+### Manual Installation
 ```powershell
 # Clone the repository
 git clone https://github.com/anshulyadav32/setupx-windows-setup.git
 cd setupx-windows-setup
 
-# Install to C:\tools\setup (automatically added to PATH)
-mkdir -p C:\tools\setup
-Copy-Item "src\config\setupx.json" "C:\tools\setup\setupx.json"
-# Create setupx.ps1 executable in C:\tools\setup
-[Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\tools\setup", [EnvironmentVariableTarget]::User)
+# Run the installer
+.\install.ps1
 
 # Test installation
-C:\tools\setup\setupx.ps1 help
-```
-
-### One-Command Installation (Coming Soon!)
-```powershell
-# Direct installation from GitHub
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+setupx help
 ```
 
 ### Available Commands (All in JSON)
