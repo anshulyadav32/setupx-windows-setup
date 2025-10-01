@@ -7,14 +7,14 @@
   "installPath": "C:\\setupx",
   "logLevel": "INFO",
   "autoUpdate": true,
-  "components": {
-    "chocolatey": {
+      "components": {
+        "chocolatey": {
       "name": "chocolatey",
-      "displayName": "Chocolatey",
-      "description": "Community package manager for Windows",
-      "scriptName": "chocolatey.ps1",
-      "installMethod": "powershell",
-      "website": "https://chocolatey.org",
+          "displayName": "Chocolatey",
+          "description": "Community package manager for Windows",
+          "scriptName": "chocolatey.ps1",
+          "installMethod": "powershell",
+          "website": "https://chocolatey.org",
       "status": "working",
       "category": "package-manager",
       "commands": {
@@ -26,14 +26,14 @@
         "test": "choco search git --limit-output",
         "path": "refreshenv"
       }
-    },
-    "scoop": {
+        },
+        "scoop": {
       "name": "scoop",
-      "displayName": "Scoop",
-      "description": "Portable applications manager for development tools",
-      "scriptName": "scoop.ps1",
-      "installMethod": "powershell",
-      "website": "https://scoop.sh",
+          "displayName": "Scoop",
+          "description": "Portable applications manager for development tools",
+          "scriptName": "scoop.ps1",
+          "installMethod": "powershell",
+          "website": "https://scoop.sh",
       "status": "working",
       "category": "package-manager",
       "commands": {
@@ -45,14 +45,14 @@
         "test": "scoop search git",
         "path": "refreshenv"
       }
-    },
-    "winget": {
+        },
+        "winget": {
       "name": "winget",
-      "displayName": "WinGet",
-      "description": "Microsoft's official Windows package manager",
-      "scriptName": "winget.ps1",
-      "installMethod": "microsoft-store",
-      "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
+          "displayName": "WinGet",
+          "description": "Microsoft's official Windows package manager",
+          "scriptName": "winget.ps1",
+          "installMethod": "microsoft-store",
+          "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
       "status": "working",
       "category": "package-manager",
       "commands": {
@@ -65,13 +65,13 @@
         "path": "refreshenv"
       }
     },
-    "nodejs": {
+        "nodejs": {
       "name": "nodejs",
-      "displayName": "Node.js & npm",
-      "description": "JavaScript runtime and package manager",
-      "scriptName": "nodejs.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://nodejs.org",
+          "displayName": "Node.js & npm",
+          "description": "JavaScript runtime and package manager",
+          "scriptName": "nodejs.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://nodejs.org",
       "status": "working",
       "category": "web-development",
       "commands": {
@@ -83,14 +83,14 @@
         "test": "node -e \"console.log('Node.js is working!')\"",
         "path": "refreshenv"
       }
-    },
-    "yarn": {
+        },
+        "yarn": {
       "name": "yarn",
-      "displayName": "Yarn Package Manager",
-      "description": "Fast, reliable, and secure dependency management",
-      "scriptName": "yarn.ps1",
-      "installMethod": "npm",
-      "website": "https://yarnpkg.com",
+          "displayName": "Yarn Package Manager",
+          "description": "Fast, reliable, and secure dependency management",
+          "scriptName": "yarn.ps1",
+          "installMethod": "npm",
+          "website": "https://yarnpkg.com",
       "status": "working",
       "category": "web-development",
       "commands": {
@@ -108,7 +108,7 @@
       "displayName": "Git",
       "description": "Distributed version control system",
       "scriptName": "git.ps1",
-      "installMethod": "chocolatey",
+          "installMethod": "chocolatey",
       "website": "https://git-scm.com",
       "status": "working",
       "category": "common-development",
@@ -127,7 +127,7 @@
       "displayName": "VS Code",
       "description": "Lightweight, powerful source code editor",
       "scriptName": "vscode.ps1",
-      "installMethod": "chocolatey",
+          "installMethod": "chocolatey",
       "website": "https://code.visualstudio.com",
       "status": "working",
       "category": "common-development",
@@ -141,13 +141,13 @@
         "path": "refreshenv"
       }
     },
-    "python": {
+        "python": {
       "name": "python",
-      "displayName": "Python",
-      "description": "Python programming language and pip package manager",
-      "scriptName": "python.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://python.org",
+          "displayName": "Python",
+          "description": "Python programming language and pip package manager",
+          "scriptName": "python.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://python.org",
       "status": "working",
       "category": "backend-development",
       "commands": {
@@ -159,14 +159,14 @@
         "test": "python -c \"print('Python is working!')\"",
         "path": "refreshenv"
       }
-    },
-    "docker": {
+        },
+        "docker": {
       "name": "docker",
-      "displayName": "Docker",
-      "description": "Containerization platform for applications",
-      "scriptName": "docker.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://docker.com",
+          "displayName": "Docker",
+          "description": "Containerization platform for applications",
+          "scriptName": "docker.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docker.com",
       "status": "working",
       "category": "backend-development",
       "commands": {
@@ -179,13 +179,13 @@
         "path": "refreshenv"
       }
     },
-    "aws-cli": {
+        "aws-cli": {
       "name": "aws-cli",
-      "displayName": "AWS CLI",
-      "description": "Command line interface for Amazon Web Services",
-      "scriptName": "aws-cli.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://aws.amazon.com/cli",
+          "displayName": "AWS CLI",
+          "description": "Command line interface for Amazon Web Services",
+          "scriptName": "aws-cli.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://aws.amazon.com/cli",
       "status": "working",
       "category": "cloud-development",
       "commands": {
@@ -197,14 +197,14 @@
         "test": "aws help",
         "path": "refreshenv"
       }
-    },
-    "azure-cli": {
+        },
+        "azure-cli": {
       "name": "azure-cli",
-      "displayName": "Azure CLI",
-      "description": "Command line interface for Microsoft Azure",
-      "scriptName": "azure-cli.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://docs.microsoft.com/en-us/cli/azure",
+          "displayName": "Azure CLI",
+          "description": "Command line interface for Microsoft Azure",
+          "scriptName": "azure-cli.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docs.microsoft.com/en-us/cli/azure",
       "status": "working",
       "category": "cloud-development",
       "commands": {
@@ -222,7 +222,7 @@
       "displayName": "Flutter",
       "description": "Google's UI toolkit for building natively compiled applications",
       "scriptName": "flutter.ps1",
-      "installMethod": "chocolatey",
+          "installMethod": "chocolatey",
       "website": "https://flutter.dev",
       "status": "working",
       "category": "mobile-development",
@@ -241,7 +241,7 @@
       "displayName": "React Native",
       "description": "Framework for building native apps with React",
       "scriptName": "react-native.ps1",
-      "installMethod": "npm",
+          "installMethod": "npm",
       "website": "https://reactnative.dev",
       "status": "working",
       "category": "mobile-development",
@@ -254,14 +254,14 @@
         "test": "react-native --help",
         "path": "refreshenv"
       }
-    },
-    "jupyter": {
+        },
+        "jupyter": {
       "name": "jupyter",
-      "displayName": "Jupyter Notebook",
-      "description": "Interactive computing environment for data science",
-      "scriptName": "jupyter.ps1",
-      "installMethod": "pip",
-      "website": "https://jupyter.org",
+          "displayName": "Jupyter Notebook",
+          "description": "Interactive computing environment for data science",
+          "scriptName": "jupyter.ps1",
+          "installMethod": "pip",
+          "website": "https://jupyter.org",
       "status": "working",
       "category": "data-science",
       "commands": {
@@ -273,14 +273,14 @@
         "test": "jupyter --help",
         "path": "refreshenv"
       }
-    },
-    "tensorflow": {
+        },
+        "tensorflow": {
       "name": "tensorflow",
-      "displayName": "TensorFlow",
-      "description": "Machine learning framework",
-      "scriptName": "tensorflow.ps1",
-      "installMethod": "pip",
-      "website": "https://tensorflow.org",
+          "displayName": "TensorFlow",
+          "description": "Machine learning framework",
+          "scriptName": "tensorflow.ps1",
+          "installMethod": "pip",
+          "website": "https://tensorflow.org",
       "status": "working",
       "category": "data-science",
       "commands": {
@@ -293,13 +293,13 @@
         "path": "refreshenv"
       }
     },
-    "unity": {
+        "unity": {
       "name": "unity",
-      "displayName": "Unity",
-      "description": "Cross-platform game engine",
-      "scriptName": "unity.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://unity.com",
+          "displayName": "Unity",
+          "description": "Cross-platform game engine",
+          "scriptName": "unity.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://unity.com",
       "status": "working",
       "category": "game-development",
       "commands": {
@@ -311,14 +311,14 @@
         "test": "Get-ChildItem \"C:\\Program Files\\Unity\" -ErrorAction SilentlyContinue",
         "path": "refreshenv"
       }
-    },
-    "terraform": {
+        },
+        "terraform": {
       "name": "terraform",
-      "displayName": "Terraform",
-      "description": "Infrastructure as code tool",
-      "scriptName": "terraform.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://terraform.io",
+          "displayName": "Terraform",
+          "description": "Infrastructure as code tool",
+          "scriptName": "terraform.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://terraform.io",
       "status": "working",
       "category": "devops",
       "commands": {
@@ -331,13 +331,13 @@
         "path": "refreshenv"
       }
     },
-    "nmap": {
+        "nmap": {
       "name": "nmap",
-      "displayName": "Nmap",
-      "description": "Network discovery and security auditing tool",
-      "scriptName": "nmap.ps1",
-      "installMethod": "chocolatey",
-      "website": "https://nmap.org",
+          "displayName": "Nmap",
+          "description": "Network discovery and security auditing tool",
+          "scriptName": "nmap.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://nmap.org",
       "status": "working",
       "category": "security",
       "commands": {
@@ -350,13 +350,13 @@
         "path": "refreshenv"
       }
     },
-    "wsl": {
+        "wsl": {
       "name": "wsl",
-      "displayName": "WSL 2",
-      "description": "Windows Subsystem for Linux 2 with Ubuntu",
-      "scriptName": "wsl.ps1",
-      "installMethod": "powershell",
-      "website": "https://docs.microsoft.com/en-us/windows/wsl",
+          "displayName": "WSL 2",
+          "description": "Windows Subsystem for Linux 2 with Ubuntu",
+          "scriptName": "wsl.ps1",
+          "installMethod": "powershell",
+          "website": "https://docs.microsoft.com/en-us/windows/wsl",
       "status": "working",
       "category": "wsl-linux",
       "commands": {
