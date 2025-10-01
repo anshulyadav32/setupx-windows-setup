@@ -7,6 +7,128 @@
   "installPath": "C:\\setupx",
   "logLevel": "INFO",
   "autoUpdate": true,
+  "core": {
+    "scripts": {
+      "setupx-cli": {
+        "path": "src/cli/setupx-cli.ps1",
+        "description": "Main CLI interface for SetupX",
+        "functions": [
+          "Show-SetupxBanner",
+          "Show-SetupxHelp", 
+          "Show-SetupxList",
+          "Show-SetupxStatus",
+          "Show-SetupxComponents",
+          "Install-SetupxComponent"
+        ]
+      },
+      "module-manager": {
+        "path": "src/core/module-manager.ps1",
+        "description": "Module management and installation",
+        "functions": [
+          "Get-AvailableModules",
+          "Get-ModuleComponents",
+          "Install-Module",
+          "Install-ModuleComponent"
+        ]
+      },
+      "package-manager": {
+        "path": "src/core/package-manager.ps1",
+        "description": "Package manager operations",
+        "functions": [
+          "Install-PackageManager",
+          "Check-PackageManagerStatus",
+          "Update-PackageManager"
+        ]
+      },
+      "setupx-installer": {
+        "path": "src/installers/setupx-installer.ps1",
+        "description": "SetupX installation logic",
+        "functions": [
+          "Install-SetupxComplete",
+          "Download-SetupxFiles",
+          "Setup-SetupxEnvironment"
+        ]
+      }
+    },
+    "utilities": {
+      "logger": {
+        "path": "src/utils/logger.ps1",
+        "description": "Logging utilities for SetupX",
+        "functions": [
+          "Write-SetupxInfo",
+          "Write-SetupxSuccess",
+          "Write-SetupxWarning",
+          "Write-SetupxError"
+        ]
+      },
+      "helpers": {
+        "path": "src/utils/helpers.ps1",
+        "description": "Common helper functions",
+        "functions": [
+          "Test-Administrator",
+          "Get-SetupxVersion",
+          "Update-EnvironmentPath"
+        ]
+      }
+    },
+    "componentScripts": {
+      "package-managers": {
+        "chocolatey": {
+          "path": "src/modules/package-managers/components/chocolatey.ps1",
+          "description": "Chocolatey package manager installation",
+          "installMethod": "powershell",
+          "dependencies": [],
+          "postInstall": ["refreshenv"]
+        },
+        "scoop": {
+          "path": "src/modules/package-managers/components/scoop.ps1", 
+          "description": "Scoop package manager installation",
+          "installMethod": "powershell",
+          "dependencies": [],
+          "postInstall": ["refreshenv"]
+        },
+        "winget": {
+          "path": "src/modules/package-managers/components/winget.ps1",
+          "description": "WinGet package manager installation", 
+          "installMethod": "microsoft-store",
+          "dependencies": ["App Installer"],
+          "postInstall": []
+        }
+      },
+      "web-development": {
+        "nodejs": {
+          "path": "src/modules/web-development/components/nodejs.ps1",
+          "description": "Node.js and npm installation",
+          "installMethod": "chocolatey",
+          "dependencies": ["chocolatey"],
+          "postInstall": ["refreshenv"]
+        },
+        "browsers": {
+          "path": "src/modules/web-development/components/browsers.ps1",
+          "description": "Modern browsers installation",
+          "installMethod": "chocolatey", 
+          "dependencies": ["chocolatey"],
+          "postInstall": []
+        }
+      },
+      "common-development": {
+        "git": {
+          "path": "src/modules/common-development/components/git.ps1",
+          "description": "Git version control installation",
+          "installMethod": "chocolatey",
+          "dependencies": ["chocolatey"],
+          "postInstall": ["refreshenv"]
+        },
+        "vscode": {
+          "path": "src/modules/common-development/components/vscode.ps1",
+          "description": "VS Code editor installation",
+          "installMethod": "chocolatey",
+          "dependencies": ["chocolatey"],
+          "postInstall": []
+        }
+      }
+    }
+  },
   "mainMenu": {
     "title": "SetupX - Modular Windows Development Setup",
     "description": "Choose your development environment setup",
