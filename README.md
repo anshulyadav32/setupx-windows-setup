@@ -86,13 +86,100 @@ setupx menu
 
 ## 📦 Available Modules
 
+### 🎯 Module Installation Commands
+
+```powershell
+# Package Managers (Foundation - Install First!)
+setupx install package-managers
+
+# Web Development Tools
+setupx install web-development
+
+# Mobile Development Tools  
+setupx install mobile-development
+
+# Backend Development Tools
+setupx install backend-development
+
+# Cloud Development Tools
+setupx install cloud-development
+
+# Common Development Tools
+setupx install common-development
+
+# AI Development Tools
+setupx install ai-development-tools
+```
+
+### 🚀 Quick Installation Workflows
+
+**Full Stack Developer:**
+```powershell
+setupx install package-managers
+setupx install web-development
+setupx install backend-development
+setupx install common-development
+```
+
+**Mobile Developer:**
+```powershell
+setupx install package-managers
+setupx install mobile-development
+setupx install common-development
+```
+
+**Cloud Developer:**
+```powershell
+setupx install package-managers
+setupx install cloud-development
+setupx install backend-development
+setupx install common-development
+```
+
+**AI Developer:**
+```powershell
+setupx install package-managers
+setupx install ai-development-tools
+setupx install web-development
+setupx install common-development
+```
+
+### 📋 Module Details
+
 - **package-managers**: WinGet, Chocolatey, Scoop, NPM (✅ **Fully Working**)
+  ```powershell
+  setupx install package-managers
+  ```
+
 - **web-development**: Node.js, Browsers, React, Vue, Angular, Build Tools (✅ **Fully Working**)
+  ```powershell
+  setupx install web-development
+  ```
+
 - **mobile-development**: Flutter, Android Studio, Xcode
+  ```powershell
+  setupx install mobile-development
+  ```
+
 - **backend-development**: Python, Node.js, Docker, PostgreSQL
+  ```powershell
+  setupx install backend-development
+  ```
+
 - **cloud-development**: AWS CLI, Azure CLI, Docker, Kubernetes
+  ```powershell
+  setupx install cloud-development
+  ```
+
 - **common-development**: Git, VS Code, PowerShell, Terminal
+  ```powershell
+  setupx install common-development
+  ```
+
 - **ai-development-tools**: Modern AI-powered development tools
+  ```powershell
+  setupx install ai-development-tools
+  ```
 
 ### 🎯 Package Managers Module (Ready to Use!)
 
