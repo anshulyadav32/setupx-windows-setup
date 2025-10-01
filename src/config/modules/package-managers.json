@@ -33,7 +33,7 @@
       "status": "working",
       "category": "package-manager",
       "commands": {
-        "install": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')",
+        "install": "if (Get-Command scoop -ErrorAction SilentlyContinue) { Write-Host 'Scoop is already installed.' } else { iwr -useb get.scoop.sh | iex }",
         "remove": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | ForEach-Object { & $_ uninstall scoop; break }",
         "update": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | ForEach-Object { & $_ update; break }",
         "check": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
@@ -51,10 +51,83 @@
       "status": "working",
       "category": "package-manager",
       "commands": {
+        "install": "if (Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Select-Object -First 1) { Write-Host 'WinGet is already installed.' } else { Write-Host 'WinGet (App Installer) must be installed from Microsoft Store. Please install \"App Installer\" to get winget.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 }",
         "check": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
         "verify": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
         "test": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
         "update": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | ForEach-Object { & $_ upgrade --all; break }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "nvm": {
+      "name": "nvm",
+      "displayName": "NVM for Windows",
+      "description": "Node Version Manager (Windows) to manage multiple Node.js versions",
+      "installMethod": "powershell",
+      "website": "https://github.com/coreybutler/nvm-windows",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "if (Get-Command choco -ErrorAction SilentlyContinue) { choco install nvm -y } else { Write-Host 'Chocolatey not found. Installing NVM from Chocolatey requires choco. Please install Chocolatey first or install NVM manually.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 }",
+        "remove": "if (Get-Command choco -ErrorAction SilentlyContinue) { choco uninstall nvm -y }",
+        "update": "if (Get-Command choco -ErrorAction SilentlyContinue) { choco upgrade nvm -y }",
+        "check": "if (Get-Command nvm -ErrorAction SilentlyContinue) { 1 } else { 0 }",
+        "verify": "nvm version",
+        "test": "nvm list",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "nodejs": {
+      "name": "nodejs",
+      "displayName": "Node.js",
+      "description": "JavaScript runtime (from NVM if available, otherwise LTS via Chocolatey)",
+      "installMethod": "powershell",
+      "website": "https://nodejs.org",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "if (Get-Command nvm -ErrorAction SilentlyContinue) { nvm install lts; nvm use lts } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs-lts -y } else { Write-Host 'Neither NVM nor Chocolatey available to install Node.js' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 }",
+        "remove": "if (Get-Command nvm -ErrorAction SilentlyContinue) { Write-Host 'Use nvm to uninstall specific Node versions (e.g., nvm uninstall <version>)' -ForegroundColor Yellow } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco uninstall nodejs-lts -y }",
+        "update": "if (Get-Command nvm -ErrorAction SilentlyContinue) { nvm install lts; nvm use lts } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco upgrade nodejs-lts -y }",
+        "check": "(Get-Command node -ErrorAction SilentlyContinue) | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "verify": "node --version",
+        "test": "node --version",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "npm": {
+      "name": "npm",
+      "displayName": "NPM",
+      "description": "Node package manager (bundled with Node.js)",
+      "installMethod": "powershell",
+      "website": "https://www.npmjs.com/",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "if (Get-Command npm -ErrorAction SilentlyContinue) { npm install -g npm@latest } else { if (Get-Command node -ErrorAction SilentlyContinue) { npm install -g npm@latest } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs-lts -y } else { Write-Host 'Node.js not found and Chocolatey not available. Cannot install npm.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 } }",
+        "remove": "Write-Host 'npm is part of Node.js. Remove Node.js to remove npm.' -ForegroundColor Yellow",
+        "update": "if (Get-Command npm -ErrorAction SilentlyContinue) { npm install -g npm@latest }",
+        "check": "if (Get-Command npm -ErrorAction SilentlyContinue) { 1 } else { 0 }",
+        "verify": "npm --version",
+        "test": "npm --version",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
+      }
+    },
+    "pip": {
+      "name": "pip",
+      "displayName": "PIP (Python)",
+      "description": "Python package manager (via Python ensurepip)",
+      "installMethod": "powershell",
+      "website": "https://pip.pypa.io/",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m ensurepip --upgrade; py -m pip install --upgrade pip } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m ensurepip --upgrade; python -m pip install --upgrade pip } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install python -y; py -m ensurepip --upgrade; py -m pip install --upgrade pip } else { Write-Host 'Python not found and Chocolatey not available. Cannot install pip.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 }",
+        "remove": "Write-Host 'pip is part of Python. Remove Python to remove pip.' -ForegroundColor Yellow",
+        "update": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip install --upgrade pip } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip install --upgrade pip }",
+        "check": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip --version } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip --version }",
+        "verify": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip --version } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip --version }",
+        "test": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip --version } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip --version }",
         "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
       }
     }

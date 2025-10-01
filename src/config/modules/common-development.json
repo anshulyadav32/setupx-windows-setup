@@ -74,6 +74,160 @@
         "check": "Get-Command wt -ErrorAction SilentlyContinue",
         "verify": "Write-Host 'Windows Terminal installed'"
       }
+    },
+    "gh": {
+      "name": "gh",
+      "displayName": "GitHub CLI (gh)",
+      "description": "GitHub’s official command-line interface",
+      "installMethod": "chocolatey",
+      "website": "https://cli.github.com/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install gh -y",
+        "remove": "choco uninstall gh -y",
+        "update": "choco upgrade gh -y",
+        "check": "gh --version",
+        "verify": "gh auth status",
+        "test": "gh --help"
+      }
+    },
+    "github-desktop": {
+      "name": "github-desktop",
+      "displayName": "GitHub Desktop",
+      "description": "GitHub Desktop client",
+      "installMethod": "chocolatey",
+      "website": "https://desktop.github.com/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install github-desktop -y",
+        "remove": "choco uninstall github-desktop -y",
+        "update": "choco upgrade github-desktop -y",
+        "check": "Test-Path \"$env:LOCALAPPDATA\\GitHubDesktop\\GitHubDesktop.exe\"",
+        "verify": "Write-Host 'GitHub Desktop installed'"
+      }
+    },
+    "jdk": {
+      "name": "jdk",
+      "displayName": "OpenJDK (Temurin 17)",
+      "description": "Java Development Kit",
+      "installMethod": "chocolatey",
+      "website": "https://adoptium.net/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install temurin17 -y",
+        "remove": "choco uninstall temurin17 -y",
+        "update": "choco upgrade temurin17 -y",
+        "check": "java -version",
+        "verify": "javac -version"
+      }
+    },
+    "chrome": {
+      "name": "chrome",
+      "displayName": "Google Chrome",
+      "description": "Google Chrome browser",
+      "installMethod": "chocolatey",
+      "website": "https://www.google.com/chrome/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install googlechrome -y",
+        "remove": "choco uninstall googlechrome -y",
+        "update": "choco upgrade googlechrome -y",
+        "check": "Test-Path 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'"
+      }
+    },
+    "brave": {
+      "name": "brave",
+      "displayName": "Brave Browser",
+      "description": "Brave browser",
+      "installMethod": "chocolatey",
+      "website": "https://brave.com/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install brave -y",
+        "remove": "choco uninstall brave -y",
+        "update": "choco upgrade brave -y",
+        "check": "Test-Path 'C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'"
+      }
+    },
+    "firefox": {
+      "name": "firefox",
+      "displayName": "Mozilla Firefox",
+      "description": "Mozilla Firefox browser",
+      "installMethod": "chocolatey",
+      "website": "https://www.mozilla.org/firefox/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install firefox -y",
+        "remove": "choco uninstall firefox -y",
+        "update": "choco upgrade firefox -y",
+        "check": "Test-Path 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'"
+      }
+    },
+    "7zip": {
+      "name": "7zip",
+      "displayName": "7-Zip",
+      "description": "File archiver",
+      "installMethod": "chocolatey",
+      "website": "https://www.7-zip.org/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install 7zip -y",
+        "remove": "choco uninstall 7zip -y",
+        "update": "choco upgrade 7zip -y",
+        "check": "Test-Path 'C:\\Program Files\\7-Zip\\7z.exe'"
+      }
+    },
+    "powertoys": {
+      "name": "powertoys",
+      "displayName": "Microsoft PowerToys",
+      "description": "Power user utilities for Windows",
+      "installMethod": "chocolatey",
+      "website": "https://github.com/microsoft/PowerToys",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install powertoys -y",
+        "remove": "choco uninstall powertoys -y",
+        "update": "choco upgrade powertoys -y",
+        "check": "Test-Path 'C:\\Program Files\\PowerToys\\PowerToys.exe'"
+      }
+    },
+    "whatsapp": {
+      "name": "whatsapp",
+      "displayName": "WhatsApp",
+      "description": "WhatsApp Desktop",
+      "installMethod": "chocolatey",
+      "website": "https://www.whatsapp.com/download",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install whatsapp -y",
+        "remove": "choco uninstall whatsapp -y",
+        "update": "choco upgrade whatsapp -y",
+        "check": "Test-Path 'C:\\Users\\$env:USERNAME\\AppData\\Local\\WhatsApp\\WhatsApp.exe'"
+      }
+    },
+    "telegram": {
+      "name": "telegram",
+      "displayName": "Telegram",
+      "description": "Telegram Desktop",
+      "installMethod": "chocolatey",
+      "website": "https://desktop.telegram.org/",
+      "status": "available",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install telegram -y",
+        "remove": "choco uninstall telegram -y",
+        "update": "choco upgrade telegram -y",
+        "check": "Test-Path 'C:\\Users\\$env:USERNAME\\AppData\\Roaming\\Telegram Desktop\\Telegram.exe'"
+      }
     }
   }
 }

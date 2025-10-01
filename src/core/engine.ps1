@@ -295,12 +295,15 @@ function Get-DynamicPaths {
             # Check PATH for node
             $pathDirs = $env:PATH -split ";"
             foreach ($dir in $pathDirs) {
-                if ($dir -and (Test-Path $dir)) {
-                    $nodeExe = Join-Path $dir "node.exe"
-                    if (Test-Path $nodeExe) {
-                        $paths += $nodeExe
+                try {
+                    if ($dir -and (Test-Path -LiteralPath $dir -ErrorAction SilentlyContinue)) {
+                        $nodeExe = Join-Path $dir "node.exe"
+                        if (Test-Path -LiteralPath $nodeExe -ErrorAction SilentlyContinue) {
+                            $paths += $nodeExe
+                        }
                     }
                 }
+                catch {}
             }
         }
         "NPM" {
@@ -310,12 +313,15 @@ function Get-DynamicPaths {
             # Check PATH for npm
             $pathDirs = $env:PATH -split ";"
             foreach ($dir in $pathDirs) {
-                if ($dir -and (Test-Path $dir)) {
-                    $npmCmd = Join-Path $dir "npm.cmd"
-                    if (Test-Path $npmCmd) {
-                        $paths += $dir
+                try {
+                    if ($dir -and (Test-Path -LiteralPath $dir -ErrorAction SilentlyContinue)) {
+                        $npmCmd = Join-Path $dir "npm.cmd"
+                        if (Test-Path -LiteralPath $npmCmd -ErrorAction SilentlyContinue) {
+                            $paths += $dir
+                        }
                     }
                 }
+                catch {}
             }
         }
         "Scoop" {
@@ -435,6 +441,73 @@ function Test-ComponentInstalled {
     }
     
     # Check for common development tools
+    if ($componentName -eq "chocolatey") {
+        $chocoPaths = Get-DynamicPaths -ToolType "Chocolatey"
+        foreach ($path in $chocoPaths) {
+            if (Test-Path $path) { return $true }
+        }
+    }
+    
+    # Cloud CLIs and common global CLIs
+    if ($componentName -eq "aws-cli") {
+        $candidatePaths = @(
+            "$env:USERPROFILE\.local\bin\aws.exe",
+            "$env:USERPROFILE\.local\pipx\venvs\awscli\Scripts\aws.exe",
+            "$env:USERPROFILE\scoop\shims\aws.exe"
+        )
+        foreach ($p in $candidatePaths) { if (Test-Path -LiteralPath $p -ErrorAction SilentlyContinue) { return $true } }
+        if (Get-Command aws -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "azure-cli") {
+        $candidatePaths = @(
+            "$env:USERPROFILE\scoop\apps\azure-cli\current\wbin\az.cmd",
+            "$env:USERPROFILE\scoop\shims\az.cmd"
+        )
+        foreach ($p in $candidatePaths) { if (Test-Path -LiteralPath $p -ErrorAction SilentlyContinue) { return $true } }
+        if (Get-Command az -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "gcloud-cli") {
+        $candidatePaths = @(
+            "$env:LOCALAPPDATA\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd",
+            "$env:PROGRAMFILES\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd",
+            "$env:USERPROFILE\scoop\shims\gcloud.cmd"
+        )
+        foreach ($p in $candidatePaths) { if (Test-Path -LiteralPath $p -ErrorAction SilentlyContinue) { return $true } }
+        if (Get-Command gcloud -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "vercel-cli") {
+        $npmBin = Join-Path $env:APPDATA "npm"
+        $vercelCmd = Join-Path $npmBin "vercel.cmd"
+        if (Test-Path -LiteralPath $vercelCmd -ErrorAction SilentlyContinue) { return $true }
+        if (Get-Command vercel -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "netlify-cli") {
+        $npmBin = Join-Path $env:APPDATA "npm"
+        $netlifyCmd = Join-Path $npmBin "netlify.cmd"
+        if (Test-Path -LiteralPath $netlifyCmd -ErrorAction SilentlyContinue) { return $true }
+        if (Get-Command netlify -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "grok-cli") {
+        $npmBin = Join-Path $env:APPDATA "npm"
+        $grokCmd = Join-Path $npmBin "grok.cmd"
+        if (Test-Path -LiteralPath $grokCmd -ErrorAction SilentlyContinue) { return $true }
+        if (Get-Command grok -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "scoop") {
+        $scoopPaths = Get-DynamicPaths -ToolType "Scoop"
+        foreach ($path in $scoopPaths) {
+            if ($path -like "*scoop.ps1" -and (Test-Path $path)) { return $true }
+        }
+        if (Get-Command scoop -ErrorAction SilentlyContinue) { return $true }
+    }
+    if ($componentName -eq "winget") {
+        $wingetPaths = Get-DynamicPaths -ToolType "WinGet"
+        foreach ($path in $wingetPaths) {
+            if (Test-Path $path) { return $true }
+        }
+        if (Get-Command winget -ErrorAction SilentlyContinue) { return $true }
+    }
+
     if ($componentName -eq "git") {
         $gitPaths = @(
             "C:\Program Files\Git\bin\git.exe",
