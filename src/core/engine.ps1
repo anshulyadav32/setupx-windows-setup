@@ -43,13 +43,18 @@ function Invoke-ComponentCommand {
                 }
             }
             
-            # Always refresh environment variables for better tool detection
+            # Refresh environment variables using PowerShell-only methods
             try {
-                refreshenv
+                # Refresh PATH from registry without external commands
+                $machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
+                $userPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
+                $env:PATH = $machinePath + ";" + $userPath
+                
+                # Refresh other common environment variables
+                $env:PYTHONPATH = [System.Environment]::GetEnvironmentVariable("PYTHONPATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PYTHONPATH", "User")
             }
             catch {
-                # Fallback: manually refresh PATH from registry
-                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+                Write-Host "Warning: Could not refresh environment variables: $_" -ForegroundColor Yellow
             }
             
             return $true
@@ -257,35 +262,80 @@ function Test-ComponentInstalled {
         catch { }
     }
     
-    # Check for pip-based tools
+    # Check for pip-based tools using PowerShell-only methods
     if ($componentName -in @("jupyter", "tensorflow", "pytorch", "pandas", "ansible")) {
         try {
-            $result = & pip list 2>&1 | Select-String $componentName
-            return $result -ne $null
+            # Check Python site-packages directory for installed packages
+            $pythonPaths = @(
+                "C:\Python313\Lib\site-packages",
+                "C:\Python312\Lib\site-packages", 
+                "C:\Python311\Lib\site-packages",
+                "$env:USERPROFILE\AppData\Local\Programs\Python\Python313\Lib\site-packages"
+            )
+            
+            foreach ($pythonPath in $pythonPaths) {
+                if (Test-Path $pythonPath) {
+                    $packagePath = Join-Path $pythonPath $componentName
+                    if (Test-Path $packagePath) {
+                        return $true
+                    }
+                }
+            }
         }
         catch { }
     }
     
-    # Check for Chocolatey packages
+    # Check for Chocolatey packages using PowerShell-only methods
     if ($componentName -in @("docker", "mongodb", "jenkins", "terraform", "aws-cli", "azure-cli")) {
         try {
-            $result = & choco list $componentName --local-only 2>&1
-            return $result -match "packages installed"
+            # Check Chocolatey lib directory for installed packages
+            $chocoLibPath = "C:\ProgramData\chocolatey\lib"
+            if (Test-Path $chocoLibPath) {
+                $packagePath = Join-Path $chocoLibPath $componentName
+                if (Test-Path $packagePath) {
+                    return $true
+                }
+            }
         }
         catch { }
     }
     
-    # Check for Node.js tools
+    # Check for Node.js tools using PowerShell-only methods
     if ($componentName -in @("nodejs", "yarn", "react-tools", "vue-tools", "angular-tools", "vite")) {
         try {
             if ($componentName -eq "nodejs") {
-                $result = & node --version 2>&1
+                # Check for Node.js installation in common locations
+                $nodePaths = @(
+                    "C:\Program Files\nodejs\node.exe",
+                    "C:\Program Files (x86)\nodejs\node.exe",
+                    "$env:USERPROFILE\AppData\Local\Programs\nodejs\node.exe"
+                )
+                foreach ($nodePath in $nodePaths) {
+                    if (Test-Path $nodePath) {
+                        return $true
+                    }
+                }
             } elseif ($componentName -eq "yarn") {
-                $result = & yarn --version 2>&1
+                # Check for Yarn in npm global directory
+                $yarnPaths = @(
+                    "$env:USERPROFILE\AppData\Roaming\npm\yarn.cmd",
+                    "$env:USERPROFILE\AppData\Local\Yarn\bin\yarn.cmd"
+                )
+                foreach ($yarnPath in $yarnPaths) {
+                    if (Test-Path $yarnPath) {
+                        return $true
+                    }
+                }
             } else {
-                $result = & npm list -g 2>&1 | Select-String $componentName
+                # Check npm global packages directory
+                $npmGlobalPath = "$env:USERPROFILE\AppData\Roaming\npm\node_modules"
+                if (Test-Path $npmGlobalPath) {
+                    $packagePath = Join-Path $npmGlobalPath $componentName
+                    if (Test-Path $packagePath) {
+                        return $true
+                    }
+                }
             }
-            return $LASTEXITCODE -eq 0
         }
         catch { }
     }
