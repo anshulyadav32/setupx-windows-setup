@@ -129,6 +129,168 @@
       }
     }
   },
+  "testing": {
+    "moduleTests": {
+      "package-managers": {
+        "name": "Package Managers Module Test",
+        "description": "Test all package manager installations and functionality",
+        "testSteps": [
+          {
+            "step": 1,
+            "action": "Check Chocolatey Installation",
+            "command": "choco --version",
+            "expectedOutput": "Chocolatey v",
+            "timeout": 30
+          },
+          {
+            "step": 2,
+            "action": "Check Scoop Installation", 
+            "command": "scoop --version",
+            "expectedOutput": "Current Scoop version:",
+            "timeout": 30
+          },
+          {
+            "step": 3,
+            "action": "Check WinGet Installation",
+            "command": "winget --version",
+            "expectedOutput": "v",
+            "timeout": 30
+          },
+          {
+            "step": 4,
+            "action": "Test Package Installation",
+            "command": "choco install 7zip -y",
+            "expectedOutput": "7zip installed successfully",
+            "timeout": 60
+          }
+        ],
+        "cleanupSteps": [
+          {
+            "step": 1,
+            "action": "Uninstall Test Package",
+            "command": "choco uninstall 7zip -y"
+          }
+        ]
+      },
+      "web-development": {
+        "name": "Web Development Module Test",
+        "description": "Test web development tools and frameworks",
+        "testSteps": [
+          {
+            "step": 1,
+            "action": "Check Node.js Installation",
+            "command": "node --version",
+            "expectedOutput": "v",
+            "timeout": 30
+          },
+          {
+            "step": 2,
+            "action": "Check NPM Installation",
+            "command": "npm --version",
+            "expectedOutput": "",
+            "timeout": 30
+          },
+          {
+            "step": 3,
+            "action": "Test React Tools",
+            "command": "npx create-react-app test-app --template typescript",
+            "expectedOutput": "Success",
+            "timeout": 120
+          },
+          {
+            "step": 4,
+            "action": "Test Vue Tools",
+            "command": "npm install -g @vue/cli",
+            "expectedOutput": "added",
+            "timeout": 60
+          }
+        ],
+        "cleanupSteps": [
+          {
+            "step": 1,
+            "action": "Remove Test App",
+            "command": "Remove-Item -Path test-app -Recurse -Force"
+          }
+        ]
+      }
+    },
+    "componentTests": {
+      "package-managers": {
+        "chocolatey": {
+          "name": "Chocolatey Component Test",
+          "description": "Test Chocolatey package manager functionality",
+          "testSteps": [
+            {
+              "step": 1,
+              "action": "Check Chocolatey Version",
+              "command": "choco --version",
+              "expectedOutput": "Chocolatey v",
+              "timeout": 30
+            },
+            {
+              "step": 2,
+              "action": "Test Package Search",
+              "command": "choco search git --limit-output",
+              "expectedOutput": "git",
+              "timeout": 30
+            }
+          ],
+          "cleanupSteps": []
+        }
+      },
+      "web-development": {
+        "nodejs": {
+          "name": "Node.js Component Test",
+          "description": "Test Node.js and npm functionality",
+          "testSteps": [
+            {
+              "step": 1,
+              "action": "Check Node.js Version",
+              "command": "node --version",
+              "expectedOutput": "v",
+              "timeout": 30
+            },
+            {
+              "step": 2,
+              "action": "Check NPM Version",
+              "command": "npm --version",
+              "expectedOutput": "",
+              "timeout": 30
+            }
+          ],
+          "cleanupSteps": []
+        }
+      }
+    }
+  },
+  "configuration": {
+    "moduleConfigs": {
+      "package-managers": {
+        "chocolatey": {
+          "configPath": "$env:ChocolateyInstall\\config\\chocolatey.config",
+          "settings": {
+            "cacheLocation": "$env:TEMP\\chocolatey",
+            "commandExecutionTimeoutSeconds": 2700
+          }
+        }
+      },
+      "web-development": {
+        "nodejs": {
+          "configPath": "$env:APPDATA\\npm\\etc\\npmrc",
+          "settings": {
+            "registry": "https://registry.npmjs.org/",
+            "cache": "$env:APPDATA\\npm-cache"
+          }
+        }
+      }
+    },
+    "globalSettings": {
+      "logLevel": "INFO",
+      "autoUpdate": true,
+      "testTimeout": 300,
+      "installTimeout": 1800
+    }
+  },
   "mainMenu": {
     "title": "SetupX - Modular Windows Development Setup",
     "description": "Choose your development environment setup",
@@ -608,7 +770,100 @@
       }
     }
   },
-"modules": {
+  "executableCommands": {
+    "setupx": {
+      "description": "Main SetupX command interface",
+      "usage": "setupx [command] [options]",
+      "examples": [
+        "setupx install package-managers",
+        "setupx list",
+        "setupx status",
+        "setupx components web-development"
+      ],
+      "implementation": {
+        "type": "powershell",
+        "script": "function Invoke-SetupxCommand { param([string]$Command, [string[]]$Arguments) switch ($Command) { 'install' { Install-SetupxModule -ModuleName $Arguments[0] } 'list' { Show-SetupxList } 'status' { Show-SetupxStatus } 'components' { Show-SetupxComponents -ModuleName $Arguments[0] } 'install-component' { Install-SetupxComponent -ModuleName $Arguments[0] -ComponentName $Arguments[1] } default { Show-SetupxHelp } } }"
+      }
+    },
+    "install-module": {
+      "description": "Install a complete module",
+      "usage": "install-module [module-name]",
+      "examples": [
+        "install-module package-managers",
+        "install-module web-development"
+      ],
+      "implementation": {
+        "type": "powershell",
+        "script": "function Install-Module { param([string]$ModuleName) $modules = Get-AvailableModules; $module = $modules | Where-Object { $_.Name -eq $ModuleName }; if ($module) { Write-Host 'Installing module: ' $ModuleName -ForegroundColor Green; foreach ($component in $module.Components) { Install-ModuleComponent -ModuleName $ModuleName -ComponentName $component.scriptName } } else { Write-Host 'Module not found: ' $ModuleName -ForegroundColor Red } }"
+      }
+    },
+    "install-component": {
+      "description": "Install a specific component",
+      "usage": "install-component [module] [component]",
+      "examples": [
+        "install-component package-managers chocolatey",
+        "install-component web-development nodejs"
+      ],
+      "implementation": {
+        "type": "powershell",
+        "script": "function Install-Component { param([string]$ModuleName, [string]$ComponentName) $modules = Get-AvailableModules; $module = $modules | Where-Object { $_.Name -eq $ModuleName }; if ($module) { $component = $module.Components | Where-Object { $_.scriptName -like '*$ComponentName*' -or $_.displayName -like '*$ComponentName*' }; if ($component) { Write-Host 'Installing component: ' $component.displayName -ForegroundColor Green; $componentScript = Join-Path $module.Path 'components\\$($component.scriptName)'; if (Test-Path $componentScript) { & $componentScript } } } }"
+      }
+    },
+    "list-modules": {
+      "description": "List all available modules",
+      "usage": "list-modules",
+      "implementation": {
+        "type": "powershell",
+        "script": "function List-Modules { $modules = Get-AvailableModules; foreach ($module in $modules) { Write-Host $module.displayName ' - ' $module.description -ForegroundColor White } }"
+      }
+    },
+    "list-components": {
+      "description": "List components for a module",
+      "usage": "list-components [module]",
+      "implementation": {
+        "type": "powershell",
+        "script": "function List-Components { param([string]$ModuleName) $modules = Get-AvailableModules; $module = $modules | Where-Object { $_.Name -eq $ModuleName }; if ($module) { foreach ($component in $module.Components) { Write-Host $component.displayName ' - ' $component.description -ForegroundColor White } } }"
+      }
+    },
+    "test-module": {
+      "description": "Test a module installation",
+      "usage": "test-module [module]",
+      "implementation": {
+        "type": "powershell",
+        "script": "function Test-Module { param([string]$ModuleName) $json = Get-Content 'src/config/setupx.json' | ConvertFrom-Json; $test = $json.testing.moduleTests.$ModuleName; if ($test) { foreach ($step in $test.testSteps) { Write-Host 'Testing: ' $step.action -ForegroundColor Yellow; $result = Invoke-Expression $step.command; if ($result -like '*$($step.expectedOutput)*') { Write-Host '✓ ' $step.action -ForegroundColor Green } else { Write-Host '✗ ' $step.action -ForegroundColor Red } } } }"
+      }
+    },
+    "test-component": {
+      "description": "Test a component installation",
+      "usage": "test-component [module] [component]",
+      "implementation": {
+        "type": "powershell",
+        "script": "function Test-Component { param([string]$ModuleName, [string]$ComponentName) $json = Get-Content 'src/config/setupx.json' | ConvertFrom-Json; $test = $json.testing.componentTests.$ModuleName.$ComponentName; if ($test) { foreach ($step in $test.testSteps) { Write-Host 'Testing: ' $step.action -ForegroundColor Yellow; $result = Invoke-Expression $step.command; if ($result -like '*$($step.expectedOutput)*') { Write-Host '✓ ' $step.action -ForegroundColor Green } else { Write-Host '✗ ' $step.action -ForegroundColor Red } } } }"
+      }
+    },
+    "check-status": {
+      "description": "Check installation status of all tools",
+      "usage": "check-status",
+      "implementation": {
+        "type": "powershell",
+        "script": "function Check-Status { $tools = @('choco', 'scoop', 'winget', 'node', 'npm', 'git', 'python', 'docker'); foreach ($tool in $tools) { try { $version = & $tool --version 2>$null; if ($version) { Write-Host '✓ ' $tool ': ' $version -ForegroundColor Green } else { Write-Host '✗ ' $tool ' not found' -ForegroundColor Red } } catch { Write-Host '✗ ' $tool ' not installed' -ForegroundColor Red } } }"
+      }
+    },
+    "quick-setup": {
+      "description": "Quick setup for common development environments",
+      "usage": "quick-setup [environment]",
+      "examples": [
+        "quick-setup full-stack",
+        "quick-setup web-dev",
+        "quick-setup mobile-dev"
+      ],
+      "implementation": {
+        "type": "powershell",
+        "script": "function Quick-Setup { param([string]$Environment) switch ($Environment) { 'full-stack' { Install-Module 'package-managers'; Install-Module 'web-development'; Install-Module 'backend-development' } 'web-dev' { Install-Module 'package-managers'; Install-Module 'web-development' } 'mobile-dev' { Install-Module 'package-managers'; Install-Module 'mobile-development' } default { Write-Host 'Available environments: full-stack, web-dev, mobile-dev' -ForegroundColor Yellow } } }"
+      }
+    }
+  },
+  "modules": {
     "package-managers": {
       "name": "Package Managers",
       "displayName": "Package Managers",

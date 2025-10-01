@@ -4,84 +4,193 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ## 🚀 Quick Start
 
-### One-Command Installation
+### JSON-Only Installation (New!)
 ```powershell
-Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression
-```
-
-### Force Installation (No Prompts)
-```powershell
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
-```
-
-### Manual Installation
-```powershell
+# Clone the repository
 git clone https://github.com/anshulyadav32/setupx-windows-setup.git
 cd setupx-windows-setup
-.\install.ps1
+
+# All functionality is now in setupx.json - no separate scripts needed!
+# Commands are defined in the JSON configuration
 ```
 
-### Alternative Installation Methods
+### Available Commands (All in JSON)
 ```powershell
-# Direct download and run
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
-
-# Force installation (overwrites existing)
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
-
-# Using curl (if available)
-curl -sSL https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | powershell
-```
-
-## 📁 Clean Structure
-
-```
-setupx/
-├── setupx.ps1                    # Main entry point
-├── install.ps1                  # Complete installer (downloads everything)
-├── src/                          # Source code
-│   ├── core/                     # Core functionality
-│   │   ├── module-manager.ps1   # Module management
-│   │   └── package-manager.ps1  # Package manager operations
-│   ├── cli/                      # Command line interface
-│   │   └── setupx-cli.ps1       # Main CLI
-│   ├── utils/                    # Utilities
-│   │   ├── logger.ps1           # Logging
-│   │   └── helpers.ps1          # Helper functions
-│   ├── installers/               # Installation logic
-│   │   └── setupx-installer.ps1 # SetupX installer
-│   ├── config/                   # Configuration
-│   │   └── setupx.json          # Main config
-│   └── modules/                  # Development modules
-│       ├── package-managers/     # Package managers
-│       ├── web-development/      # Web dev tools
-│       ├── mobile-development/  # Mobile dev tools
-│       ├── backend-development/ # Backend dev tools
-│       ├── cloud-development/   # Cloud dev tools
-│       └── common-development/  # Common tools
-└── README.md                     # This file
-```
-
-## 🎯 Usage
-
-```powershell
-# Show help
-setupx -h
-
-# List all modules
-setupx list
-
-# Show system status
-setupx status
-
-# Install a module
+# Main SetupX interface
 setupx install package-managers
+setupx list
+setupx status
+setupx components web-development
 
-# Show module components
-setupx components package-managers
+# Direct module installation
+install-module package-managers
+install-module web-development
 
-# Interactive menu
-setupx menu
+# Component installation
+install-component package-managers chocolatey
+install-component web-development nodejs
+
+# Testing commands
+test-module package-managers
+test-component package-managers chocolatey
+check-status
+
+# Quick setup environments
+quick-setup full-stack
+quick-setup web-dev
+quick-setup mobile-dev
+```
+
+## 🧪 Testing Results
+
+### ✅ Successfully Tested Components
+
+| Tool | Status | Version | Test Command |
+|------|--------|---------|--------------|
+| **Chocolatey** | ✅ Working | 2.5.1 | `choco --version` |
+| **Scoop** | ✅ Working | 0.5.3 | `scoop --version` |
+| **Node.js** | ✅ Working | v22.19.0 | `node --version` |
+| **NPM** | ✅ Working | 10.9.3 | `npm --version` |
+| **Git** | ✅ Working | 2.51.0.windows.1 | `git --version` |
+| **Python** | ✅ Working | 3.13.7 | `python --version` |
+| **Docker** | ✅ Working | 28.4.0 | `docker --version` |
+
+### ⚠️ Partially Working
+| Tool | Status | Issue | Notes |
+|------|--------|-------|-------|
+| **WinGet** | ⚠️ Access Denied | Requires admin privileges | Use `winget` as administrator |
+| **Yarn** | ❌ Not Installed | Package not found | Install with `npm install -g yarn` |
+
+### 🧪 Test Commands
+```powershell
+# Test all package managers
+test-module package-managers
+
+# Test web development tools
+test-module web-development
+
+# Test specific components
+test-component package-managers chocolatey
+test-component web-development nodejs
+
+# Check overall status
+check-status
+```
+
+## 📁 JSON-Only Structure (New!)
+
+```
+setupx-windows-setup/
+├── src/
+│   └── config/
+│       └── setupx.json          # ALL functionality in JSON!
+├── README.md                    # This file
+└── .git/                        # Git repository
+```
+
+**No more PowerShell scripts!** Everything is now defined in `setupx.json`:
+- ✅ All commands and functions
+- ✅ Module definitions
+- ✅ Component configurations  
+- ✅ Testing procedures
+- ✅ Installation methods
+
+## 📋 Complete Command Reference
+
+### Core Commands
+```powershell
+# Main SetupX interface
+setupx [command] [options]
+
+# Examples:
+setupx install package-managers
+setupx list
+setupx status
+setupx components web-development
+setupx install-component package-managers chocolatey
+```
+
+### Module Management
+```powershell
+# Install complete modules
+install-module package-managers
+install-module web-development
+install-module mobile-development
+install-module backend-development
+install-module cloud-development
+install-module common-development
+install-module ai-development-tools
+install-module data-science
+install-module game-development
+install-module devops
+install-module security
+install-module blockchain
+install-module wsl-linux
+```
+
+### Component Installation
+```powershell
+# Install specific components
+install-component package-managers chocolatey
+install-component package-managers scoop
+install-component package-managers winget
+install-component web-development nodejs
+install-component web-development yarn
+install-component web-development browsers
+install-component web-development react-tools
+install-component web-development vue-tools
+install-component web-development angular-tools
+install-component web-development webpack-tools
+```
+
+### Testing & Status
+```powershell
+# Test modules
+test-module package-managers
+test-module web-development
+
+# Test components
+test-component package-managers chocolatey
+test-component web-development nodejs
+
+# Check system status
+check-status
+
+# List available modules
+list-modules
+
+# List components for a module
+list-components web-development
+```
+
+### Quick Setup Environments
+```powershell
+# Pre-configured development environments
+quick-setup full-stack    # Package managers + Web + Backend
+quick-setup web-dev       # Package managers + Web development
+quick-setup mobile-dev    # Package managers + Mobile development
+quick-setup cloud-dev     # Package managers + Cloud development
+quick-setup ai-dev        # Package managers + AI development
+```
+
+## 🎯 Usage Examples
+
+```powershell
+# Check what's available
+list-modules
+list-components web-development
+
+# Install everything for web development
+install-module package-managers
+install-module web-development
+
+# Install specific tools
+install-component package-managers chocolatey
+install-component web-development nodejs
+
+# Test your installation
+test-module package-managers
+check-status
 ```
 
 ## 📦 Available Modules
