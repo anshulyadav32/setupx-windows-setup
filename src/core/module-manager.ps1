@@ -124,4 +124,66 @@ function Install-Module {
     }
 }
 
+function Install-ModuleComponent {
+    param([string]$ModuleName, [string]$ComponentName)
+    <#
+    .SYNOPSIS
+    Installs a specific component from a module
+    #>
+    if (-not $ModuleName -or -not $ComponentName) {
+        Write-SetupxError "Module name and component name required. Use: setupx install-component <module> <component>"
+        return $false
+    }
+    
+    $modules = Get-AvailableModules
+    $module = $modules | Where-Object { $_.Name -eq $ModuleName }
+    
+    if (-not $module) {
+        Write-SetupxError "Module '$ModuleName' not found"
+        return $false
+    }
+    
+    if (-not $module.Components) {
+        Write-SetupxError "No components found for module: $ModuleName"
+        return $false
+    }
+    
+    $component = $module.Components | Where-Object { $_.scriptName -like "*$ComponentName*" -or $_.displayName -like "*$ComponentName*" }
+    
+    if (-not $component) {
+        Write-SetupxError "Component '$ComponentName' not found in module '$ModuleName'"
+        Write-SetupxInfo "Available components:"
+        foreach ($comp in $module.Components) {
+            Write-SetupxInfo "  - $($comp.displayName) ($($comp.scriptName))"
+        }
+        return $false
+    }
+    
+    Write-SetupxInfo "Installing component: $($component.displayName)"
+    
+    # Get the component script path
+    $componentScript = Join-Path $module.Path "components\$($component.scriptName)"
+    
+    if (Test-Path $componentScript) {
+        try {
+            Write-SetupxInfo "Running installation script: $($component.scriptName)"
+            & $componentScript
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-SetupxSuccess "Component installed: $($component.displayName)"
+                return $true
+            } else {
+                Write-SetupxError "Component installation failed: $($component.displayName)"
+                return $false
+            }
+        } catch {
+            Write-SetupxError "Component installation error: $($_.Exception.Message)"
+            return $false
+        }
+    } else {
+        Write-SetupxWarning "Installation script not found: $($component.scriptName)"
+        return $false
+    }
+}
+
 # Functions are available for use in other modules

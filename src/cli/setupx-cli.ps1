@@ -26,6 +26,7 @@ function Show-SetupxHelp {
     Write-Host "  list                   List all available modules" -ForegroundColor White
     Write-Host "  status                 Show system status" -ForegroundColor White
     Write-Host "  install [module]       Install a specific module" -ForegroundColor White
+    Write-Host "  install-component [module] [component]  Install a specific component" -ForegroundColor White
     Write-Host "  test [module]          Test module components" -ForegroundColor White
     Write-Host "  components [module]    List module components" -ForegroundColor White
     Write-Host ""
@@ -33,6 +34,7 @@ function Show-SetupxHelp {
     Write-Host "  setupx -h" -ForegroundColor White
     Write-Host "  setupx list" -ForegroundColor White
     Write-Host "  setupx install package-managers" -ForegroundColor White
+    Write-Host "  setupx install-component package-managers chocolatey" -ForegroundColor White
     Write-Host "  setupx test package-managers" -ForegroundColor White
     Write-Host "  setupx components package-managers" -ForegroundColor White
     Write-Host ""
@@ -127,6 +129,32 @@ function Show-SetupxComponents {
     }
 }
 
+function Install-SetupxComponent {
+    param([string]$ModuleName, [string]$ComponentName)
+    
+    if (-not $ModuleName -or -not $ComponentName) {
+        Write-Host "Module name and component name required." -ForegroundColor Red
+        Write-Host "Use: setupx install-component [module] [component]" -ForegroundColor Yellow
+        Write-Host "Example: setupx install-component package-managers chocolatey" -ForegroundColor White
+        return
+    }
+    
+    Show-SetupxBanner
+    Write-Host "Installing component: $ComponentName from module: $ModuleName" -ForegroundColor Yellow
+    Write-Host ""
+    
+    try {
+        $result = Install-ModuleComponent $ModuleName $ComponentName
+        if ($result) {
+            Write-Host "SUCCESS: Component '$ComponentName' installed successfully!" -ForegroundColor Green
+        } else {
+            Write-Host "ERROR: Failed to install component '$ComponentName'" -ForegroundColor Red
+        }
+    } catch {
+        Write-Host "ERROR: Installation failed - $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
 
 # Main CLI logic
 
@@ -141,6 +169,14 @@ switch ($Command) {
     "list" { Show-SetupxList }
     "status" { Show-SetupxStatus }
     "install" { Install-Module $ModuleName }
+    "install-component" { 
+        if ($ModuleName -and $args.Count -gt 0) {
+            Install-SetupxComponent $ModuleName $args[0]
+        } else {
+            Write-Host "Module name and component name required." -ForegroundColor Red
+            Write-Host "Use: setupx install-component [module] [component]" -ForegroundColor Yellow
+        }
+    }
     "test" { 
         if ($ModuleName) {
             Write-Host "Testing module: $ModuleName" -ForegroundColor Yellow
