@@ -64,6 +64,16 @@
         ]
       },
       {
+        "id": "linux-dev",
+        "name": "Linux Developer",
+        "description": "WSL Linux development environment with Ubuntu and Linux tools",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install wsl-linux",
+          "setupx install common-development"
+        ]
+      },
+      {
         "id": "custom",
         "name": "Custom Setup",
         "description": "Choose specific modules and components",
@@ -110,7 +120,7 @@
           "module": {
             "required": true,
             "description": "Name of the module to install",
-            "validValues": ["package-managers", "web-development", "mobile-development", "backend-development", "cloud-development", "common-development", "ai-development-tools"]
+            "validValues": ["package-managers", "web-development", "mobile-development", "backend-development", "cloud-development", "common-development", "ai-development-tools", "wsl-linux", "data-science", "game-development", "devops", "security", "blockchain"]
           }
         }
       },
@@ -840,6 +850,81 @@
           "scriptName": "ganache.ps1",
           "installMethod": "npm",
           "website": "https://trufflesuite.com/ganache",
+          "status": "available"
+        }
+      }
+    },
+    "wsl-linux": {
+      "name": "WSL Linux Development",
+      "displayName": "WSL Linux Development",
+      "description": "Windows Subsystem for Linux (WSL) setup with Ubuntu, development tools, and Linux environment",
+      "priority": 13,
+      "category": "development",
+      "status": "available",
+      "components": 8,
+      "components": {
+        "wsl": {
+          "displayName": "WSL 2",
+          "description": "Windows Subsystem for Linux 2 with Ubuntu",
+          "scriptName": "wsl.ps1",
+          "installMethod": "powershell",
+          "website": "https://docs.microsoft.com/en-us/windows/wsl",
+          "status": "available"
+        },
+        "ubuntu": {
+          "displayName": "Ubuntu",
+          "description": "Ubuntu Linux distribution for WSL",
+          "scriptName": "ubuntu.ps1",
+          "installMethod": "microsoft-store",
+          "website": "https://ubuntu.com/wsl",
+          "status": "available"
+        },
+        "docker-desktop": {
+          "displayName": "Docker Desktop",
+          "description": "Docker Desktop with WSL 2 backend",
+          "scriptName": "docker-desktop.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docs.docker.com/desktop/windows/wsl",
+          "status": "available"
+        },
+        "windows-terminal": {
+          "displayName": "Windows Terminal",
+          "description": "Modern terminal with WSL integration",
+          "scriptName": "windows-terminal.ps1",
+          "installMethod": "microsoft-store",
+          "website": "https://github.com/microsoft/terminal",
+          "status": "available"
+        },
+        "vscode-wsl": {
+          "displayName": "VS Code WSL Extension",
+          "description": "VS Code with WSL remote development",
+          "scriptName": "vscode-wsl.ps1",
+          "installMethod": "vscode-extension",
+          "website": "https://code.visualstudio.com/docs/remote/wsl",
+          "status": "available"
+        },
+        "git-bash": {
+          "displayName": "Git Bash",
+          "description": "Git for Windows with Bash shell",
+          "scriptName": "git-bash.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://git-scm.com/download/win",
+          "status": "available"
+        },
+        "linux-tools": {
+          "displayName": "Linux Development Tools",
+          "description": "Essential Linux development tools (gcc, make, curl, wget)",
+          "scriptName": "linux-tools.ps1",
+          "installMethod": "apt",
+          "website": "https://ubuntu.com",
+          "status": "available"
+        },
+        "oh-my-zsh": {
+          "displayName": "Oh My Zsh",
+          "description": "Zsh shell framework for WSL",
+          "scriptName": "oh-my-zsh.ps1",
+          "installMethod": "curl",
+          "website": "https://ohmyz.sh",
           "status": "available"
         }
       }
