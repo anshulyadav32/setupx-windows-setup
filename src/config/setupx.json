@@ -7,6 +7,70 @@
   "installPath": "C:\\setupx",
   "logLevel": "INFO",
   "autoUpdate": true,
+  "mainMenu": {
+    "title": "SetupX - Modular Windows Development Setup",
+    "description": "Choose your development environment setup",
+    "options": [
+      {
+        "id": "quick-setup",
+        "name": "Quick Setup",
+        "description": "Install essential development tools quickly",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install common-development"
+        ]
+      },
+      {
+        "id": "full-stack",
+        "name": "Full Stack Developer",
+        "description": "Complete web and backend development environment",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install web-development",
+          "setupx install backend-development",
+          "setupx install common-development"
+        ]
+      },
+      {
+        "id": "mobile-dev",
+        "name": "Mobile Developer",
+        "description": "Mobile app development with Flutter and React Native",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install mobile-development",
+          "setupx install common-development"
+        ]
+      },
+      {
+        "id": "cloud-dev",
+        "name": "Cloud Developer",
+        "description": "Cloud development and deployment tools",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install cloud-development",
+          "setupx install backend-development",
+          "setupx install common-development"
+        ]
+      },
+      {
+        "id": "ai-dev",
+        "name": "AI Developer",
+        "description": "AI-powered development tools and frameworks",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install ai-development-tools",
+          "setupx install web-development",
+          "setupx install common-development"
+        ]
+      },
+      {
+        "id": "custom",
+        "name": "Custom Setup",
+        "description": "Choose specific modules and components",
+        "commands": []
+      }
+    ]
+  },
   "cli": {
     "commands": {
       "help": {
@@ -135,7 +199,7 @@
       }
     }
   },
-  "modules": {
+a  "modules": {
     "package-managers": {
       "name": "Package Managers",
       "displayName": "Package Managers",
@@ -466,6 +530,317 @@
           "installMethod": "npm",
           "website": "https://cloud.google.com",
           "status": "experimental"
+        }
+      }
+    },
+    "data-science": {
+      "name": "Data Science",
+      "displayName": "Data Science Tools",
+      "description": "Complete data science and machine learning environment with Python, R, and analytics tools",
+      "priority": 8,
+      "category": "development",
+      "status": "available",
+      "components": 8,
+      "components": {
+        "python": {
+          "displayName": "Python",
+          "description": "Python programming language with data science libraries",
+          "scriptName": "python.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://python.org",
+          "status": "available"
+        },
+        "jupyter": {
+          "displayName": "Jupyter Notebook",
+          "description": "Interactive computing environment for data science",
+          "scriptName": "jupyter.ps1",
+          "installMethod": "pip",
+          "website": "https://jupyter.org",
+          "status": "available"
+        },
+        "r": {
+          "displayName": "R Programming",
+          "description": "Statistical computing and graphics language",
+          "scriptName": "r.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://r-project.org",
+          "status": "available"
+        },
+        "anaconda": {
+          "displayName": "Anaconda",
+          "description": "Python distribution for data science",
+          "scriptName": "anaconda.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://anaconda.com",
+          "status": "available"
+        },
+        "tensorflow": {
+          "displayName": "TensorFlow",
+          "description": "Machine learning framework",
+          "scriptName": "tensorflow.ps1",
+          "installMethod": "pip",
+          "website": "https://tensorflow.org",
+          "status": "available"
+        },
+        "pytorch": {
+          "displayName": "PyTorch",
+          "description": "Machine learning framework",
+          "scriptName": "pytorch.ps1",
+          "installMethod": "pip",
+          "website": "https://pytorch.org",
+          "status": "available"
+        },
+        "pandas": {
+          "displayName": "Pandas",
+          "description": "Data manipulation and analysis library",
+          "scriptName": "pandas.ps1",
+          "installMethod": "pip",
+          "website": "https://pandas.pydata.org",
+          "status": "available"
+        },
+        "matplotlib": {
+          "displayName": "Matplotlib",
+          "description": "Plotting library for Python",
+          "scriptName": "matplotlib.ps1",
+          "installMethod": "pip",
+          "website": "https://matplotlib.org",
+          "status": "available"
+        }
+      }
+    },
+    "game-development": {
+      "name": "Game Development",
+      "displayName": "Game Development Tools",
+      "description": "Complete game development environment with Unity, Unreal Engine, and game frameworks",
+      "priority": 9,
+      "category": "development",
+      "status": "available",
+      "components": 6,
+      "components": {
+        "unity": {
+          "displayName": "Unity",
+          "description": "Cross-platform game engine",
+          "scriptName": "unity.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://unity.com",
+          "status": "available"
+        },
+        "unreal-engine": {
+          "displayName": "Unreal Engine",
+          "description": "3D game engine and development platform",
+          "scriptName": "unreal-engine.ps1",
+          "installMethod": "epic-games",
+          "website": "https://unrealengine.com",
+          "status": "available"
+        },
+        "godot": {
+          "displayName": "Godot",
+          "description": "Open source game engine",
+          "scriptName": "godot.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://godotengine.org",
+          "status": "available"
+        },
+        "blender": {
+          "displayName": "Blender",
+          "description": "3D creation and animation software",
+          "scriptName": "blender.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://blender.org",
+          "status": "available"
+        },
+        "gimp": {
+          "displayName": "GIMP",
+          "description": "Image manipulation program",
+          "scriptName": "gimp.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://gimp.org",
+          "status": "available"
+        },
+        "audacity": {
+          "displayName": "Audacity",
+          "description": "Audio editing software",
+          "scriptName": "audacity.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://audacityteam.org",
+          "status": "available"
+        }
+      }
+    },
+    "devops": {
+      "name": "DevOps",
+      "displayName": "DevOps Tools",
+      "description": "DevOps and automation tools for CI/CD, monitoring, and infrastructure management",
+      "priority": 10,
+      "category": "development",
+      "status": "available",
+      "components": 7,
+      "components": {
+        "jenkins": {
+          "displayName": "Jenkins",
+          "description": "Open source automation server",
+          "scriptName": "jenkins.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://jenkins.io",
+          "status": "available"
+        },
+        "terraform": {
+          "displayName": "Terraform",
+          "description": "Infrastructure as code tool",
+          "scriptName": "terraform.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://terraform.io",
+          "status": "available"
+        },
+        "ansible": {
+          "displayName": "Ansible",
+          "description": "Automation platform",
+          "scriptName": "ansible.ps1",
+          "installMethod": "pip",
+          "website": "https://ansible.com",
+          "status": "available"
+        },
+        "prometheus": {
+          "displayName": "Prometheus",
+          "description": "Monitoring and alerting toolkit",
+          "scriptName": "prometheus.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://prometheus.io",
+          "status": "available"
+        },
+        "grafana": {
+          "displayName": "Grafana",
+          "description": "Analytics and monitoring platform",
+          "scriptName": "grafana.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://grafana.com",
+          "status": "available"
+        },
+        "vault": {
+          "displayName": "HashiCorp Vault",
+          "description": "Secrets management tool",
+          "scriptName": "vault.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://vaultproject.io",
+          "status": "available"
+        },
+        "consul": {
+          "displayName": "HashiCorp Consul",
+          "description": "Service mesh and service discovery",
+          "scriptName": "consul.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://consul.io",
+          "status": "available"
+        }
+      }
+    },
+    "security": {
+      "name": "Security",
+      "displayName": "Security Tools",
+      "description": "Cybersecurity and penetration testing tools for security professionals",
+      "priority": 11,
+      "category": "development",
+      "status": "available",
+      "components": 6,
+      "components": {
+        "nmap": {
+          "displayName": "Nmap",
+          "description": "Network discovery and security auditing tool",
+          "scriptName": "nmap.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://nmap.org",
+          "status": "available"
+        },
+        "wireshark": {
+          "displayName": "Wireshark",
+          "description": "Network protocol analyzer",
+          "scriptName": "wireshark.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://wireshark.org",
+          "status": "available"
+        },
+        "metasploit": {
+          "displayName": "Metasploit",
+          "description": "Penetration testing framework",
+          "scriptName": "metasploit.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://metasploit.com",
+          "status": "available"
+        },
+        "burp-suite": {
+          "displayName": "Burp Suite",
+          "description": "Web application security testing platform",
+          "scriptName": "burp-suite.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://portswigger.net/burp",
+          "status": "available"
+        },
+        "john": {
+          "displayName": "John the Ripper",
+          "description": "Password cracking tool",
+          "scriptName": "john.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://openwall.com/john",
+          "status": "available"
+        },
+        "hashcat": {
+          "displayName": "Hashcat",
+          "description": "Advanced password recovery tool",
+          "scriptName": "hashcat.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://hashcat.net",
+          "status": "available"
+        }
+      }
+    },
+    "blockchain": {
+      "name": "Blockchain",
+      "displayName": "Blockchain Development",
+      "description": "Blockchain and cryptocurrency development tools and frameworks",
+      "priority": 12,
+      "category": "development",
+      "status": "available",
+      "components": 5,
+      "components": {
+        "ethereum": {
+          "displayName": "Ethereum",
+          "description": "Blockchain platform for smart contracts",
+          "scriptName": "ethereum.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://ethereum.org",
+          "status": "available"
+        },
+        "truffle": {
+          "displayName": "Truffle",
+          "description": "Blockchain development framework",
+          "scriptName": "truffle.ps1",
+          "installMethod": "npm",
+          "website": "https://trufflesuite.com",
+          "status": "available"
+        },
+        "hardhat": {
+          "displayName": "Hardhat",
+          "description": "Ethereum development environment",
+          "scriptName": "hardhat.ps1",
+          "installMethod": "npm",
+          "website": "https://hardhat.org",
+          "status": "available"
+        },
+        "web3": {
+          "displayName": "Web3.js",
+          "description": "JavaScript library for Ethereum",
+          "scriptName": "web3.ps1",
+          "installMethod": "npm",
+          "website": "https://web3js.readthedocs.io",
+          "status": "available"
+        },
+        "ganache": {
+          "displayName": "Ganache",
+          "description": "Personal blockchain for development",
+          "scriptName": "ganache.ps1",
+          "installMethod": "npm",
+          "website": "https://trufflesuite.com/ganache",
+          "status": "available"
         }
       }
     }
