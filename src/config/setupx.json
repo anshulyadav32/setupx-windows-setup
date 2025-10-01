@@ -1,298 +1,426 @@
 {
   "name": "SetupX",
   "version": "2.0.0",
-  "description": "Modular Windows Development Environment Setup Tool",
+  "description": "Individual Component Windows Development Setup Tool",
   "author": "anshulyadav32",
   "repository": "https://github.com/anshulyadav32/setupx-windows-setup",
   "installPath": "C:\\setupx",
   "logLevel": "INFO",
   "autoUpdate": true,
-  "core": {
-    "scripts": {
-      "setupx-cli": {
-        "path": "src/cli/setupx-cli.ps1",
-        "description": "Main CLI interface for SetupX",
-        "functions": [
-          "Show-SetupxBanner",
-          "Show-SetupxHelp", 
-          "Show-SetupxList",
-          "Show-SetupxStatus",
-          "Show-SetupxComponents",
-          "Install-SetupxComponent"
-        ]
-      },
-      "module-manager": {
-        "path": "src/core/module-manager.ps1",
-        "description": "Module management and installation",
-        "functions": [
-          "Get-AvailableModules",
-          "Get-ModuleComponents",
-          "Install-Module",
-          "Install-ModuleComponent"
-        ]
-      },
-      "package-manager": {
-        "path": "src/core/package-manager.ps1",
-        "description": "Package manager operations",
-        "functions": [
-          "Install-PackageManager",
-          "Check-PackageManagerStatus",
-          "Update-PackageManager"
-        ]
-      },
-      "setupx-installer": {
-        "path": "src/installers/setupx-installer.ps1",
-        "description": "SetupX installation logic",
-        "functions": [
-          "Install-SetupxComplete",
-          "Download-SetupxFiles",
-          "Setup-SetupxEnvironment"
-        ]
+  "components": {
+    "chocolatey": {
+      "name": "chocolatey",
+      "displayName": "Chocolatey",
+      "description": "Community package manager for Windows",
+      "scriptName": "chocolatey.ps1",
+      "installMethod": "powershell",
+      "website": "https://chocolatey.org",
+      "status": "working",
+      "category": "package-manager",
+      "commands": {
+        "install": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+        "remove": "Remove-Item -Path \"$env:ChocolateyInstall\" -Recurse -Force; Remove-Item -Path \"$env:ChocolateyInstall\\bin\\choco.exe\" -Force",
+        "update": "choco upgrade chocolatey -y",
+        "check": "choco --version",
+        "verify": "choco list --local-only",
+        "test": "choco search git --limit-output",
+        "path": "refreshenv"
       }
     },
-    "utilities": {
-      "logger": {
-        "path": "src/utils/logger.ps1",
-        "description": "Logging utilities for SetupX",
-        "functions": [
-          "Write-SetupxInfo",
-          "Write-SetupxSuccess",
-          "Write-SetupxWarning",
-          "Write-SetupxError"
-        ]
-      },
-      "helpers": {
-        "path": "src/utils/helpers.ps1",
-        "description": "Common helper functions",
-        "functions": [
-          "Test-Administrator",
-          "Get-SetupxVersion",
-          "Update-EnvironmentPath"
-        ]
+    "scoop": {
+      "name": "scoop",
+      "displayName": "Scoop",
+      "description": "Portable applications manager for development tools",
+      "scriptName": "scoop.ps1",
+      "installMethod": "powershell",
+      "website": "https://scoop.sh",
+      "status": "working",
+      "category": "package-manager",
+      "commands": {
+        "install": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser; iex (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')",
+        "remove": "Remove-Item -Path \"$env:SCOOP\" -Recurse -Force",
+        "update": "scoop update",
+        "check": "scoop --version",
+        "verify": "scoop list",
+        "test": "scoop search git",
+        "path": "refreshenv"
       }
     },
-    "componentScripts": {
-      "package-managers": {
-        "chocolatey": {
-          "path": "src/modules/package-managers/components/chocolatey.ps1",
-          "description": "Chocolatey package manager installation",
-          "installMethod": "powershell",
-          "dependencies": [],
-          "postInstall": ["refreshenv"]
-        },
-        "scoop": {
-          "path": "src/modules/package-managers/components/scoop.ps1", 
-          "description": "Scoop package manager installation",
-          "installMethod": "powershell",
-          "dependencies": [],
-          "postInstall": ["refreshenv"]
-        },
-        "winget": {
-          "path": "src/modules/package-managers/components/winget.ps1",
-          "description": "WinGet package manager installation", 
-          "installMethod": "microsoft-store",
-          "dependencies": ["App Installer"],
-          "postInstall": []
-        }
-      },
-      "web-development": {
-        "nodejs": {
-          "path": "src/modules/web-development/components/nodejs.ps1",
-          "description": "Node.js and npm installation",
-          "installMethod": "chocolatey",
-          "dependencies": ["chocolatey"],
-          "postInstall": ["refreshenv"]
-        },
-        "browsers": {
-          "path": "src/modules/web-development/components/browsers.ps1",
-          "description": "Modern browsers installation",
-          "installMethod": "chocolatey", 
-          "dependencies": ["chocolatey"],
-          "postInstall": []
-        }
-      },
-      "common-development": {
-        "git": {
-          "path": "src/modules/common-development/components/git.ps1",
-          "description": "Git version control installation",
-          "installMethod": "chocolatey",
-          "dependencies": ["chocolatey"],
-          "postInstall": ["refreshenv"]
-        },
-        "vscode": {
-          "path": "src/modules/common-development/components/vscode.ps1",
-          "description": "VS Code editor installation",
-          "installMethod": "chocolatey",
-          "dependencies": ["chocolatey"],
-          "postInstall": []
-        }
+    "winget": {
+      "name": "winget",
+      "displayName": "WinGet",
+      "description": "Microsoft's official Windows package manager",
+      "scriptName": "winget.ps1",
+      "installMethod": "microsoft-store",
+      "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
+      "status": "working",
+      "category": "package-manager",
+      "commands": {
+        "install": "winget install Microsoft.Winget.Source.Msix",
+        "remove": "winget uninstall Microsoft.Winget.Source.Msix",
+        "update": "winget upgrade --all",
+        "check": "winget --version",
+        "verify": "winget list",
+        "test": "winget search git",
+        "path": "refreshenv"
+      }
+    },
+    "nodejs": {
+      "name": "nodejs",
+      "displayName": "Node.js & npm",
+      "description": "JavaScript runtime and package manager",
+      "scriptName": "nodejs.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://nodejs.org",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "choco install nodejs -y",
+        "remove": "choco uninstall nodejs -y",
+        "update": "choco upgrade nodejs -y",
+        "check": "node --version",
+        "verify": "npm --version",
+        "test": "node -e \"console.log('Node.js is working!')\"",
+        "path": "refreshenv"
+      }
+    },
+    "yarn": {
+      "name": "yarn",
+      "displayName": "Yarn Package Manager",
+      "description": "Fast, reliable, and secure dependency management",
+      "scriptName": "yarn.ps1",
+      "installMethod": "npm",
+      "website": "https://yarnpkg.com",
+      "status": "working",
+      "category": "web-development",
+      "commands": {
+        "install": "npm install -g yarn",
+        "remove": "npm uninstall -g yarn",
+        "update": "npm update -g yarn",
+        "check": "yarn --version",
+        "verify": "yarn --version",
+        "test": "yarn --version",
+        "path": "refreshenv"
+      }
+    },
+    "git": {
+      "name": "git",
+      "displayName": "Git",
+      "description": "Distributed version control system",
+      "scriptName": "git.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://git-scm.com",
+      "status": "working",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install git -y",
+        "remove": "choco uninstall git -y",
+        "update": "choco upgrade git -y",
+        "check": "git --version",
+        "verify": "git config --list",
+        "test": "git --help",
+        "path": "refreshenv"
+      }
+    },
+    "vscode": {
+      "name": "vscode",
+      "displayName": "VS Code",
+      "description": "Lightweight, powerful source code editor",
+      "scriptName": "vscode.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://code.visualstudio.com",
+      "status": "working",
+      "category": "common-development",
+      "commands": {
+        "install": "choco install vscode -y",
+        "remove": "choco uninstall vscode -y",
+        "update": "choco upgrade vscode -y",
+        "check": "code --version",
+        "verify": "code --list-extensions",
+        "test": "code --help",
+        "path": "refreshenv"
+      }
+    },
+    "python": {
+      "name": "python",
+      "displayName": "Python",
+      "description": "Python programming language and pip package manager",
+      "scriptName": "python.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://python.org",
+      "status": "working",
+      "category": "backend-development",
+      "commands": {
+        "install": "choco install python -y",
+        "remove": "choco uninstall python -y",
+        "update": "choco upgrade python -y",
+        "check": "python --version",
+        "verify": "pip --version",
+        "test": "python -c \"print('Python is working!')\"",
+        "path": "refreshenv"
+      }
+    },
+    "docker": {
+      "name": "docker",
+      "displayName": "Docker",
+      "description": "Containerization platform for applications",
+      "scriptName": "docker.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://docker.com",
+      "status": "working",
+      "category": "backend-development",
+      "commands": {
+        "install": "choco install docker-desktop -y",
+        "remove": "choco uninstall docker-desktop -y",
+        "update": "choco upgrade docker-desktop -y",
+        "check": "docker --version",
+        "verify": "docker info",
+        "test": "docker run hello-world",
+        "path": "refreshenv"
+      }
+    },
+    "aws-cli": {
+      "name": "aws-cli",
+      "displayName": "AWS CLI",
+      "description": "Command line interface for Amazon Web Services",
+      "scriptName": "aws-cli.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://aws.amazon.com/cli",
+      "status": "working",
+      "category": "cloud-development",
+      "commands": {
+        "install": "choco install awscli -y",
+        "remove": "choco uninstall awscli -y",
+        "update": "choco upgrade awscli -y",
+        "check": "aws --version",
+        "verify": "aws configure list",
+        "test": "aws help",
+        "path": "refreshenv"
+      }
+    },
+    "azure-cli": {
+      "name": "azure-cli",
+      "displayName": "Azure CLI",
+      "description": "Command line interface for Microsoft Azure",
+      "scriptName": "azure-cli.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://docs.microsoft.com/en-us/cli/azure",
+      "status": "working",
+      "category": "cloud-development",
+      "commands": {
+        "install": "choco install azure-cli -y",
+        "remove": "choco uninstall azure-cli -y",
+        "update": "choco upgrade azure-cli -y",
+        "check": "az --version",
+        "verify": "az account show",
+        "test": "az --help",
+        "path": "refreshenv"
+      }
+    },
+    "flutter": {
+      "name": "flutter",
+      "displayName": "Flutter",
+      "description": "Google's UI toolkit for building natively compiled applications",
+      "scriptName": "flutter.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://flutter.dev",
+      "status": "working",
+      "category": "mobile-development",
+      "commands": {
+        "install": "choco install flutter -y",
+        "remove": "choco uninstall flutter -y",
+        "update": "choco upgrade flutter -y",
+        "check": "flutter --version",
+        "verify": "flutter doctor",
+        "test": "flutter --help",
+        "path": "refreshenv"
+      }
+    },
+    "react-native": {
+      "name": "react-native",
+      "displayName": "React Native",
+      "description": "Framework for building native apps with React",
+      "scriptName": "react-native.ps1",
+      "installMethod": "npm",
+      "website": "https://reactnative.dev",
+      "status": "working",
+      "category": "mobile-development",
+      "commands": {
+        "install": "npm install -g @react-native-community/cli",
+        "remove": "npm uninstall -g @react-native-community/cli",
+        "update": "npm update -g @react-native-community/cli",
+        "check": "react-native --version",
+        "verify": "react-native --version",
+        "test": "react-native --help",
+        "path": "refreshenv"
+      }
+    },
+    "jupyter": {
+      "name": "jupyter",
+      "displayName": "Jupyter Notebook",
+      "description": "Interactive computing environment for data science",
+      "scriptName": "jupyter.ps1",
+      "installMethod": "pip",
+      "website": "https://jupyter.org",
+      "status": "working",
+      "category": "data-science",
+      "commands": {
+        "install": "pip install jupyter",
+        "remove": "pip uninstall jupyter -y",
+        "update": "pip install --upgrade jupyter",
+        "check": "jupyter --version",
+        "verify": "jupyter --version",
+        "test": "jupyter --help",
+        "path": "refreshenv"
+      }
+    },
+    "tensorflow": {
+      "name": "tensorflow",
+      "displayName": "TensorFlow",
+      "description": "Machine learning framework",
+      "scriptName": "tensorflow.ps1",
+      "installMethod": "pip",
+      "website": "https://tensorflow.org",
+      "status": "working",
+      "category": "data-science",
+      "commands": {
+        "install": "pip install tensorflow",
+        "remove": "pip uninstall tensorflow -y",
+        "update": "pip install --upgrade tensorflow",
+        "check": "python -c \"import tensorflow as tf; print(tf.__version__)\"",
+        "verify": "python -c \"import tensorflow as tf; print(tf.__version__)\"",
+        "test": "python -c \"import tensorflow as tf; print(tf.constant([1, 2, 3]))\"",
+        "path": "refreshenv"
+      }
+    },
+    "unity": {
+      "name": "unity",
+      "displayName": "Unity",
+      "description": "Cross-platform game engine",
+      "scriptName": "unity.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://unity.com",
+      "status": "working",
+      "category": "game-development",
+      "commands": {
+        "install": "choco install unity -y",
+        "remove": "choco uninstall unity -y",
+        "update": "choco upgrade unity -y",
+        "check": "Get-ChildItem \"C:\\Program Files\\Unity\" -ErrorAction SilentlyContinue",
+        "verify": "Get-ChildItem \"C:\\Program Files\\Unity\" -ErrorAction SilentlyContinue",
+        "test": "Get-ChildItem \"C:\\Program Files\\Unity\" -ErrorAction SilentlyContinue",
+        "path": "refreshenv"
+      }
+    },
+    "terraform": {
+      "name": "terraform",
+      "displayName": "Terraform",
+      "description": "Infrastructure as code tool",
+      "scriptName": "terraform.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://terraform.io",
+      "status": "working",
+      "category": "devops",
+      "commands": {
+        "install": "choco install terraform -y",
+        "remove": "choco uninstall terraform -y",
+        "update": "choco upgrade terraform -y",
+        "check": "terraform --version",
+        "verify": "terraform --version",
+        "test": "terraform --help",
+        "path": "refreshenv"
+      }
+    },
+    "nmap": {
+      "name": "nmap",
+      "displayName": "Nmap",
+      "description": "Network discovery and security auditing tool",
+      "scriptName": "nmap.ps1",
+      "installMethod": "chocolatey",
+      "website": "https://nmap.org",
+      "status": "working",
+      "category": "security",
+      "commands": {
+        "install": "choco install nmap -y",
+        "remove": "choco uninstall nmap -y",
+        "update": "choco upgrade nmap -y",
+        "check": "nmap --version",
+        "verify": "nmap --version",
+        "test": "nmap --help",
+        "path": "refreshenv"
+      }
+    },
+    "wsl": {
+      "name": "wsl",
+      "displayName": "WSL 2",
+      "description": "Windows Subsystem for Linux 2 with Ubuntu",
+      "scriptName": "wsl.ps1",
+      "installMethod": "powershell",
+      "website": "https://docs.microsoft.com/en-us/windows/wsl",
+      "status": "working",
+      "category": "wsl-linux",
+      "commands": {
+        "install": "wsl --install",
+        "remove": "wsl --unregister Ubuntu",
+        "update": "wsl --update",
+        "check": "wsl --version",
+        "verify": "wsl --list",
+        "test": "wsl --help",
+        "path": "refreshenv"
       }
     }
   },
-  "testing": {
-    "moduleTests": {
-      "package-managers": {
-        "name": "Package Managers Module Test",
-        "description": "Test all package manager installations and functionality",
-        "testSteps": [
-          {
-            "step": 1,
-            "action": "Check Chocolatey Installation",
-            "command": "choco --version",
-            "expectedOutput": "Chocolatey v",
-            "timeout": 30
-          },
-          {
-            "step": 2,
-            "action": "Check Scoop Installation", 
-            "command": "scoop --version",
-            "expectedOutput": "Current Scoop version:",
-            "timeout": 30
-          },
-          {
-            "step": 3,
-            "action": "Check WinGet Installation",
-            "command": "winget --version",
-            "expectedOutput": "v",
-            "timeout": 30
-          },
-          {
-            "step": 4,
-            "action": "Test Package Installation",
-            "command": "choco install 7zip -y",
-            "expectedOutput": "7zip installed successfully",
-            "timeout": 60
-          }
-        ],
-        "cleanupSteps": [
-          {
-            "step": 1,
-            "action": "Uninstall Test Package",
-            "command": "choco uninstall 7zip -y"
-          }
-        ]
+  "cli": {
+    "commands": {
+      "help": {
+        "aliases": ["-h", "-help", "help"],
+        "description": "Show help message and available commands",
+        "usage": "setupx -h"
       },
-      "web-development": {
-        "name": "Web Development Module Test",
-        "description": "Test web development tools and frameworks",
-        "testSteps": [
-          {
-            "step": 1,
-            "action": "Check Node.js Installation",
-            "command": "node --version",
-            "expectedOutput": "v",
-            "timeout": 30
-          },
-          {
-            "step": 2,
-            "action": "Check NPM Installation",
-            "command": "npm --version",
-            "expectedOutput": "",
-            "timeout": 30
-          },
-          {
-            "step": 3,
-            "action": "Test React Tools",
-            "command": "npx create-react-app test-app --template typescript",
-            "expectedOutput": "Success",
-            "timeout": 120
-          },
-          {
-            "step": 4,
-            "action": "Test Vue Tools",
-            "command": "npm install -g @vue/cli",
-            "expectedOutput": "added",
-            "timeout": 60
-          }
-        ],
-        "cleanupSteps": [
-          {
-            "step": 1,
-            "action": "Remove Test App",
-            "command": "Remove-Item -Path test-app -Recurse -Force"
-          }
-        ]
-      }
-    },
-    "componentTests": {
-      "package-managers": {
-        "chocolatey": {
-          "name": "Chocolatey Component Test",
-          "description": "Test Chocolatey package manager functionality",
-          "testSteps": [
-            {
-              "step": 1,
-              "action": "Check Chocolatey Version",
-              "command": "choco --version",
-              "expectedOutput": "Chocolatey v",
-              "timeout": 30
-            },
-            {
-              "step": 2,
-              "action": "Test Package Search",
-              "command": "choco search git --limit-output",
-              "expectedOutput": "git",
-              "timeout": 30
-            }
-          ],
-          "cleanupSteps": []
-        }
+      "list": {
+        "description": "List all available components",
+        "usage": "setupx list"
       },
-      "web-development": {
-        "nodejs": {
-          "name": "Node.js Component Test",
-          "description": "Test Node.js and npm functionality",
-          "testSteps": [
-            {
-              "step": 1,
-              "action": "Check Node.js Version",
-              "command": "node --version",
-              "expectedOutput": "v",
-              "timeout": 30
-            },
-            {
-              "step": 2,
-              "action": "Check NPM Version",
-              "command": "npm --version",
-              "expectedOutput": "",
-              "timeout": 30
-            }
-          ],
-          "cleanupSteps": []
-        }
-      }
-    }
-  },
-  "configuration": {
-    "moduleConfigs": {
-      "package-managers": {
-        "chocolatey": {
-          "configPath": "$env:ChocolateyInstall\\config\\chocolatey.config",
-          "settings": {
-            "cacheLocation": "$env:TEMP\\chocolatey",
-            "commandExecutionTimeoutSeconds": 2700
-          }
-        }
+      "status": {
+        "description": "Show system status and installed components",
+        "usage": "setupx status"
       },
-      "web-development": {
-        "nodejs": {
-          "configPath": "$env:APPDATA\\npm\\etc\\npmrc",
-          "settings": {
-            "registry": "https://registry.npmjs.org/",
-            "cache": "$env:APPDATA\\npm-cache"
-          }
-        }
+      "install": {
+        "description": "Install a specific component",
+        "usage": "setupx install [component]"
+      },
+      "remove": {
+        "description": "Remove/uninstall a specific component",
+        "usage": "setupx remove [component]"
+      },
+      "update": {
+        "description": "Update a specific component to latest version",
+        "usage": "setupx update [component]"
+      },
+      "reinstall": {
+        "description": "Reinstall a component (remove and install again)",
+        "usage": "setupx reinstall [component]"
+      },
+      "test": {
+        "description": "Test a component installation and functionality",
+        "usage": "setupx test [component]"
+      },
+      "check": {
+        "description": "Check if a component is installed and working",
+        "usage": "setupx check [component]"
+      },
+      "path": {
+        "description": "Show or update PATH environment variable",
+        "usage": "setupx path [action]"
+      },
+      "refresh": {
+        "description": "Refresh environment variables and PATH",
+        "usage": "setupx refresh"
       }
-    },
-    "globalSettings": {
-      "logLevel": "INFO",
-      "autoUpdate": true,
-      "testTimeout": 300,
-      "installTimeout": 1800
     }
   },
   "mainMenu": {
-    "title": "SetupX - Modular Windows Development Setup",
+    "title": "SetupX - Individual Component Windows Development Setup",
     "description": "Choose your development environment setup",
     "options": [
       {
@@ -300,8 +428,9 @@
         "name": "Quick Setup",
         "description": "Install essential development tools quickly",
         "commands": [
-          "setupx install package-managers",
-          "setupx install common-development"
+          "setupx install chocolatey",
+          "setupx install git",
+          "setupx install vscode"
         ]
       },
       {
@@ -309,10 +438,11 @@
         "name": "Full Stack Developer",
         "description": "Complete web and backend development environment",
         "commands": [
-          "setupx install package-managers",
-          "setupx install web-development",
-          "setupx install backend-development",
-          "setupx install common-development"
+          "setupx install chocolatey",
+          "setupx install nodejs",
+          "setupx install git",
+          "setupx install vscode",
+          "setupx install docker"
         ]
       },
       {
@@ -320,9 +450,11 @@
         "name": "Mobile Developer",
         "description": "Mobile app development with Flutter and React Native",
         "commands": [
-          "setupx install package-managers",
-          "setupx install mobile-development",
-          "setupx install common-development"
+          "setupx install chocolatey",
+          "setupx install flutter",
+          "setupx install react-native",
+          "setupx install git",
+          "setupx install vscode"
         ]
       },
       {
@@ -330,21 +462,23 @@
         "name": "Cloud Developer",
         "description": "Cloud development and deployment tools",
         "commands": [
-          "setupx install package-managers",
-          "setupx install cloud-development",
-          "setupx install backend-development",
-          "setupx install common-development"
+          "setupx install chocolatey",
+          "setupx install aws-cli",
+          "setupx install azure-cli",
+          "setupx install docker",
+          "setupx install terraform"
         ]
       },
       {
-        "id": "ai-dev",
-        "name": "AI Developer",
-        "description": "AI-powered development tools and frameworks",
+        "id": "data-scientist",
+        "name": "Data Scientist",
+        "description": "Data science and machine learning environment",
         "commands": [
-          "setupx install package-managers",
-          "setupx install ai-development-tools",
-          "setupx install web-development",
-          "setupx install common-development"
+          "setupx install chocolatey",
+          "setupx install python",
+          "setupx install jupyter",
+          "setupx install tensorflow",
+          "setupx install git"
         ]
       },
       {
@@ -352,1348 +486,28 @@
         "name": "Linux Developer",
         "description": "WSL Linux development environment with Ubuntu and Linux tools",
         "commands": [
-          "setupx install package-managers",
-          "setupx install wsl-linux",
-          "setupx install common-development"
+          "setupx install chocolatey",
+          "setupx install wsl",
+          "setupx install git",
+          "setupx install vscode"
         ]
       },
       {
         "id": "custom",
         "name": "Custom Setup",
-        "description": "Choose specific modules and components",
+        "description": "Choose specific components",
         "commands": []
       }
     ]
-  },
-  "cli": {
-    "commands": {
-      "help": {
-        "aliases": ["-h", "-help", "help"],
-        "description": "Show help message and available commands",
-        "usage": "setupx -h",
-        "examples": [
-          "setupx -h",
-          "setupx help"
-        ]
-      },
-      "list": {
-        "description": "List all available modules with details",
-        "usage": "setupx list",
-        "examples": [
-          "setupx list"
-        ],
-        "output": "Shows all modules with names, descriptions, and component counts"
-      },
-      "status": {
-        "description": "Show system status and installed components",
-        "usage": "setupx status",
-        "examples": [
-          "setupx status"
-        ],
-        "output": "Shows package manager status and module information"
-      },
-      "install": {
-        "description": "Install a complete module with all its components",
-        "usage": "setupx install [module]",
-        "examples": [
-          "setupx install package-managers",
-          "setupx install web-development",
-          "setupx install mobile-development"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module to install",
-            "validValues": ["package-managers", "web-development", "mobile-development", "backend-development", "cloud-development", "common-development", "ai-development-tools", "wsl-linux", "data-science", "game-development", "devops", "security", "blockchain"]
-          }
-        }
-      },
-      "install-component": {
-        "description": "Install a specific component from a module",
-        "usage": "setupx install-component [module] [component]",
-        "examples": [
-          "setupx install-component package-managers chocolatey",
-          "setupx install-component web-development nodejs",
-          "setupx install-component web-development react-tools"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module containing the component"
-          },
-          "component": {
-            "required": true,
-            "description": "Name of the component to install (supports fuzzy matching)"
-          }
-        }
-      },
-      "components": {
-        "description": "List all components for a specific module",
-        "usage": "setupx components [module]",
-        "examples": [
-          "setupx components package-managers",
-          "setupx components web-development"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module to list components for"
-          }
-        }
-      },
-      "test": {
-        "description": "Test module components (placeholder for future implementation)",
-        "usage": "setupx test [module]",
-        "examples": [
-          "setupx test package-managers"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module to test"
-          }
-        }
-      },
-      "update": {
-        "description": "Update SetupX and all installed modules to latest versions",
-        "usage": "setupx update [options]",
-        "examples": [
-          "setupx update",
-          "setupx update --force",
-          "setupx update --modules-only"
-        ],
-        "parameters": {
-          "--force": {
-            "required": false,
-            "description": "Force update without prompts"
-          },
-          "--modules-only": {
-            "required": false,
-            "description": "Update only modules, not SetupX core"
-          }
-        }
-      },
-      "uninstall": {
-        "description": "Uninstall a module and all its components",
-        "usage": "setupx uninstall [module] [options]",
-        "examples": [
-          "setupx uninstall web-development",
-          "setupx uninstall package-managers --force"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module to uninstall"
-          },
-          "--force": {
-            "required": false,
-            "description": "Force uninstall without confirmation"
-          }
-        }
-      },
-      "uninstall-component": {
-        "description": "Uninstall a specific component from a module",
-        "usage": "setupx uninstall-component [module] [component]",
-        "examples": [
-          "setupx uninstall-component web-development nodejs",
-          "setupx uninstall-component package-managers chocolatey"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module containing the component"
-          },
-          "component": {
-            "required": true,
-            "description": "Name of the component to uninstall"
-          }
-        }
-      },
-      "info": {
-        "description": "Show detailed information about a module or component",
-        "usage": "setupx info [module] [component]",
-        "examples": [
-          "setupx info web-development",
-          "setupx info package-managers chocolatey",
-          "setupx info --all"
-        ],
-        "parameters": {
-          "module": {
-            "required": false,
-            "description": "Name of the module to get info about"
-          },
-          "component": {
-            "required": false,
-            "description": "Name of the component to get info about"
-          },
-          "--all": {
-            "required": false,
-            "description": "Show info for all modules and components"
-          }
-        }
-      },
-      "search": {
-        "description": "Search for modules and components by name or description",
-        "usage": "setupx search [query]",
-        "examples": [
-          "setupx search node",
-          "setupx search docker",
-          "setupx search \"machine learning\""
-        ],
-        "parameters": {
-          "query": {
-            "required": true,
-            "description": "Search term to look for in module/component names and descriptions"
-          }
-        }
-      },
-      "backup": {
-        "description": "Create a backup of current SetupX configuration and installed modules",
-        "usage": "setupx backup [options]",
-        "examples": [
-          "setupx backup",
-          "setupx backup --output C:\\backup\\setupx-backup.json",
-          "setupx backup --include-modules"
-        ],
-        "parameters": {
-          "--output": {
-            "required": false,
-            "description": "Output path for backup file"
-          },
-          "--include-modules": {
-            "required": false,
-            "description": "Include module files in backup"
-          }
-        }
-      },
-      "restore": {
-        "description": "Restore SetupX configuration from a backup file",
-        "usage": "setupx restore [backup-file]",
-        "examples": [
-          "setupx restore setupx-backup.json",
-          "setupx restore C:\\backup\\setupx-backup.json"
-        ],
-        "parameters": {
-          "backup-file": {
-            "required": true,
-            "description": "Path to the backup file to restore from"
-          }
-        }
-      },
-      "config": {
-        "description": "Manage SetupX configuration settings",
-        "usage": "setupx config [action] [key] [value]",
-        "examples": [
-          "setupx config get logLevel",
-          "setupx config set logLevel DEBUG",
-          "setupx config list",
-          "setupx config reset"
-        ],
-        "parameters": {
-          "action": {
-            "required": true,
-            "description": "Configuration action (get, set, list, reset)",
-            "validValues": ["get", "set", "list", "reset"]
-          },
-          "key": {
-            "required": false,
-            "description": "Configuration key to get or set"
-          },
-          "value": {
-            "required": false,
-            "description": "Value to set for the configuration key"
-          }
-        }
-      },
-      "doctor": {
-        "description": "Diagnose and fix common SetupX issues",
-        "usage": "setupx doctor [options]",
-        "examples": [
-          "setupx doctor",
-          "setupx doctor --fix",
-          "setupx doctor --verbose"
-        ],
-        "parameters": {
-          "--fix": {
-            "required": false,
-            "description": "Automatically fix detected issues"
-          },
-          "--verbose": {
-            "required": false,
-            "description": "Show detailed diagnostic information"
-          }
-        }
-      },
-      "clean": {
-        "description": "Clean up temporary files and unused components",
-        "usage": "setupx clean [options]",
-        "examples": [
-          "setupx clean",
-          "setupx clean --force",
-          "setupx clean --temp-only"
-        ],
-        "parameters": {
-          "--force": {
-            "required": false,
-            "description": "Force cleanup without prompts"
-          },
-          "--temp-only": {
-            "required": false,
-            "description": "Clean only temporary files"
-          }
-        }
-      },
-      "export": {
-        "description": "Export module or component configuration to a file",
-        "usage": "setupx export [module] [output-file]",
-        "examples": [
-          "setupx export web-development web-config.json",
-          "setupx export package-managers --format yaml"
-        ],
-        "parameters": {
-          "module": {
-            "required": true,
-            "description": "Name of the module to export"
-          },
-          "output-file": {
-            "required": false,
-            "description": "Output file path (default: module-name.json)"
-          },
-          "--format": {
-            "required": false,
-            "description": "Export format (json, yaml, xml)",
-            "validValues": ["json", "yaml", "xml"]
-          }
-        }
-      },
-      "import": {
-        "description": "Import module or component configuration from a file",
-        "usage": "setupx import [config-file]",
-        "examples": [
-          "setupx import web-config.json",
-          "setupx import --validate-only config.yaml"
-        ],
-        "parameters": {
-          "config-file": {
-            "required": true,
-            "description": "Path to the configuration file to import"
-          },
-          "--validate-only": {
-            "required": false,
-            "description": "Only validate the configuration without importing"
-          }
-        }
-      },
-      "version": {
-        "description": "Show SetupX version and module information",
-        "usage": "setupx version [options]",
-        "examples": [
-          "setupx version",
-          "setupx version --modules",
-          "setupx version --check-updates"
-        ],
-        "parameters": {
-          "--modules": {
-            "required": false,
-            "description": "Show version information for all modules"
-          },
-          "--check-updates": {
-            "required": false,
-            "description": "Check for available updates"
-          }
-        }
-      },
-      "menu": {
-        "description": "Show interactive menu for guided setup",
-        "usage": "setupx menu",
-        "examples": [
-          "setupx menu"
-        ],
-        "output": "Interactive menu with guided setup options"
-      },
-      "init": {
-        "description": "Initialize SetupX in a new directory or reset configuration",
-        "usage": "setupx init [options]",
-        "examples": [
-          "setupx init",
-          "setupx init --force",
-          "setupx init --template full-stack"
-        ],
-        "parameters": {
-          "--force": {
-            "required": false,
-            "description": "Force initialization even if SetupX already exists"
-          },
-          "--template": {
-            "required": false,
-            "description": "Use a predefined template for initialization",
-            "validValues": ["full-stack", "mobile", "cloud", "ai", "minimal"]
-          }
-        }
-      }
-    },
-    "workflows": {
-      "full-stack-developer": {
-        "description": "Complete full-stack development environment",
-        "commands": [
-          "setupx install package-managers",
-          "setupx install web-development",
-          "setupx install backend-development",
-          "setupx install common-development"
-        ]
-      },
-      "mobile-developer": {
-        "description": "Mobile app development environment",
-        "commands": [
-          "setupx install package-managers",
-          "setupx install mobile-development",
-          "setupx install common-development"
-        ]
-      },
-      "cloud-developer": {
-        "description": "Cloud development and deployment environment",
-        "commands": [
-          "setupx install package-managers",
-          "setupx install cloud-development",
-          "setupx install backend-development",
-          "setupx install common-development"
-        ]
-      },
-      "ai-developer": {
-        "description": "AI-powered development environment",
-        "commands": [
-          "setupx install package-managers",
-          "setupx install ai-development-tools",
-          "setupx install web-development",
-          "setupx install common-development"
-        ]
-      }
-    }
-  },
-  "executableCommands": {
-    "setupx": {
-      "description": "Main SetupX command interface",
-      "usage": "setupx [command] [options]",
-      "examples": [
-        "setupx install package-managers",
-        "setupx list",
-        "setupx status",
-        "setupx components web-development"
-      ],
-      "implementation": {
-        "type": "powershell",
-        "script": "function Invoke-SetupxCommand { param([string]$Command, [string[]]$Arguments) switch ($Command) { 'install' { Install-SetupxModule -ModuleName $Arguments[0] } 'list' { Show-SetupxList } 'status' { Show-SetupxStatus } 'components' { Show-SetupxComponents -ModuleName $Arguments[0] } 'install-component' { Install-SetupxComponent -ModuleName $Arguments[0] -ComponentName $Arguments[1] } default { Show-SetupxHelp } } }"
-      }
-    },
-    "install-module": {
-      "description": "Install a complete module",
-      "usage": "install-module [module-name]",
-      "examples": [
-        "install-module package-managers",
-        "install-module web-development"
-      ],
-      "implementation": {
-        "type": "powershell",
-        "script": "function Install-Module { param([string]$ModuleName) $modules = Get-AvailableModules; $module = $modules | Where-Object { $_.Name -eq $ModuleName }; if ($module) { Write-Host 'Installing module: ' $ModuleName -ForegroundColor Green; foreach ($component in $module.Components) { Install-ModuleComponent -ModuleName $ModuleName -ComponentName $component.scriptName } } else { Write-Host 'Module not found: ' $ModuleName -ForegroundColor Red } }"
-      }
-    },
-    "install-component": {
-      "description": "Install a specific component",
-      "usage": "install-component [module] [component]",
-      "examples": [
-        "install-component package-managers chocolatey",
-        "install-component web-development nodejs"
-      ],
-      "implementation": {
-        "type": "powershell",
-        "script": "function Install-Component { param([string]$ModuleName, [string]$ComponentName) $modules = Get-AvailableModules; $module = $modules | Where-Object { $_.Name -eq $ModuleName }; if ($module) { $component = $module.Components | Where-Object { $_.scriptName -like '*$ComponentName*' -or $_.displayName -like '*$ComponentName*' }; if ($component) { Write-Host 'Installing component: ' $component.displayName -ForegroundColor Green; $componentScript = Join-Path $module.Path 'components\\$($component.scriptName)'; if (Test-Path $componentScript) { & $componentScript } } } }"
-      }
-    },
-    "list-modules": {
-      "description": "List all available modules",
-      "usage": "list-modules",
-      "implementation": {
-        "type": "powershell",
-        "script": "function List-Modules { $modules = Get-AvailableModules; foreach ($module in $modules) { Write-Host $module.displayName ' - ' $module.description -ForegroundColor White } }"
-      }
-    },
-    "list-components": {
-      "description": "List components for a module",
-      "usage": "list-components [module]",
-      "implementation": {
-        "type": "powershell",
-        "script": "function List-Components { param([string]$ModuleName) $modules = Get-AvailableModules; $module = $modules | Where-Object { $_.Name -eq $ModuleName }; if ($module) { foreach ($component in $module.Components) { Write-Host $component.displayName ' - ' $component.description -ForegroundColor White } } }"
-      }
-    },
-    "test-module": {
-      "description": "Test a module installation",
-      "usage": "test-module [module]",
-      "implementation": {
-        "type": "powershell",
-        "script": "function Test-Module { param([string]$ModuleName) $json = Get-Content 'src/config/setupx.json' | ConvertFrom-Json; $test = $json.testing.moduleTests.$ModuleName; if ($test) { foreach ($step in $test.testSteps) { Write-Host 'Testing: ' $step.action -ForegroundColor Yellow; $result = Invoke-Expression $step.command; if ($result -like '*$($step.expectedOutput)*') { Write-Host '✓ ' $step.action -ForegroundColor Green } else { Write-Host '✗ ' $step.action -ForegroundColor Red } } } }"
-      }
-    },
-    "test-component": {
-      "description": "Test a component installation",
-      "usage": "test-component [module] [component]",
-      "implementation": {
-        "type": "powershell",
-        "script": "function Test-Component { param([string]$ModuleName, [string]$ComponentName) $json = Get-Content 'src/config/setupx.json' | ConvertFrom-Json; $test = $json.testing.componentTests.$ModuleName.$ComponentName; if ($test) { foreach ($step in $test.testSteps) { Write-Host 'Testing: ' $step.action -ForegroundColor Yellow; $result = Invoke-Expression $step.command; if ($result -like '*$($step.expectedOutput)*') { Write-Host '✓ ' $step.action -ForegroundColor Green } else { Write-Host '✗ ' $step.action -ForegroundColor Red } } } }"
-      }
-    },
-    "check-status": {
-      "description": "Check installation status of all tools",
-      "usage": "check-status",
-      "implementation": {
-        "type": "powershell",
-        "script": "function Check-Status { $tools = @('choco', 'scoop', 'winget', 'node', 'npm', 'git', 'python', 'docker'); foreach ($tool in $tools) { try { $version = & $tool --version 2>$null; if ($version) { Write-Host '✓ ' $tool ': ' $version -ForegroundColor Green } else { Write-Host '✗ ' $tool ' not found' -ForegroundColor Red } } catch { Write-Host '✗ ' $tool ' not installed' -ForegroundColor Red } } }"
-      }
-    },
-    "quick-setup": {
-      "description": "Quick setup for common development environments",
-      "usage": "quick-setup [environment]",
-      "examples": [
-        "quick-setup full-stack",
-        "quick-setup web-dev",
-        "quick-setup mobile-dev"
-      ],
-      "implementation": {
-        "type": "powershell",
-        "script": "function Quick-Setup { param([string]$Environment) switch ($Environment) { 'full-stack' { Install-Module 'package-managers'; Install-Module 'web-development'; Install-Module 'backend-development' } 'web-dev' { Install-Module 'package-managers'; Install-Module 'web-development' } 'mobile-dev' { Install-Module 'package-managers'; Install-Module 'mobile-development' } default { Write-Host 'Available environments: full-stack, web-dev, mobile-dev' -ForegroundColor Yellow } } }"
-      }
-    }
   },
   "installation": {
     "installPath": "C:\\tools\\setup",
     "executablePath": "C:\\tools\\setup\\setupx.ps1",
     "jsonConfigPath": "C:\\tools\\setup\\setupx.json",
     "pathVariable": "C:\\tools\\setup",
-    "installCommands": {
-      "install-setupx": {
-        "description": "Install SetupX to C:\\tools\\setup",
-        "steps": [
-          {
-            "step": 1,
-            "action": "Create tools directory",
-            "command": "mkdir -p C:\\tools\\setup"
-          },
-          {
-            "step": 2,
-            "action": "Copy JSON configuration",
-            "command": "Copy-Item 'src\\config\\setupx.json' 'C:\\tools\\setup\\setupx.json'"
-          },
-          {
-            "step": 3,
-            "action": "Create main executable",
-            "command": "Create setupx.ps1 in C:\\tools\\setup"
-          },
-          {
-            "step": 4,
-            "action": "Add to PATH",
-            "command": "[Environment]::SetEnvironmentVariable('PATH', $env:PATH + ';C:\\tools\\setup', [EnvironmentVariableTarget]::User)"
-          },
-          {
-            "step": 5,
-            "action": "Test installation",
-            "command": "C:\\tools\\setup\\setupx.ps1 help"
-          }
-        ]
-      },
-      "uninstall-setupx": {
-        "description": "Remove SetupX from system",
-        "steps": [
-          {
-            "step": 1,
-            "action": "Remove from PATH",
-            "command": "Remove PATH entry for C:\\tools\\setup"
-          },
-          {
-            "step": 2,
-            "action": "Delete installation directory",
-            "command": "Remove-Item -Path 'C:\\tools\\setup' -Recurse -Force"
-          }
-        ]
-      },
-      "update-setupx": {
-        "description": "Update SetupX installation",
-        "steps": [
-          {
-            "step": 1,
-            "action": "Backup current installation",
-            "command": "Copy-Item 'C:\\tools\\setup' 'C:\\tools\\setup.backup' -Recurse"
-          },
-          {
-            "step": 2,
-            "action": "Update JSON configuration",
-            "command": "Copy-Item 'src\\config\\setupx.json' 'C:\\tools\\setup\\setupx.json' -Force"
-          },
-          {
-            "step": 3,
-            "action": "Update executable",
-            "command": "Update setupx.ps1 with latest version"
-          },
-          {
-            "step": 4,
-            "action": "Test update",
-            "command": "C:\\tools\\setup\\setupx.ps1 help"
-          }
-        ]
-      }
-    },
     "quickInstall": {
       "description": "One-command SetupX installation",
-      "command": "Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1' | Invoke-Expression",
-      "alternative": "iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex"
-    }
-  },
-  "modules": {
-    "package-managers": {
-      "name": "Package Managers",
-      "displayName": "Package Managers",
-      "description": "Essential Windows package managers: Chocolatey, Scoop, and WinGet configuration",
-      "priority": 1,
-      "category": "foundation",
-      "status": "fully-working",
-      "components": 3,
-      "components": {
-        "chocolatey": {
-          "displayName": "Chocolatey",
-          "description": "Community package manager for Windows",
-          "scriptName": "chocolatey.ps1",
-          "installMethod": "powershell",
-          "website": "https://chocolatey.org",
-          "status": "working"
-        },
-        "scoop": {
-          "displayName": "Scoop",
-          "description": "Portable applications manager for development tools",
-          "scriptName": "scoop.ps1",
-          "installMethod": "powershell",
-          "website": "https://scoop.sh",
-          "status": "working"
-        },
-        "winget": {
-          "displayName": "WinGet",
-          "description": "Microsoft's official Windows package manager",
-          "scriptName": "winget.ps1",
-          "installMethod": "microsoft-store",
-          "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
-          "status": "working"
-        }
-      }
-    },
-    "web-development": {
-      "name": "Web Development",
-      "displayName": "Web Development",
-      "description": "Complete web development environment with Node.js, browsers, and modern frameworks",
-      "priority": 2,
-      "category": "development",
-      "status": "fully-working",
-      "components": 7,
-      "components": {
-        "nodejs": {
-          "displayName": "Node.js & npm",
-          "description": "JavaScript runtime and package manager",
-          "scriptName": "nodejs.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://nodejs.org",
-          "status": "working"
-        },
-        "yarn": {
-          "displayName": "Yarn Package Manager",
-          "description": "Fast, reliable, and secure dependency management",
-          "scriptName": "yarn.ps1",
-          "installMethod": "npm",
-          "website": "https://yarnpkg.com",
-          "status": "working"
-        },
-        "browsers": {
-          "displayName": "Modern Browsers",
-          "description": "Chrome, Firefox, and Edge for testing",
-          "scriptName": "browsers.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://www.google.com/chrome, https://www.mozilla.org/firefox",
-          "status": "working"
-        },
-        "react-tools": {
-          "displayName": "React Development Tools",
-          "description": "Create React App, React DevTools, and React utilities",
-          "scriptName": "react-tools.ps1",
-          "installMethod": "npm",
-          "website": "https://reactjs.org",
-          "status": "working"
-        },
-        "vue-tools": {
-          "displayName": "Vue.js Development Tools",
-          "description": "Vue CLI, Vite, Vue DevTools, and Vue utilities",
-          "scriptName": "vue-tools.ps1",
-          "installMethod": "npm",
-          "website": "https://vuejs.org",
-          "status": "working"
-        },
-        "angular-tools": {
-          "displayName": "Angular Development Tools",
-          "description": "Angular CLI, Angular DevTools, and Angular utilities",
-          "scriptName": "angular-tools.ps1",
-          "installMethod": "npm",
-          "website": "https://angular.io",
-          "status": "working"
-        },
-        "webpack-tools": {
-          "displayName": "Build Tools (Webpack, Vite)",
-          "description": "Webpack, Vite, Rollup, Parcel, and build utilities",
-          "scriptName": "webpack-tools.ps1",
-          "installMethod": "npm",
-          "website": "https://webpack.js.org, https://vitejs.dev",
-          "status": "working"
-        }
-      }
-    },
-    "mobile-development": {
-      "name": "Mobile Development",
-      "displayName": "Mobile Development",
-      "description": "Cross-platform mobile development with Flutter, React Native, and Android tools",
-      "priority": 3,
-      "category": "development",
-      "status": "available",
-      "components": 8,
-      "components": {
-        "flutter": {
-          "displayName": "Flutter",
-          "description": "Google's UI toolkit for building natively compiled applications",
-          "scriptName": "flutter.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://flutter.dev",
-          "status": "available"
-        },
-        "react-native": {
-          "displayName": "React Native",
-          "description": "Framework for building native apps with React",
-          "scriptName": "react-native.ps1",
-          "installMethod": "npm",
-          "website": "https://reactnative.dev",
-          "status": "available"
-        },
-        "android-studio": {
-          "displayName": "Android Studio",
-          "description": "Official IDE for Android development",
-          "scriptName": "android-studio.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://developer.android.com/studio",
-          "status": "available"
-        },
-        "xcode": {
-          "displayName": "Xcode",
-          "description": "Apple's IDE for iOS development",
-          "scriptName": "xcode.ps1",
-          "installMethod": "app-store",
-          "website": "https://developer.apple.com/xcode",
-          "status": "available"
-        }
-      }
-    },
-    "backend-development": {
-      "name": "Backend Development",
-      "displayName": "Backend Development",
-      "description": "Server-side development tools including Python, .NET, databases, and runtime environments",
-      "priority": 4,
-      "category": "development",
-      "status": "available",
-      "components": 9,
-      "components": {
-        "python": {
-          "displayName": "Python",
-          "description": "Python programming language and pip package manager",
-          "scriptName": "python.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://python.org",
-          "status": "available"
-        },
-        "nodejs": {
-          "displayName": "Node.js",
-          "description": "JavaScript runtime for server-side development",
-          "scriptName": "nodejs.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://nodejs.org",
-          "status": "available"
-        },
-        "docker": {
-          "displayName": "Docker",
-          "description": "Containerization platform for applications",
-          "scriptName": "docker.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://docker.com",
-          "status": "available"
-        },
-        "postgresql": {
-          "displayName": "PostgreSQL",
-          "description": "Advanced open source relational database",
-          "scriptName": "postgresql.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://postgresql.org",
-          "status": "available"
-        }
-      }
-    },
-    "cloud-development": {
-      "name": "Cloud Development",
-      "displayName": "Cloud Development",
-      "description": "Cloud development tools for AWS, Azure, Google Cloud, and Kubernetes",
-      "priority": 5,
-      "category": "development",
-      "status": "available",
-      "components": 7,
-      "components": {
-        "aws-cli": {
-          "displayName": "AWS CLI",
-          "description": "Command line interface for Amazon Web Services",
-          "scriptName": "aws-cli.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://aws.amazon.com/cli",
-          "status": "available"
-        },
-        "azure-cli": {
-          "displayName": "Azure CLI",
-          "description": "Command line interface for Microsoft Azure",
-          "scriptName": "azure-cli.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://docs.microsoft.com/en-us/cli/azure",
-          "status": "available"
-        },
-        "docker": {
-          "displayName": "Docker",
-          "description": "Containerization platform for cloud applications",
-          "scriptName": "docker.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://docker.com",
-          "status": "available"
-        },
-        "kubernetes": {
-          "displayName": "Kubernetes",
-          "description": "Container orchestration platform",
-          "scriptName": "kubernetes.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://kubernetes.io",
-          "status": "available"
-        }
-      }
-    },
-    "common-development": {
-      "name": "Common Development",
-      "displayName": "Common Development Tools",
-      "description": "Essential development tools used across all programming languages and frameworks",
-      "priority": 6,
-      "category": "development",
-      "status": "available",
-      "components": 8,
-      "components": {
-        "git": {
-          "displayName": "Git",
-          "description": "Distributed version control system",
-          "scriptName": "git.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://git-scm.com",
-          "status": "available"
-        },
-        "vscode": {
-          "displayName": "VS Code",
-          "description": "Lightweight, powerful source code editor",
-          "scriptName": "vscode.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://code.visualstudio.com",
-          "status": "available"
-        },
-        "powershell": {
-          "displayName": "PowerShell",
-          "description": "Cross-platform automation and configuration framework",
-          "scriptName": "powershell.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://docs.microsoft.com/en-us/powershell",
-          "status": "available"
-        },
-        "terminal": {
-          "displayName": "Terminal",
-          "description": "Modern terminal applications for Windows",
-          "scriptName": "terminal.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://github.com/microsoft/terminal",
-          "status": "available"
-        }
-      }
-    },
-    "ai-development-tools": {
-      "name": "AI Development Tools",
-      "displayName": "AI Development Tools",
-      "description": "Modern AI-powered development tools for enhanced productivity and intelligent coding assistance",
-      "priority": 7,
-      "category": "development",
-      "status": "experimental",
-      "components": 6,
-      "components": {
-        "vercel-cli": {
-          "displayName": "Vercel CLI",
-          "description": "Command line interface for Vercel platform",
-          "scriptName": "vercel-cli.ps1",
-          "installMethod": "npm",
-          "website": "https://vercel.com",
-          "status": "experimental"
-        },
-        "netlify-cli": {
-          "displayName": "Netlify CLI",
-          "description": "Command line interface for Netlify platform",
-          "scriptName": "netlify-cli.ps1",
-          "installMethod": "npm",
-          "website": "https://netlify.com",
-          "status": "experimental"
-        },
-        "cursor-ai": {
-          "displayName": "Cursor AI",
-          "description": "AI-powered code editor",
-          "scriptName": "cursor-ai.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://cursor.sh",
-          "status": "experimental"
-        },
-        "codex-cli": {
-          "displayName": "Codex CLI",
-          "description": "AI code generation command line tool",
-          "scriptName": "codex-cli.ps1",
-          "installMethod": "npm",
-          "website": "https://openai.com",
-          "status": "experimental"
-        },
-        "grok-cli": {
-          "displayName": "Grok CLI",
-          "description": "AI-powered development assistant",
-          "scriptName": "grok-cli.ps1",
-          "installMethod": "npm",
-          "website": "https://x.ai",
-          "status": "experimental"
-        },
-        "cloud-cli": {
-          "displayName": "Cloud CLI",
-          "description": "AI cloud development tools",
-          "scriptName": "cloud-cli.ps1",
-          "installMethod": "npm",
-          "website": "https://cloud.google.com",
-          "status": "experimental"
-        }
-      }
-    },
-    "data-science": {
-      "name": "Data Science",
-      "displayName": "Data Science Tools",
-      "description": "Complete data science and machine learning environment with Python, R, and analytics tools",
-      "priority": 8,
-      "category": "development",
-      "status": "available",
-      "components": 8,
-      "components": {
-        "python": {
-          "displayName": "Python",
-          "description": "Python programming language with data science libraries",
-          "scriptName": "python.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://python.org",
-          "status": "available"
-        },
-        "jupyter": {
-          "displayName": "Jupyter Notebook",
-          "description": "Interactive computing environment for data science",
-          "scriptName": "jupyter.ps1",
-          "installMethod": "pip",
-          "website": "https://jupyter.org",
-          "status": "available"
-        },
-        "r": {
-          "displayName": "R Programming",
-          "description": "Statistical computing and graphics language",
-          "scriptName": "r.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://r-project.org",
-          "status": "available"
-        },
-        "anaconda": {
-          "displayName": "Anaconda",
-          "description": "Python distribution for data science",
-          "scriptName": "anaconda.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://anaconda.com",
-          "status": "available"
-        },
-        "tensorflow": {
-          "displayName": "TensorFlow",
-          "description": "Machine learning framework",
-          "scriptName": "tensorflow.ps1",
-          "installMethod": "pip",
-          "website": "https://tensorflow.org",
-          "status": "available"
-        },
-        "pytorch": {
-          "displayName": "PyTorch",
-          "description": "Machine learning framework",
-          "scriptName": "pytorch.ps1",
-          "installMethod": "pip",
-          "website": "https://pytorch.org",
-          "status": "available"
-        },
-        "pandas": {
-          "displayName": "Pandas",
-          "description": "Data manipulation and analysis library",
-          "scriptName": "pandas.ps1",
-          "installMethod": "pip",
-          "website": "https://pandas.pydata.org",
-          "status": "available"
-        },
-        "matplotlib": {
-          "displayName": "Matplotlib",
-          "description": "Plotting library for Python",
-          "scriptName": "matplotlib.ps1",
-          "installMethod": "pip",
-          "website": "https://matplotlib.org",
-          "status": "available"
-        }
-      }
-    },
-    "game-development": {
-      "name": "Game Development",
-      "displayName": "Game Development Tools",
-      "description": "Complete game development environment with Unity, Unreal Engine, and game frameworks",
-      "priority": 9,
-      "category": "development",
-      "status": "available",
-      "components": 6,
-      "components": {
-        "unity": {
-          "displayName": "Unity",
-          "description": "Cross-platform game engine",
-          "scriptName": "unity.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://unity.com",
-          "status": "available"
-        },
-        "unreal-engine": {
-          "displayName": "Unreal Engine",
-          "description": "3D game engine and development platform",
-          "scriptName": "unreal-engine.ps1",
-          "installMethod": "epic-games",
-          "website": "https://unrealengine.com",
-          "status": "available"
-        },
-        "godot": {
-          "displayName": "Godot",
-          "description": "Open source game engine",
-          "scriptName": "godot.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://godotengine.org",
-          "status": "available"
-        },
-        "blender": {
-          "displayName": "Blender",
-          "description": "3D creation and animation software",
-          "scriptName": "blender.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://blender.org",
-          "status": "available"
-        },
-        "gimp": {
-          "displayName": "GIMP",
-          "description": "Image manipulation program",
-          "scriptName": "gimp.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://gimp.org",
-          "status": "available"
-        },
-        "audacity": {
-          "displayName": "Audacity",
-          "description": "Audio editing software",
-          "scriptName": "audacity.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://audacityteam.org",
-          "status": "available"
-        }
-      }
-    },
-    "devops": {
-      "name": "DevOps",
-      "displayName": "DevOps Tools",
-      "description": "DevOps and automation tools for CI/CD, monitoring, and infrastructure management",
-      "priority": 10,
-      "category": "development",
-      "status": "available",
-      "components": 7,
-      "components": {
-        "jenkins": {
-          "displayName": "Jenkins",
-          "description": "Open source automation server",
-          "scriptName": "jenkins.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://jenkins.io",
-          "status": "available"
-        },
-        "terraform": {
-          "displayName": "Terraform",
-          "description": "Infrastructure as code tool",
-          "scriptName": "terraform.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://terraform.io",
-          "status": "available"
-        },
-        "ansible": {
-          "displayName": "Ansible",
-          "description": "Automation platform",
-          "scriptName": "ansible.ps1",
-          "installMethod": "pip",
-          "website": "https://ansible.com",
-          "status": "available"
-        },
-        "prometheus": {
-          "displayName": "Prometheus",
-          "description": "Monitoring and alerting toolkit",
-          "scriptName": "prometheus.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://prometheus.io",
-          "status": "available"
-        },
-        "grafana": {
-          "displayName": "Grafana",
-          "description": "Analytics and monitoring platform",
-          "scriptName": "grafana.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://grafana.com",
-          "status": "available"
-        },
-        "vault": {
-          "displayName": "HashiCorp Vault",
-          "description": "Secrets management tool",
-          "scriptName": "vault.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://vaultproject.io",
-          "status": "available"
-        },
-        "consul": {
-          "displayName": "HashiCorp Consul",
-          "description": "Service mesh and service discovery",
-          "scriptName": "consul.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://consul.io",
-          "status": "available"
-        }
-      }
-    },
-    "security": {
-      "name": "Security",
-      "displayName": "Security Tools",
-      "description": "Cybersecurity and penetration testing tools for security professionals",
-      "priority": 11,
-      "category": "development",
-      "status": "available",
-      "components": 6,
-      "components": {
-        "nmap": {
-          "displayName": "Nmap",
-          "description": "Network discovery and security auditing tool",
-          "scriptName": "nmap.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://nmap.org",
-          "status": "available"
-        },
-        "wireshark": {
-          "displayName": "Wireshark",
-          "description": "Network protocol analyzer",
-          "scriptName": "wireshark.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://wireshark.org",
-          "status": "available"
-        },
-        "metasploit": {
-          "displayName": "Metasploit",
-          "description": "Penetration testing framework",
-          "scriptName": "metasploit.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://metasploit.com",
-          "status": "available"
-        },
-        "burp-suite": {
-          "displayName": "Burp Suite",
-          "description": "Web application security testing platform",
-          "scriptName": "burp-suite.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://portswigger.net/burp",
-          "status": "available"
-        },
-        "john": {
-          "displayName": "John the Ripper",
-          "description": "Password cracking tool",
-          "scriptName": "john.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://openwall.com/john",
-          "status": "available"
-        },
-        "hashcat": {
-          "displayName": "Hashcat",
-          "description": "Advanced password recovery tool",
-          "scriptName": "hashcat.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://hashcat.net",
-          "status": "available"
-        }
-      }
-    },
-    "blockchain": {
-      "name": "Blockchain",
-      "displayName": "Blockchain Development",
-      "description": "Blockchain and cryptocurrency development tools and frameworks",
-      "priority": 12,
-      "category": "development",
-      "status": "available",
-      "components": 5,
-      "components": {
-        "ethereum": {
-          "displayName": "Ethereum",
-          "description": "Blockchain platform for smart contracts",
-          "scriptName": "ethereum.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://ethereum.org",
-          "status": "available"
-        },
-        "truffle": {
-          "displayName": "Truffle",
-          "description": "Blockchain development framework",
-          "scriptName": "truffle.ps1",
-          "installMethod": "npm",
-          "website": "https://trufflesuite.com",
-          "status": "available"
-        },
-        "hardhat": {
-          "displayName": "Hardhat",
-          "description": "Ethereum development environment",
-          "scriptName": "hardhat.ps1",
-          "installMethod": "npm",
-          "website": "https://hardhat.org",
-          "status": "available"
-        },
-        "web3": {
-          "displayName": "Web3.js",
-          "description": "JavaScript library for Ethereum",
-          "scriptName": "web3.ps1",
-          "installMethod": "npm",
-          "website": "https://web3js.readthedocs.io",
-          "status": "available"
-        },
-        "ganache": {
-          "displayName": "Ganache",
-          "description": "Personal blockchain for development",
-          "scriptName": "ganache.ps1",
-          "installMethod": "npm",
-          "website": "https://trufflesuite.com/ganache",
-          "status": "available"
-        }
-      }
-    },
-    "wsl-linux": {
-      "name": "WSL Linux Development",
-      "displayName": "WSL Linux Development",
-      "description": "Windows Subsystem for Linux (WSL) setup with Ubuntu, development tools, and Linux environment",
-      "priority": 13,
-      "category": "development",
-      "status": "available",
-      "components": 8,
-      "components": {
-        "wsl": {
-          "displayName": "WSL 2",
-          "description": "Windows Subsystem for Linux 2 with Ubuntu",
-          "scriptName": "wsl.ps1",
-          "installMethod": "powershell",
-          "website": "https://docs.microsoft.com/en-us/windows/wsl",
-          "status": "available"
-        },
-        "ubuntu": {
-          "displayName": "Ubuntu",
-          "description": "Ubuntu Linux distribution for WSL",
-          "scriptName": "ubuntu.ps1",
-          "installMethod": "microsoft-store",
-          "website": "https://ubuntu.com/wsl",
-          "status": "available"
-        },
-        "docker-desktop": {
-          "displayName": "Docker Desktop",
-          "description": "Docker Desktop with WSL 2 backend",
-          "scriptName": "docker-desktop.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://docs.docker.com/desktop/windows/wsl",
-          "status": "available"
-        },
-        "windows-terminal": {
-          "displayName": "Windows Terminal",
-          "description": "Modern terminal with WSL integration",
-          "scriptName": "windows-terminal.ps1",
-          "installMethod": "microsoft-store",
-          "website": "https://github.com/microsoft/terminal",
-          "status": "available"
-        },
-        "vscode-wsl": {
-          "displayName": "VS Code WSL Extension",
-          "description": "VS Code with WSL remote development",
-          "scriptName": "vscode-wsl.ps1",
-          "installMethod": "vscode-extension",
-          "website": "https://code.visualstudio.com/docs/remote/wsl",
-          "status": "available"
-        },
-        "git-bash": {
-          "displayName": "Git Bash",
-          "description": "Git for Windows with Bash shell",
-          "scriptName": "git-bash.ps1",
-          "installMethod": "chocolatey",
-          "website": "https://git-scm.com/download/win",
-          "status": "available"
-        },
-        "linux-tools": {
-          "displayName": "Linux Development Tools",
-          "description": "Essential Linux development tools (gcc, make, curl, wget)",
-          "scriptName": "linux-tools.ps1",
-          "installMethod": "apt",
-          "website": "https://ubuntu.com",
-          "status": "available"
-        },
-        "oh-my-zsh": {
-          "displayName": "Oh My Zsh",
-          "description": "Zsh shell framework for WSL",
-          "scriptName": "oh-my-zsh.ps1",
-          "installMethod": "curl",
-          "website": "https://ohmyz.sh",
-          "status": "available"
-        }
-      }
-    }
-  },
-  "installation": {
-    "methods": {
-      "one-command": {
-        "description": "Single command installation from GitHub",
-        "command": "Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression",
-        "requirements": ["PowerShell 5.1+", "Internet connection"]
-      },
-      "force-installation": {
-        "description": "Force installation without prompts",
-        "command": "iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force",
-        "requirements": ["PowerShell 5.1+", "Internet connection"]
-      },
-      "manual-installation": {
-        "description": "Clone repository and install locally",
-        "commands": [
-          "git clone https://github.com/anshulyadav32/setupx-windows-setup.git",
-          "cd setupx-windows-setup",
-          ".\\install.ps1"
-        ],
-        "requirements": ["Git", "PowerShell 5.1+"]
-      }
-    },
-    "requirements": {
-      "os": "Windows 10/11",
-      "powershell": "5.1 or later",
-      "internet": "Required for installation",
-      "admin": "Optional (some components work better as regular user)"
+      "command": "Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1' | Invoke-Expression"
     }
   },
   "troubleshooting": {
@@ -1706,17 +520,9 @@
         "problem": "PATH not updated in current session",
         "solution": "Restart PowerShell or run 'refreshenv'"
       },
-      "module-not-found": {
+      "component-not-found": {
         "problem": "Installation didn't complete properly",
         "solution": "Reinstall with force mode: 'iwr .../install.ps1 | iex -Force'"
-      },
-      "installation-script-not-found": {
-        "problem": "Component scripts not downloaded properly",
-        "solution": "Use the latest install.ps1 (now fixed)"
-      },
-      "emoji-parsing-errors": {
-        "problem": "PowerShell version compatibility",
-        "solution": "Use the latest install.ps1 (emoji-free version)"
       }
     }
   },
