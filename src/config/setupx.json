@@ -7,48 +7,525 @@
   "installPath": "C:\\setupx",
   "logLevel": "INFO",
   "autoUpdate": true,
+  "cli": {
+    "commands": {
+      "help": {
+        "aliases": ["-h", "-help", "help"],
+        "description": "Show help message and available commands",
+        "usage": "setupx -h",
+        "examples": [
+          "setupx -h",
+          "setupx help"
+        ]
+      },
+      "list": {
+        "description": "List all available modules with details",
+        "usage": "setupx list",
+        "examples": [
+          "setupx list"
+        ],
+        "output": "Shows all modules with names, descriptions, and component counts"
+      },
+      "status": {
+        "description": "Show system status and installed components",
+        "usage": "setupx status",
+        "examples": [
+          "setupx status"
+        ],
+        "output": "Shows package manager status and module information"
+      },
+      "install": {
+        "description": "Install a complete module with all its components",
+        "usage": "setupx install [module]",
+        "examples": [
+          "setupx install package-managers",
+          "setupx install web-development",
+          "setupx install mobile-development"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module to install",
+            "validValues": ["package-managers", "web-development", "mobile-development", "backend-development", "cloud-development", "common-development", "ai-development-tools"]
+          }
+        }
+      },
+      "install-component": {
+        "description": "Install a specific component from a module",
+        "usage": "setupx install-component [module] [component]",
+        "examples": [
+          "setupx install-component package-managers chocolatey",
+          "setupx install-component web-development nodejs",
+          "setupx install-component web-development react-tools"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module containing the component"
+          },
+          "component": {
+            "required": true,
+            "description": "Name of the component to install (supports fuzzy matching)"
+          }
+        }
+      },
+      "components": {
+        "description": "List all components for a specific module",
+        "usage": "setupx components [module]",
+        "examples": [
+          "setupx components package-managers",
+          "setupx components web-development"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module to list components for"
+          }
+        }
+      },
+      "test": {
+        "description": "Test module components (placeholder for future implementation)",
+        "usage": "setupx test [module]",
+        "examples": [
+          "setupx test package-managers"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module to test"
+          }
+        }
+      }
+    },
+    "workflows": {
+      "full-stack-developer": {
+        "description": "Complete full-stack development environment",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install web-development",
+          "setupx install backend-development",
+          "setupx install common-development"
+        ]
+      },
+      "mobile-developer": {
+        "description": "Mobile app development environment",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install mobile-development",
+          "setupx install common-development"
+        ]
+      },
+      "cloud-developer": {
+        "description": "Cloud development and deployment environment",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install cloud-development",
+          "setupx install backend-development",
+          "setupx install common-development"
+        ]
+      },
+      "ai-developer": {
+        "description": "AI-powered development environment",
+        "commands": [
+          "setupx install package-managers",
+          "setupx install ai-development-tools",
+          "setupx install web-development",
+          "setupx install common-development"
+        ]
+      }
+    }
+  },
   "modules": {
     "package-managers": {
       "name": "Package Managers",
-      "description": "Install and manage Windows package managers",
+      "displayName": "Package Managers",
+      "description": "Essential Windows package managers: Chocolatey, Scoop, and WinGet configuration",
       "priority": 1,
       "category": "foundation",
-      "components": ["chocolatey", "scoop", "winget"]
+      "status": "fully-working",
+      "components": 3,
+      "components": {
+        "chocolatey": {
+          "displayName": "Chocolatey",
+          "description": "Community package manager for Windows",
+          "scriptName": "chocolatey.ps1",
+          "installMethod": "powershell",
+          "website": "https://chocolatey.org",
+          "status": "working"
+        },
+        "scoop": {
+          "displayName": "Scoop",
+          "description": "Portable applications manager for development tools",
+          "scriptName": "scoop.ps1",
+          "installMethod": "powershell",
+          "website": "https://scoop.sh",
+          "status": "working"
+        },
+        "winget": {
+          "displayName": "WinGet",
+          "description": "Microsoft's official Windows package manager",
+          "scriptName": "winget.ps1",
+          "installMethod": "microsoft-store",
+          "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
+          "status": "working"
+        }
+      }
     },
     "web-development": {
       "name": "Web Development",
-      "description": "Tools for web development",
+      "displayName": "Web Development",
+      "description": "Complete web development environment with Node.js, browsers, and modern frameworks",
       "priority": 2,
       "category": "development",
-      "components": ["nodejs", "browsers", "vscode"]
+      "status": "fully-working",
+      "components": 7,
+      "components": {
+        "nodejs": {
+          "displayName": "Node.js & npm",
+          "description": "JavaScript runtime and package manager",
+          "scriptName": "nodejs.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://nodejs.org",
+          "status": "working"
+        },
+        "yarn": {
+          "displayName": "Yarn Package Manager",
+          "description": "Fast, reliable, and secure dependency management",
+          "scriptName": "yarn.ps1",
+          "installMethod": "npm",
+          "website": "https://yarnpkg.com",
+          "status": "working"
+        },
+        "browsers": {
+          "displayName": "Modern Browsers",
+          "description": "Chrome, Firefox, and Edge for testing",
+          "scriptName": "browsers.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://www.google.com/chrome, https://www.mozilla.org/firefox",
+          "status": "working"
+        },
+        "react-tools": {
+          "displayName": "React Development Tools",
+          "description": "Create React App, React DevTools, and React utilities",
+          "scriptName": "react-tools.ps1",
+          "installMethod": "npm",
+          "website": "https://reactjs.org",
+          "status": "working"
+        },
+        "vue-tools": {
+          "displayName": "Vue.js Development Tools",
+          "description": "Vue CLI, Vite, Vue DevTools, and Vue utilities",
+          "scriptName": "vue-tools.ps1",
+          "installMethod": "npm",
+          "website": "https://vuejs.org",
+          "status": "working"
+        },
+        "angular-tools": {
+          "displayName": "Angular Development Tools",
+          "description": "Angular CLI, Angular DevTools, and Angular utilities",
+          "scriptName": "angular-tools.ps1",
+          "installMethod": "npm",
+          "website": "https://angular.io",
+          "status": "working"
+        },
+        "webpack-tools": {
+          "displayName": "Build Tools (Webpack, Vite)",
+          "description": "Webpack, Vite, Rollup, Parcel, and build utilities",
+          "scriptName": "webpack-tools.ps1",
+          "installMethod": "npm",
+          "website": "https://webpack.js.org, https://vitejs.dev",
+          "status": "working"
+        }
+      }
     },
     "mobile-development": {
-      "name": "Mobile Development", 
-      "description": "Tools for mobile app development",
+      "name": "Mobile Development",
+      "displayName": "Mobile Development",
+      "description": "Cross-platform mobile development with Flutter, React Native, and Android tools",
       "priority": 3,
       "category": "development",
-      "components": ["flutter", "android-studio", "react-native"]
+      "status": "available",
+      "components": 8,
+      "components": {
+        "flutter": {
+          "displayName": "Flutter",
+          "description": "Google's UI toolkit for building natively compiled applications",
+          "scriptName": "flutter.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://flutter.dev",
+          "status": "available"
+        },
+        "react-native": {
+          "displayName": "React Native",
+          "description": "Framework for building native apps with React",
+          "scriptName": "react-native.ps1",
+          "installMethod": "npm",
+          "website": "https://reactnative.dev",
+          "status": "available"
+        },
+        "android-studio": {
+          "displayName": "Android Studio",
+          "description": "Official IDE for Android development",
+          "scriptName": "android-studio.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://developer.android.com/studio",
+          "status": "available"
+        },
+        "xcode": {
+          "displayName": "Xcode",
+          "description": "Apple's IDE for iOS development",
+          "scriptName": "xcode.ps1",
+          "installMethod": "app-store",
+          "website": "https://developer.apple.com/xcode",
+          "status": "available"
+        }
+      }
     },
     "backend-development": {
       "name": "Backend Development",
-      "description": "Backend development tools and frameworks",
+      "displayName": "Backend Development",
+      "description": "Server-side development tools including Python, .NET, databases, and runtime environments",
       "priority": 4,
       "category": "development",
-      "components": ["python", "nodejs", "docker", "postgresql"]
+      "status": "available",
+      "components": 9,
+      "components": {
+        "python": {
+          "displayName": "Python",
+          "description": "Python programming language and pip package manager",
+          "scriptName": "python.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://python.org",
+          "status": "available"
+        },
+        "nodejs": {
+          "displayName": "Node.js",
+          "description": "JavaScript runtime for server-side development",
+          "scriptName": "nodejs.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://nodejs.org",
+          "status": "available"
+        },
+        "docker": {
+          "displayName": "Docker",
+          "description": "Containerization platform for applications",
+          "scriptName": "docker.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docker.com",
+          "status": "available"
+        },
+        "postgresql": {
+          "displayName": "PostgreSQL",
+          "description": "Advanced open source relational database",
+          "scriptName": "postgresql.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://postgresql.org",
+          "status": "available"
+        }
+      }
     },
     "cloud-development": {
       "name": "Cloud Development",
-      "description": "Cloud development and deployment tools",
+      "displayName": "Cloud Development",
+      "description": "Cloud development tools for AWS, Azure, Google Cloud, and Kubernetes",
       "priority": 5,
       "category": "development",
-      "components": ["aws-cli", "azure-cli", "docker", "kubernetes"]
+      "status": "available",
+      "components": 7,
+      "components": {
+        "aws-cli": {
+          "displayName": "AWS CLI",
+          "description": "Command line interface for Amazon Web Services",
+          "scriptName": "aws-cli.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://aws.amazon.com/cli",
+          "status": "available"
+        },
+        "azure-cli": {
+          "displayName": "Azure CLI",
+          "description": "Command line interface for Microsoft Azure",
+          "scriptName": "azure-cli.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docs.microsoft.com/en-us/cli/azure",
+          "status": "available"
+        },
+        "docker": {
+          "displayName": "Docker",
+          "description": "Containerization platform for cloud applications",
+          "scriptName": "docker.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docker.com",
+          "status": "available"
+        },
+        "kubernetes": {
+          "displayName": "Kubernetes",
+          "description": "Container orchestration platform",
+          "scriptName": "kubernetes.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://kubernetes.io",
+          "status": "available"
+        }
+      }
     },
     "common-development": {
       "name": "Common Development",
-      "description": "Common development tools and utilities",
+      "displayName": "Common Development Tools",
+      "description": "Essential development tools used across all programming languages and frameworks",
       "priority": 6,
       "category": "development",
-      "components": ["git", "vscode", "powershell", "terminal"]
+      "status": "available",
+      "components": 8,
+      "components": {
+        "git": {
+          "displayName": "Git",
+          "description": "Distributed version control system",
+          "scriptName": "git.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://git-scm.com",
+          "status": "available"
+        },
+        "vscode": {
+          "displayName": "VS Code",
+          "description": "Lightweight, powerful source code editor",
+          "scriptName": "vscode.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://code.visualstudio.com",
+          "status": "available"
+        },
+        "powershell": {
+          "displayName": "PowerShell",
+          "description": "Cross-platform automation and configuration framework",
+          "scriptName": "powershell.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://docs.microsoft.com/en-us/powershell",
+          "status": "available"
+        },
+        "terminal": {
+          "displayName": "Terminal",
+          "description": "Modern terminal applications for Windows",
+          "scriptName": "terminal.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://github.com/microsoft/terminal",
+          "status": "available"
+        }
+      }
+    },
+    "ai-development-tools": {
+      "name": "AI Development Tools",
+      "displayName": "AI Development Tools",
+      "description": "Modern AI-powered development tools for enhanced productivity and intelligent coding assistance",
+      "priority": 7,
+      "category": "development",
+      "status": "experimental",
+      "components": 6,
+      "components": {
+        "vercel-cli": {
+          "displayName": "Vercel CLI",
+          "description": "Command line interface for Vercel platform",
+          "scriptName": "vercel-cli.ps1",
+          "installMethod": "npm",
+          "website": "https://vercel.com",
+          "status": "experimental"
+        },
+        "netlify-cli": {
+          "displayName": "Netlify CLI",
+          "description": "Command line interface for Netlify platform",
+          "scriptName": "netlify-cli.ps1",
+          "installMethod": "npm",
+          "website": "https://netlify.com",
+          "status": "experimental"
+        },
+        "cursor-ai": {
+          "displayName": "Cursor AI",
+          "description": "AI-powered code editor",
+          "scriptName": "cursor-ai.ps1",
+          "installMethod": "chocolatey",
+          "website": "https://cursor.sh",
+          "status": "experimental"
+        },
+        "codex-cli": {
+          "displayName": "Codex CLI",
+          "description": "AI code generation command line tool",
+          "scriptName": "codex-cli.ps1",
+          "installMethod": "npm",
+          "website": "https://openai.com",
+          "status": "experimental"
+        },
+        "grok-cli": {
+          "displayName": "Grok CLI",
+          "description": "AI-powered development assistant",
+          "scriptName": "grok-cli.ps1",
+          "installMethod": "npm",
+          "website": "https://x.ai",
+          "status": "experimental"
+        },
+        "cloud-cli": {
+          "displayName": "Cloud CLI",
+          "description": "AI cloud development tools",
+          "scriptName": "cloud-cli.ps1",
+          "installMethod": "npm",
+          "website": "https://cloud.google.com",
+          "status": "experimental"
+        }
+      }
     }
+  },
+  "installation": {
+    "methods": {
+      "one-command": {
+        "description": "Single command installation from GitHub",
+        "command": "Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression",
+        "requirements": ["PowerShell 5.1+", "Internet connection"]
+      },
+      "force-installation": {
+        "description": "Force installation without prompts",
+        "command": "iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force",
+        "requirements": ["PowerShell 5.1+", "Internet connection"]
+      },
+      "manual-installation": {
+        "description": "Clone repository and install locally",
+        "commands": [
+          "git clone https://github.com/anshulyadav32/setupx-windows-setup.git",
+          "cd setupx-windows-setup",
+          ".\\install.ps1"
+        ],
+        "requirements": ["Git", "PowerShell 5.1+"]
+      }
+    },
+    "requirements": {
+      "os": "Windows 10/11",
+      "powershell": "5.1 or later",
+      "internet": "Required for installation",
+      "admin": "Optional (some components work better as regular user)"
+    }
+  },
+  "troubleshooting": {
+    "common-issues": {
+      "404-not-found": {
+        "problem": "Using old installation URL",
+        "solution": "Use the new install.ps1 URL from the repository"
+      },
+      "setupx-command-not-found": {
+        "problem": "PATH not updated in current session",
+        "solution": "Restart PowerShell or run 'refreshenv'"
+      },
+      "module-not-found": {
+        "problem": "Installation didn't complete properly",
+        "solution": "Reinstall with force mode: 'iwr .../install.ps1 | iex -Force'"
+      },
+      "installation-script-not-found": {
+        "problem": "Component scripts not downloaded properly",
+        "solution": "Use the latest install.ps1 (now fixed)"
+      },
+      "emoji-parsing-errors": {
+        "problem": "PowerShell version compatibility",
+        "solution": "Use the latest install.ps1 (emoji-free version)"
+      }
+    }
+  },
+  "support": {
+    "issues": "https://github.com/anshulyadav32/setupx-windows-setup/issues",
+    "documentation": "https://github.com/anshulyadav32/setupx-windows-setup/wiki",
+    "discussions": "https://github.com/anshulyadav32/setupx-windows-setup/discussions"
   }
 }
