@@ -169,6 +169,57 @@ function Get-ComponentsByModule {
     return $allComponents | Where-Object { $_.moduleName -eq $ModuleName }
 }
 
+function Get-ModuleConfig {
+    <#
+    .SYNOPSIS
+    Gets module configuration from JSON file
+    #>
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$ModuleName
+    )
+    
+    $modulePath = Join-Path $PSScriptRoot "..\config\modules\$ModuleName.json"
+    
+    if (Test-Path $modulePath) {
+        try {
+            $moduleData = Get-Content $modulePath -Raw | ConvertFrom-Json
+            return $moduleData
+        }
+        catch {
+            Write-Host "Warning: Could not load module $ModuleName`: $_" -ForegroundColor Yellow
+            return $null
+        }
+    }
+    
+    return $null
+}
+
+function Get-AllModuleConfigs {
+    <#
+    .SYNOPSIS
+    Gets all module configurations
+    #>
+    $allModules = @()
+    $modulesPath = Join-Path $PSScriptRoot "..\config\modules"
+    
+    if (Test-Path $modulesPath) {
+        $jsonFiles = Get-ChildItem -Path $modulesPath -Filter "*.json"
+        
+        foreach ($file in $jsonFiles) {
+            try {
+                $moduleData = Get-Content $file.FullName -Raw | ConvertFrom-Json
+                $allModules += $moduleData
+            }
+            catch {
+                Write-Host "Warning: Could not load $($file.Name): $_" -ForegroundColor Yellow
+            }
+        }
+    }
+    
+    return $allModules
+}
+
 function Test-ComponentInstalled {
     <#
     .SYNOPSIS
@@ -181,12 +232,62 @@ function Test-ComponentInstalled {
     
     if ($Component.commands.check) {
         try {
+            # Try the check command
             $result = Invoke-Expression $Component.commands.check 2>&1
-            return $LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE
+            if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+                return $true
+            }
         }
         catch {
-            return $false
+            # If check command fails, try alternative detection methods
         }
+    }
+    
+    # Alternative detection methods for common tools
+    $componentName = $Component.name.ToLower()
+    
+    # Check for Python
+    if ($componentName -eq "python") {
+        try {
+            $pythonPath = "C:\Python313\python.exe"
+            if (Test-Path $pythonPath) {
+                return $true
+            }
+        }
+        catch { }
+    }
+    
+    # Check for pip-based tools
+    if ($componentName -in @("jupyter", "tensorflow", "pytorch", "pandas", "ansible")) {
+        try {
+            $result = & pip list 2>&1 | Select-String $componentName
+            return $result -ne $null
+        }
+        catch { }
+    }
+    
+    # Check for Chocolatey packages
+    if ($componentName -in @("docker", "mongodb", "jenkins", "terraform", "aws-cli", "azure-cli")) {
+        try {
+            $result = & choco list $componentName --local-only 2>&1
+            return $result -match "packages installed"
+        }
+        catch { }
+    }
+    
+    # Check for Node.js tools
+    if ($componentName -in @("nodejs", "yarn", "react-tools", "vue-tools", "angular-tools", "vite")) {
+        try {
+            if ($componentName -eq "nodejs") {
+                $result = & node --version 2>&1
+            } elseif ($componentName -eq "yarn") {
+                $result = & yarn --version 2>&1
+            } else {
+                $result = & npm list -g 2>&1 | Select-String $componentName
+            }
+            return $LASTEXITCODE -eq 0
+        }
+        catch { }
     }
     
     return $false
