@@ -169,6 +169,283 @@
             "description": "Name of the module to test"
           }
         }
+      },
+      "update": {
+        "description": "Update SetupX and all installed modules to latest versions",
+        "usage": "setupx update [options]",
+        "examples": [
+          "setupx update",
+          "setupx update --force",
+          "setupx update --modules-only"
+        ],
+        "parameters": {
+          "--force": {
+            "required": false,
+            "description": "Force update without prompts"
+          },
+          "--modules-only": {
+            "required": false,
+            "description": "Update only modules, not SetupX core"
+          }
+        }
+      },
+      "uninstall": {
+        "description": "Uninstall a module and all its components",
+        "usage": "setupx uninstall [module] [options]",
+        "examples": [
+          "setupx uninstall web-development",
+          "setupx uninstall package-managers --force"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module to uninstall"
+          },
+          "--force": {
+            "required": false,
+            "description": "Force uninstall without confirmation"
+          }
+        }
+      },
+      "uninstall-component": {
+        "description": "Uninstall a specific component from a module",
+        "usage": "setupx uninstall-component [module] [component]",
+        "examples": [
+          "setupx uninstall-component web-development nodejs",
+          "setupx uninstall-component package-managers chocolatey"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module containing the component"
+          },
+          "component": {
+            "required": true,
+            "description": "Name of the component to uninstall"
+          }
+        }
+      },
+      "info": {
+        "description": "Show detailed information about a module or component",
+        "usage": "setupx info [module] [component]",
+        "examples": [
+          "setupx info web-development",
+          "setupx info package-managers chocolatey",
+          "setupx info --all"
+        ],
+        "parameters": {
+          "module": {
+            "required": false,
+            "description": "Name of the module to get info about"
+          },
+          "component": {
+            "required": false,
+            "description": "Name of the component to get info about"
+          },
+          "--all": {
+            "required": false,
+            "description": "Show info for all modules and components"
+          }
+        }
+      },
+      "search": {
+        "description": "Search for modules and components by name or description",
+        "usage": "setupx search [query]",
+        "examples": [
+          "setupx search node",
+          "setupx search docker",
+          "setupx search \"machine learning\""
+        ],
+        "parameters": {
+          "query": {
+            "required": true,
+            "description": "Search term to look for in module/component names and descriptions"
+          }
+        }
+      },
+      "backup": {
+        "description": "Create a backup of current SetupX configuration and installed modules",
+        "usage": "setupx backup [options]",
+        "examples": [
+          "setupx backup",
+          "setupx backup --output C:\\backup\\setupx-backup.json",
+          "setupx backup --include-modules"
+        ],
+        "parameters": {
+          "--output": {
+            "required": false,
+            "description": "Output path for backup file"
+          },
+          "--include-modules": {
+            "required": false,
+            "description": "Include module files in backup"
+          }
+        }
+      },
+      "restore": {
+        "description": "Restore SetupX configuration from a backup file",
+        "usage": "setupx restore [backup-file]",
+        "examples": [
+          "setupx restore setupx-backup.json",
+          "setupx restore C:\\backup\\setupx-backup.json"
+        ],
+        "parameters": {
+          "backup-file": {
+            "required": true,
+            "description": "Path to the backup file to restore from"
+          }
+        }
+      },
+      "config": {
+        "description": "Manage SetupX configuration settings",
+        "usage": "setupx config [action] [key] [value]",
+        "examples": [
+          "setupx config get logLevel",
+          "setupx config set logLevel DEBUG",
+          "setupx config list",
+          "setupx config reset"
+        ],
+        "parameters": {
+          "action": {
+            "required": true,
+            "description": "Configuration action (get, set, list, reset)",
+            "validValues": ["get", "set", "list", "reset"]
+          },
+          "key": {
+            "required": false,
+            "description": "Configuration key to get or set"
+          },
+          "value": {
+            "required": false,
+            "description": "Value to set for the configuration key"
+          }
+        }
+      },
+      "doctor": {
+        "description": "Diagnose and fix common SetupX issues",
+        "usage": "setupx doctor [options]",
+        "examples": [
+          "setupx doctor",
+          "setupx doctor --fix",
+          "setupx doctor --verbose"
+        ],
+        "parameters": {
+          "--fix": {
+            "required": false,
+            "description": "Automatically fix detected issues"
+          },
+          "--verbose": {
+            "required": false,
+            "description": "Show detailed diagnostic information"
+          }
+        }
+      },
+      "clean": {
+        "description": "Clean up temporary files and unused components",
+        "usage": "setupx clean [options]",
+        "examples": [
+          "setupx clean",
+          "setupx clean --force",
+          "setupx clean --temp-only"
+        ],
+        "parameters": {
+          "--force": {
+            "required": false,
+            "description": "Force cleanup without prompts"
+          },
+          "--temp-only": {
+            "required": false,
+            "description": "Clean only temporary files"
+          }
+        }
+      },
+      "export": {
+        "description": "Export module or component configuration to a file",
+        "usage": "setupx export [module] [output-file]",
+        "examples": [
+          "setupx export web-development web-config.json",
+          "setupx export package-managers --format yaml"
+        ],
+        "parameters": {
+          "module": {
+            "required": true,
+            "description": "Name of the module to export"
+          },
+          "output-file": {
+            "required": false,
+            "description": "Output file path (default: module-name.json)"
+          },
+          "--format": {
+            "required": false,
+            "description": "Export format (json, yaml, xml)",
+            "validValues": ["json", "yaml", "xml"]
+          }
+        }
+      },
+      "import": {
+        "description": "Import module or component configuration from a file",
+        "usage": "setupx import [config-file]",
+        "examples": [
+          "setupx import web-config.json",
+          "setupx import --validate-only config.yaml"
+        ],
+        "parameters": {
+          "config-file": {
+            "required": true,
+            "description": "Path to the configuration file to import"
+          },
+          "--validate-only": {
+            "required": false,
+            "description": "Only validate the configuration without importing"
+          }
+        }
+      },
+      "version": {
+        "description": "Show SetupX version and module information",
+        "usage": "setupx version [options]",
+        "examples": [
+          "setupx version",
+          "setupx version --modules",
+          "setupx version --check-updates"
+        ],
+        "parameters": {
+          "--modules": {
+            "required": false,
+            "description": "Show version information for all modules"
+          },
+          "--check-updates": {
+            "required": false,
+            "description": "Check for available updates"
+          }
+        }
+      },
+      "menu": {
+        "description": "Show interactive menu for guided setup",
+        "usage": "setupx menu",
+        "examples": [
+          "setupx menu"
+        ],
+        "output": "Interactive menu with guided setup options"
+      },
+      "init": {
+        "description": "Initialize SetupX in a new directory or reset configuration",
+        "usage": "setupx init [options]",
+        "examples": [
+          "setupx init",
+          "setupx init --force",
+          "setupx init --template full-stack"
+        ],
+        "parameters": {
+          "--force": {
+            "required": false,
+            "description": "Force initialization even if SetupX already exists"
+          },
+          "--template": {
+            "required": false,
+            "description": "Use a predefined template for initialization",
+            "validValues": ["full-stack", "mobile", "cloud", "ai", "minimal"]
+          }
+        }
       }
     },
     "workflows": {
