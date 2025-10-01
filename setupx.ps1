@@ -173,7 +173,7 @@ function Show-Status {
     
     # Display by category
     foreach ($category in $groupedTools.Keys | Sort-Object) {
-        $categoryDisplay = (Get-Culture).TextInfo.ToTitleCase($category -replace '-', ' ')
+        $categoryDisplay = (Get-Culture).TextInfo.ToTitleCase(($category -replace '-', ' '))
         Write-Host "${categoryDisplay}:" -ForegroundColor Yellow
         
         foreach ($component in $groupedTools[$category]) {

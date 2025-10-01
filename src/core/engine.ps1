@@ -35,7 +35,21 @@ function Invoke-ComponentCommand {
             
             # Execute path refresh if specified
             if ($Component.commands.path) {
-                Invoke-Expression $Component.commands.path
+                try {
+                    Invoke-Expression $Component.commands.path
+                }
+                catch {
+                    Write-Host "Warning: Path refresh failed: $_" -ForegroundColor Yellow
+                }
+            }
+            
+            # Always refresh environment variables for better tool detection
+            try {
+                refreshenv
+            }
+            catch {
+                # Fallback: manually refresh PATH from registry
+                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
             }
             
             return $true
