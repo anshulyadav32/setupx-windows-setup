@@ -1,6 +1,12 @@
 # SetupX CLI - Simplified Version
 # Main Command Line Interface for SetupX
 
+# Main CLI parameters
+param(
+    [string]$Command,
+    [string]$ModuleName
+)
+
 # Import core modules
 . "$PSScriptRoot\..\core\module-manager.ps1"
 . "$PSScriptRoot\..\core\package-manager.ps1"
@@ -22,7 +28,6 @@ function Show-SetupxHelp {
     Write-Host "  install [module]       Install a specific module" -ForegroundColor White
     Write-Host "  test [module]          Test module components" -ForegroundColor White
     Write-Host "  components [module]    List module components" -ForegroundColor White
-    Write-Host "  menu                   Show interactive menu" -ForegroundColor White
     Write-Host ""
     Write-Host "EXAMPLES:" -ForegroundColor Yellow
     Write-Host "  setupx -h" -ForegroundColor White
@@ -122,95 +127,8 @@ function Show-SetupxComponents {
     }
 }
 
-function Show-SetupxMenu {
-    do {
-        Show-SetupxBanner
-        Write-Host "Interactive SetupX Menu" -ForegroundColor Yellow
-        Write-Host ""
-        Write-Host "1. List all modules" -ForegroundColor White
-        Write-Host "2. Show system status" -ForegroundColor White
-        Write-Host "3. Install package managers (Priority 1)" -ForegroundColor White
-        Write-Host "4. Install web development (Priority 2)" -ForegroundColor White
-        Write-Host "5. Install mobile development (Priority 3)" -ForegroundColor White
-        Write-Host "6. Install backend development (Priority 4)" -ForegroundColor White
-        Write-Host "7. Install cloud development (Priority 5)" -ForegroundColor White
-        Write-Host "8. Install common development (Priority 6)" -ForegroundColor White
-        Write-Host "9. Install specific module" -ForegroundColor White
-        Write-Host "10. Show help" -ForegroundColor White
-        Write-Host "0. Exit" -ForegroundColor White
-        Write-Host ""
-        
-        $choice = Read-Host "Enter your choice (0-10)"
-        
-        switch ($choice) {
-            "1" { 
-                Show-SetupxList
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "2" { 
-                Show-SetupxStatus
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "3" { 
-                Install-Module "package-managers"
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "4" { 
-                Install-Module "web-development"
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "5" { 
-                Install-Module "mobile-development"
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "6" { 
-                Install-Module "backend-development"
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "7" { 
-                Install-Module "cloud-development"
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "8" { 
-                Install-Module "common-development"
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "9" {
-                $moduleName = Read-Host "Enter module name"
-                Install-Module $moduleName
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "10" { 
-                Show-SetupxHelp
-                Write-Host ""
-                Read-Host "Press Enter to continue"
-            }
-            "0" { 
-                Write-Host "Goodbye!" -ForegroundColor Green
-                return
-            }
-            default {
-                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
-                Write-Host ""
-            }
-        }
-    } while ($true)
-}
 
 # Main CLI logic
-param(
-    [string]$Command,
-    [string]$ModuleName
-)
 
 # Import logger
 . "$PSScriptRoot\..\utils\logger.ps1"
@@ -232,13 +150,12 @@ switch ($Command) {
         }
     }
     "components" { Show-SetupxComponents $ModuleName }
-    "menu" { Show-SetupxMenu }
     default { 
         if ($Command) {
             Write-Host "Unknown command: $Command" -ForegroundColor Red
             Write-Host "Use 'setupx -h' for help" -ForegroundColor Yellow
         } else {
-            Show-SetupxMenu
+            Show-SetupxHelp
         }
     }
 }
