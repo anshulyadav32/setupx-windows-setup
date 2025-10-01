@@ -17,10 +17,10 @@
       "commands": {
         "install": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
         "remove": "Remove-Item -Path \"$env:ChocolateyInstall\" -Recurse -Force",
-        "update": "if (Test-Path \"C:\\ProgramData\\chocolatey\\bin\\choco.exe\") { & \"C:\\ProgramData\\chocolatey\\bin\\choco.exe\" upgrade chocolatey -y }",
-        "check": "Test-Path \"C:\\ProgramData\\chocolatey\\bin\\choco.exe\"",
-        "verify": "Test-Path \"C:\\ProgramData\\chocolatey\\lib\"",
-        "test": "Test-Path \"C:\\ProgramData\\chocolatey\\bin\\choco.exe\"",
+        "update": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*choco.exe' -and (Test-Path $_) } | ForEach-Object { & $_ upgrade chocolatey -y; break }",
+        "check": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*choco.exe' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "verify": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*lib' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "test": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*choco.exe' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
         "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
       }
     },
@@ -34,11 +34,11 @@
       "category": "package-manager",
       "commands": {
         "install": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iex (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')",
-        "remove": "if (Test-Path \"$env:USERPROFILE\\scoop\\apps\\scoop\\current\\bin\\scoop.ps1\") { & \"$env:USERPROFILE\\scoop\\apps\\scoop\\current\\bin\\scoop.ps1\" uninstall scoop }",
-        "update": "if (Test-Path \"$env:USERPROFILE\\scoop\\apps\\scoop\\current\\bin\\scoop.ps1\") { & \"$env:USERPROFILE\\scoop\\apps\\scoop\\current\\bin\\scoop.ps1\" update }",
-        "check": "Test-Path \"$env:USERPROFILE\\scoop\\apps\\scoop\\current\\bin\\scoop.ps1\"",
-        "verify": "Test-Path \"$env:USERPROFILE\\scoop\\apps\"",
-        "test": "Test-Path \"$env:USERPROFILE\\scoop\\apps\\scoop\\current\\bin\\scoop.ps1\"",
+        "remove": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | ForEach-Object { & $_ uninstall scoop; break }",
+        "update": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | ForEach-Object { & $_ update; break }",
+        "check": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "verify": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*apps' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "test": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
         "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
       }
     },
@@ -51,10 +51,10 @@
       "status": "working",
       "category": "package-manager",
       "commands": {
-        "check": "Test-Path \"C:\\Program Files\\Microsoft\\WindowsApps\\winget.exe\"",
-        "verify": "Test-Path \"C:\\Program Files\\Microsoft\\WindowsApps\\winget.exe\"",
-        "test": "Test-Path \"C:\\Program Files\\Microsoft\\WindowsApps\\winget.exe\"",
-        "update": "if (Test-Path \"C:\\Program Files\\Microsoft\\WindowsApps\\winget.exe\") { & \"C:\\Program Files\\Microsoft\\WindowsApps\\winget.exe\" upgrade --all }",
+        "check": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "verify": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "test": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
+        "update": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | ForEach-Object { & $_ upgrade --all; break }",
         "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
       }
     }

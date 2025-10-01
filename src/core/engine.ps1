@@ -225,10 +225,114 @@ function Get-AllModuleConfigs {
     return $allModules
 }
 
+function Get-DynamicPaths {
+    <#
+    .SYNOPSIS
+    Gets dynamic installation paths for various tools
+    #>
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$ToolType
+    )
+    
+    $paths = @()
+    
+    switch ($ToolType) {
+        "Python" {
+            # Dynamic Python detection
+            $pythonVersions = @("313", "312", "311", "310", "39", "38")
+            foreach ($version in $pythonVersions) {
+                $paths += "C:\Python$version\python.exe"
+                $paths += "$env:USERPROFILE\AppData\Local\Programs\Python\Python$version\python.exe"
+                $paths += "$env:USERPROFILE\AppData\Local\Programs\Python\Python$version-32\python.exe"
+            }
+            # Check PATH for python
+            $pathDirs = $env:PATH -split ";"
+            foreach ($dir in $pathDirs) {
+                if ($dir -and (Test-Path $dir)) {
+                    $pythonExe = Join-Path $dir "python.exe"
+                    if (Test-Path $pythonExe) {
+                        $paths += $pythonExe
+                    }
+                }
+            }
+        }
+        "PythonSitePackages" {
+            # Dynamic Python site-packages detection
+            $pythonVersions = @("313", "312", "311", "310", "39", "38")
+            foreach ($version in $pythonVersions) {
+                $paths += "C:\Python$version\Lib\site-packages"
+                $paths += "$env:USERPROFILE\AppData\Local\Programs\Python\Python$version\Lib\site-packages"
+                $paths += "$env:USERPROFILE\AppData\Local\Programs\Python\Python$version-32\Lib\site-packages"
+            }
+        }
+        "Chocolatey" {
+            # Dynamic Chocolatey detection
+            $chocoInstall = $env:ChocolateyInstall
+            if ($chocoInstall) {
+                $paths += Join-Path $chocoInstall "bin\choco.exe"
+                $paths += Join-Path $chocoInstall "lib"
+            }
+            $paths += "C:\ProgramData\chocolatey\bin\choco.exe"
+            $paths += "C:\ProgramData\chocolatey\lib"
+        }
+        "NodeJS" {
+            # Dynamic Node.js detection
+            $paths += "C:\Program Files\nodejs\node.exe"
+            $paths += "C:\Program Files (x86)\nodejs\node.exe"
+            $paths += "$env:USERPROFILE\AppData\Local\Programs\nodejs\node.exe"
+            $paths += "$env:USERPROFILE\AppData\Roaming\npm\node.exe"
+            # Check PATH for node
+            $pathDirs = $env:PATH -split ";"
+            foreach ($dir in $pathDirs) {
+                if ($dir -and (Test-Path $dir)) {
+                    $nodeExe = Join-Path $dir "node.exe"
+                    if (Test-Path $nodeExe) {
+                        $paths += $nodeExe
+                    }
+                }
+            }
+        }
+        "NPM" {
+            # Dynamic npm detection
+            $paths += "$env:USERPROFILE\AppData\Roaming\npm"
+            $paths += "$env:USERPROFILE\AppData\Local\Programs\nodejs\node_modules\npm"
+            # Check PATH for npm
+            $pathDirs = $env:PATH -split ";"
+            foreach ($dir in $pathDirs) {
+                if ($dir -and (Test-Path $dir)) {
+                    $npmCmd = Join-Path $dir "npm.cmd"
+                    if (Test-Path $npmCmd) {
+                        $paths += $dir
+                    }
+                }
+            }
+        }
+        "Scoop" {
+            # Dynamic Scoop detection
+            $scoopRoot = $env:SCOOP
+            if ($scoopRoot) {
+                $paths += Join-Path $scoopRoot "apps\scoop\current\bin\scoop.ps1"
+                $paths += Join-Path $scoopRoot "apps"
+            }
+            $paths += "$env:USERPROFILE\scoop\apps\scoop\current\bin\scoop.ps1"
+            $paths += "$env:USERPROFILE\scoop\apps"
+        }
+        "WinGet" {
+            # Dynamic WinGet detection
+            $paths += "C:\Program Files\Microsoft\WindowsApps\winget.exe"
+            $paths += "C:\Program Files (x86)\Microsoft\WindowsApps\winget.exe"
+            $paths += "$env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\winget.exe"
+        }
+    }
+    
+    return $paths | Where-Object { $_ -ne $null -and $_ -ne "" }
+}
+
 function Test-ComponentInstalled {
     <#
     .SYNOPSIS
-    Tests if a component is installed
+    Tests if a component is installed using dynamic path detection
     #>
     param(
         [Parameter(Mandatory=$true)]
@@ -248,96 +352,75 @@ function Test-ComponentInstalled {
         }
     }
     
-    # Alternative detection methods for common tools
+    # Dynamic detection methods for common tools
     $componentName = $Component.name.ToLower()
     
     # Check for Python
     if ($componentName -eq "python") {
-        try {
-            $pythonPath = "C:\Python313\python.exe"
-            if (Test-Path $pythonPath) {
+        $pythonPaths = Get-DynamicPaths -ToolType "Python"
+        foreach ($path in $pythonPaths) {
+            if (Test-Path $path) {
                 return $true
             }
         }
-        catch { }
     }
     
-    # Check for pip-based tools using PowerShell-only methods
+    # Check for pip-based tools using dynamic detection
     if ($componentName -in @("jupyter", "tensorflow", "pytorch", "pandas", "ansible")) {
-        try {
-            # Check Python site-packages directory for installed packages
-            $pythonPaths = @(
-                "C:\Python313\Lib\site-packages",
-                "C:\Python312\Lib\site-packages", 
-                "C:\Python311\Lib\site-packages",
-                "$env:USERPROFILE\AppData\Local\Programs\Python\Python313\Lib\site-packages"
-            )
-            
-            foreach ($pythonPath in $pythonPaths) {
-                if (Test-Path $pythonPath) {
-                    $packagePath = Join-Path $pythonPath $componentName
-                    if (Test-Path $packagePath) {
-                        return $true
-                    }
-                }
-            }
-        }
-        catch { }
-    }
-    
-    # Check for Chocolatey packages using PowerShell-only methods
-    if ($componentName -in @("docker", "mongodb", "jenkins", "terraform", "aws-cli", "azure-cli")) {
-        try {
-            # Check Chocolatey lib directory for installed packages
-            $chocoLibPath = "C:\ProgramData\chocolatey\lib"
-            if (Test-Path $chocoLibPath) {
-                $packagePath = Join-Path $chocoLibPath $componentName
+        $sitePackagesPaths = Get-DynamicPaths -ToolType "PythonSitePackages"
+        foreach ($pythonPath in $sitePackagesPaths) {
+            if (Test-Path $pythonPath) {
+                $packagePath = Join-Path $pythonPath $componentName
                 if (Test-Path $packagePath) {
                     return $true
                 }
             }
         }
-        catch { }
     }
     
-    # Check for Node.js tools using PowerShell-only methods
+    # Check for Chocolatey packages using dynamic detection
+    if ($componentName -in @("docker", "mongodb", "jenkins", "terraform", "aws-cli", "azure-cli")) {
+        $chocoPaths = Get-DynamicPaths -ToolType "Chocolatey"
+        foreach ($chocoPath in $chocoPaths) {
+            if ($chocoPath -like "*\lib") {
+                $packagePath = Join-Path $chocoPath $componentName
+                if (Test-Path $packagePath) {
+                    return $true
+                }
+            }
+        }
+    }
+    
+    # Check for Node.js tools using dynamic detection
     if ($componentName -in @("nodejs", "yarn", "react-tools", "vue-tools", "angular-tools", "vite")) {
-        try {
-            if ($componentName -eq "nodejs") {
-                # Check for Node.js installation in common locations
-                $nodePaths = @(
-                    "C:\Program Files\nodejs\node.exe",
-                    "C:\Program Files (x86)\nodejs\node.exe",
-                    "$env:USERPROFILE\AppData\Local\Programs\nodejs\node.exe"
-                )
-                foreach ($nodePath in $nodePaths) {
-                    if (Test-Path $nodePath) {
-                        return $true
-                    }
+        if ($componentName -eq "nodejs") {
+            $nodePaths = Get-DynamicPaths -ToolType "NodeJS"
+            foreach ($path in $nodePaths) {
+                if (Test-Path $path) {
+                    return $true
                 }
-            } elseif ($componentName -eq "yarn") {
-                # Check for Yarn in npm global directory
-                $yarnPaths = @(
-                    "$env:USERPROFILE\AppData\Roaming\npm\yarn.cmd",
-                    "$env:USERPROFILE\AppData\Local\Yarn\bin\yarn.cmd"
-                )
-                foreach ($yarnPath in $yarnPaths) {
-                    if (Test-Path $yarnPath) {
-                        return $true
-                    }
+            }
+        } elseif ($componentName -eq "yarn") {
+            $yarnPaths = @(
+                "$env:USERPROFILE\AppData\Roaming\npm\yarn.cmd",
+                "$env:USERPROFILE\AppData\Local\Yarn\bin\yarn.cmd"
+            )
+            foreach ($yarnPath in $yarnPaths) {
+                if (Test-Path $yarnPath) {
+                    return $true
                 }
-            } else {
-                # Check npm global packages directory
-                $npmGlobalPath = "$env:USERPROFILE\AppData\Roaming\npm\node_modules"
-                if (Test-Path $npmGlobalPath) {
-                    $packagePath = Join-Path $npmGlobalPath $componentName
+            }
+        } else {
+            $npmPaths = Get-DynamicPaths -ToolType "NPM"
+            foreach ($npmPath in $npmPaths) {
+                if (Test-Path $npmPath) {
+                    $packagePath = Join-Path $npmPath "node_modules\$componentName"
                     if (Test-Path $packagePath) {
                         return $true
                     }
                 }
             }
         }
-        catch { }
     }
     
     return $false
