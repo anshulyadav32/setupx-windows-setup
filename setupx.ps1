@@ -23,6 +23,10 @@ function Resolve-ModuleAlias {
         return "package-managers"
     }
 
+    if ($ModuleName -eq "wdev") {
+        return "web-development"
+    }
+
     return $ModuleName
 }
 
@@ -76,6 +80,7 @@ function Show-Help {
     Write-Host "    test <component>              Test component functionality" -ForegroundColor White
     Write-Host "    install-module <module>       Install all components in a module" -ForegroundColor White
     Write-Host "    install-managers              Install all package managers module components" -ForegroundColor White
+    Write-Host "    wdev                          Install all web-development module components" -ForegroundColor White
     Write-Host "    list-module <module>          List components in a specific module" -ForegroundColor White
     Write-Host "    components <module>           Alias for list-module" -ForegroundColor White
     Write-Host "    install-component <m> <c>     Install a component from a specific module" -ForegroundColor White
@@ -93,6 +98,7 @@ function Show-Help {
     Write-Host "    sx install nodejs             # Install Node.js" -ForegroundColor DarkGray
     Write-Host "    sx check git                  # Check if Git is installed" -ForegroundColor DarkGray
     Write-Host "    sx install-module web-development  # Install all web dev tools" -ForegroundColor DarkGray
+    Write-Host "    sx wdev                       # Install all web-development components" -ForegroundColor DarkGray
     Write-Host "    sx list-module pgkm           # List package managers" -ForegroundColor DarkGray
     Write-Host "    sx pgkm                       # Install all package managers" -ForegroundColor DarkGray
     Write-Host "    sx quick-setup web-dev        # Install web dev preset" -ForegroundColor DarkGray
@@ -582,6 +588,10 @@ function Invoke-InstallManagers {
     Invoke-InstallModule -ModuleName "pgkm"
 }
 
+function Invoke-InstallWebDev {
+    Invoke-InstallModule -ModuleName "wdev"
+}
+
 # Main command router
 switch ($Command) {
     "help" { Show-Help }
@@ -593,6 +603,7 @@ switch ($Command) {
     "check-status" { Show-Status }
     "install" { Invoke-Install -ComponentName $Arguments[0] }
     "install-managers" { Invoke-InstallManagers }
+    "wdev" { Invoke-InstallWebDev }
     "pkgm" { Invoke-InstallManagers }
     "pgkm" { Invoke-InstallManagers }
     "remove" { Invoke-Remove -ComponentName $Arguments[0] }
