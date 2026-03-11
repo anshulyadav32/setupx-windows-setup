@@ -182,6 +182,32 @@ if (Test-Path `$setupxPath) {
     $wsxContent | Out-File -FilePath $wsxPath -Encoding UTF8
     Write-Host "[OK] Created wsx alias" -ForegroundColor Green
 
+    # Create sx.ps1 alias (preferred short command)
+    $sxContent = @"
+# SX - Preferred short alias for SetupX CLI
+
+param(
+    [Parameter(Position=0)]
+    [string]`$Command,
+
+    [Parameter(Position=1, ValueFromRemainingArguments=`$true)]
+    [string[]]`$Arguments
+)
+
+`$setupxPath = Join-Path `$PSScriptRoot "setupx.ps1"
+
+if (Test-Path `$setupxPath) {
+    & `$setupxPath `$Command @Arguments
+} else {
+    Write-Host "Error: setupx.ps1 not found in `$PSScriptRoot" -ForegroundColor Red
+    Write-Host "Please ensure SetupX is properly installed." -ForegroundColor Yellow
+}
+"@
+
+    $sxPath = Join-Path $InstallPath "sx.ps1"
+    $sxContent | Out-File -FilePath $sxPath -Encoding UTF8
+    Write-Host "[OK] Created sx alias" -ForegroundColor Green
+
     # Add to PATH
     Write-Host "Adding SetupX to PATH..." -ForegroundColor Yellow
     
@@ -220,6 +246,7 @@ if (Test-Path `$setupxPath) {
     Write-Host "`nSetupX Installation Complete!" -ForegroundColor Green
     Write-Host "Installation path: $InstallPath" -ForegroundColor Cyan
     Write-Host "`nYou can now use SetupX with:" -ForegroundColor Yellow
+    Write-Host "  sx help" -ForegroundColor White
     Write-Host "  setupx help" -ForegroundColor White
     Write-Host "  wsx help" -ForegroundColor White
     Write-Host "`nNote: You may need to restart your terminal for PATH changes to take effect." -ForegroundColor Yellow

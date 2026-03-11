@@ -1,4 +1,4 @@
-# SetupX - Modular Windows Development Setup
+# sx - Modular Windows Development Setup
 
 A clean, modular PowerShell tool for setting up Windows development environments.
 
@@ -6,19 +6,19 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ### One-Command Installation
 ```powershell
-# Install SetupX with one command
+# Install sx with one command
 iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
 ### One-Command Installation + Install All Package Managers
 ```powershell
-# Install SetupX and all package managers with one script
+# Install sx and all package managers with one script
 iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
 ```
 
 Manual equivalent:
 ```powershell
-.\install.ps1; C:\tools\setupx\setupx.ps1 pkgm
+.\install.ps1; C:\\tools\\setupx\\sx.ps1 pkgm
 ```
 
 ### Manual Installation
@@ -31,30 +31,30 @@ cd setupx-windows-setup
 .\install.ps1
 
 # Test installation
-setupx help
+sx help
 ```
 
-Need all package managers quickly? [Install all package managers](#install-all-package-managers).
+Need all package managers quickly? [Install all package managers](#install-all-pgkm).
 
 ### Available Commands (All in JSON)
 ```powershell
-# Main SetupX interface
-setupx pkgm
-setupx list
-setupx status
-setupx components web-development
+# Main sx interface
+sx pkgm
+sx list
+sx status
+sx components web-development
 
 # Direct module installation
-install-module package-managers
+install-module pgkm
 install-module web-development
 
 # Component installation
-install-component package-managers chocolatey
+install-component pgkm chocolatey
 install-component web-development nodejs
 
 # Testing commands
-test-module package-managers
-test-component package-managers chocolatey
+test-module pgkm
+test-component pgkm chocolatey
 check-status
 
 # Quick setup environments
@@ -86,13 +86,13 @@ quick-setup mobile-dev
 ### 🧪 Test Commands
 ```powershell
 # Test all package managers
-test-module package-managers
+test-module pgkm
 
 # Test web development tools
 test-module web-development
 
 # Test specific components
-test-component package-managers chocolatey
+test-component pgkm chocolatey
 test-component web-development nodejs
 
 # Check overall status
@@ -121,21 +121,21 @@ setupx-windows-setup/
 
 ### Core Commands
 ```powershell
-# Main SetupX interface
-setupx [command] [options]
+# Main sx interface
+sx [command] [options]
 
 # Examples:
-setupx pkgm
-setupx list
-setupx status
-setupx components web-development
-setupx install-component package-managers chocolatey
+sx pkgm
+sx list
+sx status
+sx components web-development
+sx install-component pgkm chocolatey
 ```
 
 ### Module Management
 ```powershell
 # Install complete modules
-install-module package-managers
+install-module pgkm
 install-module web-development
 install-module mobile-development
 install-module backend-development
@@ -153,9 +153,9 @@ install-module wsl-linux
 ### Component Installation
 ```powershell
 # Install specific components
-install-component package-managers chocolatey
-install-component package-managers scoop
-install-component package-managers winget
+install-component pgkm chocolatey
+install-component pgkm scoop
+install-component pgkm winget
 install-component web-development nodejs
 install-component web-development yarn
 install-component web-development browsers
@@ -168,11 +168,11 @@ install-component web-development webpack-tools
 ### Testing & Status
 ```powershell
 # Test modules
-test-module package-managers
+test-module pgkm
 test-module web-development
 
 # Test components
-test-component package-managers chocolatey
+test-component pgkm chocolatey
 test-component web-development nodejs
 
 # Check system status
@@ -203,15 +203,15 @@ list-modules
 list-components web-development
 
 # Install everything for web development
-install-module package-managers
+install-module pgkm
 install-module web-development
 
 # Install specific tools
-install-component package-managers chocolatey
+install-component pgkm chocolatey
 install-component web-development nodejs
 
 # Test your installation
-test-module package-managers
+test-module pgkm
 check-status
 ```
 
@@ -221,100 +221,100 @@ check-status
 
 ```powershell
 # Package Managers (Foundation - Install First!)
-setupx pkgm
+sx pkgm
 
 # Web Development Tools
-setupx install web-development
+sx install web-development
 
 # Mobile Development Tools  
-setupx install mobile-development
+sx install mobile-development
 
 # Backend Development Tools
-setupx install backend-development
+sx install backend-development
 
 # Cloud Development Tools
-setupx install cloud-development
+sx install cloud-development
 
 # Common Development Tools
-setupx install common-development
+sx install common-development
 
 # AI Development Tools
-setupx install ai-development-tools
+sx install ai-development-tools
 ```
 
 ### 🚀 Quick Installation Workflows
 
 **Full Stack Developer:**
 ```powershell
-setupx pkgm
-setupx install web-development
-setupx install backend-development
-setupx install common-development
+sx pkgm
+sx install web-development
+sx install backend-development
+sx install common-development
 ```
 
 **Mobile Developer:**
 ```powershell
-setupx pkgm
-setupx install mobile-development
-setupx install common-development
+sx pkgm
+sx install mobile-development
+sx install common-development
 ```
 
 **Cloud Developer:**
 ```powershell
-setupx pkgm
-setupx install cloud-development
-setupx install backend-development
-setupx install common-development
+sx pkgm
+sx install cloud-development
+sx install backend-development
+sx install common-development
 ```
 
 **AI Developer:**
 ```powershell
-setupx pkgm
-setupx install ai-development-tools
-setupx install web-development
-setupx install common-development
+sx pkgm
+sx install ai-development-tools
+sx install web-development
+sx install common-development
 ```
 
 ### 📋 Module Details
 
-- **package-managers**: Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip (✅ **Fully Working**)
+- **pgkm**: Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip (✅ **Fully Working**)
   ```powershell
-  setupx pkgm
+  sx pkgm
   ```
 
 - **web-development**: Node.js, Browsers, React, Vue, Angular, Build Tools (✅ **Fully Working**)
   ```powershell
-  setupx install web-development
+  sx install web-development
   ```
 
 - **mobile-development**: Flutter, Android Studio, Xcode
   ```powershell
-  setupx install mobile-development
+  sx install mobile-development
   ```
 
 - **backend-development**: Python, Node.js, Docker, PostgreSQL
   ```powershell
-  setupx install backend-development
+  sx install backend-development
   ```
 
 - **cloud-development**: AWS CLI, Azure CLI, Docker, Kubernetes
   ```powershell
-  setupx install cloud-development
+  sx install cloud-development
   ```
 
 - **common-development**: Git, VS Code, PowerShell, Terminal
   ```powershell
-  setupx install common-development
+  sx install common-development
   ```
 
 - **ai-development-tools**: Modern AI-powered development tools
   ```powershell
-  setupx install ai-development-tools
+  sx install ai-development-tools
   ```
 
 ### 🎯 Package Managers Module (Ready to Use!)
 
-The **package-managers** module is fully functional and includes all 20 package manager/toolchain components:
+The **pgkm** module is fully functional and includes all 20 package manager/toolchain components:
 
 - **Chocolatey** - Windows package manager for software installation
 - **Scoop** - Portable applications manager for development tools
@@ -341,7 +341,7 @@ The **package-managers** module is fully functional and includes all 20 package 
 
 Use this command to install every package manager in the module:
 ```powershell
-setupx pkgm
+sx pkgm
 ```
 
 **Expected output:**
@@ -361,7 +361,7 @@ setupx pkgm
 - ✅ **Error Handling**: Robust error handling and logging
 - ✅ **One-Command Install**: Single `install.ps1` downloads everything
 - ✅ **Force Mode**: `-Force` parameter for automated installations
-- ✅ **Existing File Detection**: Handles `C:\setupx` conflicts gracefully
+- ✅ **Existing File Detection**: Handles `C:\sx` conflicts gracefully
 - ✅ **Clean Structure**: Minimal, maintainable codebase
 - ✅ **CLI Syntax Fixed**: Resolved PowerShell parameter issues
 
@@ -384,7 +384,7 @@ setupx pkgm
 
 ### Standard Installation
 - Downloads all files from GitHub
-- Asks for confirmation if `C:\setupx` exists
+- Asks for confirmation if `C:\sx` exists
 - Safe for first-time installations
 
 ### Force Installation
@@ -442,7 +442,7 @@ setupx pkgm
 
 **Install web development tools:**
 ```powershell
-setupx install web-development
+sx install web-development
 ```
 
 **Expected output:**
@@ -487,7 +487,7 @@ MIT License - see LICENSE file for details
   Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | Invoke-Expression
   ```
 
-**❌ "setupx command not found"**
+**❌ "sx command not found"**
 - **Problem**: PATH not updated in current session
 - **Solution**: Restart PowerShell or run:
   ```powershell
@@ -532,5 +532,7 @@ iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/
 
 ---
 
-**SetupX** - Making Windows development setup simple and modular! 🚀
+**sx** - Making Windows development setup simple and modular! 🚀
+
+
 
