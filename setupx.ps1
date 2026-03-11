@@ -35,6 +35,22 @@ function Resolve-ModuleAlias {
         return "mobile-development"
     }
 
+    if ($ModuleName -eq "wsl") {
+        return "wsl-linux"
+    }
+
+    if ($ModuleName -eq "cdev" -or $ModuleName -eq "cloud-dev") {
+        return "cloud-development"
+    }
+
+    if ($ModuleName -eq "codev" -or $ModuleName -eq "common-dev") {
+        return "common-development"
+    }
+
+    if ($ModuleName -eq "dscience" -or $ModuleName -eq "datascien") {
+        return "data-science"
+    }
+
     return $ModuleName
 }
 
@@ -91,6 +107,11 @@ function Show-Help {
     Write-Host "    wdev                          Install all web-development module components" -ForegroundColor White
     Write-Host "    aidev                         Install all ai-development-tools module components" -ForegroundColor White
     Write-Host "    mdev                          Install all mobile-development module components" -ForegroundColor White
+    Write-Host "    wsl                           Install all wsl-linux module components" -ForegroundColor White
+    Write-Host "    cdev                          Install all cloud-development module components" -ForegroundColor White
+    Write-Host "    codev                         Install all common-development module components" -ForegroundColor White
+    Write-Host "    devops                        Install all devops module components" -ForegroundColor White
+    Write-Host "    dscience                      Install all data-science module components" -ForegroundColor White
     Write-Host "    list-module <module>          List components in a specific module" -ForegroundColor White
     Write-Host "    components <module>           Alias for list-module" -ForegroundColor White
     Write-Host "    install-component <m> <c>     Install a component from a specific module" -ForegroundColor White
@@ -111,6 +132,11 @@ function Show-Help {
     Write-Host "    sx wdev                       # Install all web-development components" -ForegroundColor DarkGray
     Write-Host "    sx aidev                      # Install all AI-development components" -ForegroundColor DarkGray
     Write-Host "    sx mdev                       # Install all mobile-development components" -ForegroundColor DarkGray
+    Write-Host "    sx wsl                        # Install all WSL/Linux components" -ForegroundColor DarkGray
+    Write-Host "    sx cdev                       # Install all cloud-development components" -ForegroundColor DarkGray
+    Write-Host "    sx codev                      # Install all common-development components" -ForegroundColor DarkGray
+    Write-Host "    sx devops                     # Install all devops components" -ForegroundColor DarkGray
+    Write-Host "    sx dscience                   # Install all data-science components" -ForegroundColor DarkGray
     Write-Host "    sx list-module pgkm           # List package managers" -ForegroundColor DarkGray
     Write-Host "    sx pgkm                       # Install all package managers" -ForegroundColor DarkGray
     Write-Host "    sx quick-setup web-dev        # Install web dev preset" -ForegroundColor DarkGray
@@ -612,6 +638,26 @@ function Invoke-InstallMobileDev {
     Invoke-InstallModule -ModuleName "mdev"
 }
 
+function Invoke-InstallWSL {
+    Invoke-InstallModule -ModuleName "wsl"
+}
+
+function Invoke-InstallCloudDev {
+    Invoke-InstallModule -ModuleName "cdev"
+}
+
+function Invoke-InstallCommonDev {
+    Invoke-InstallModule -ModuleName "codev"
+}
+
+function Invoke-InstallDevOps {
+    Invoke-InstallModule -ModuleName "devops"
+}
+
+function Invoke-InstallDataScience {
+    Invoke-InstallModule -ModuleName "dscience"
+}
+
 # Main command router
 switch ($Command) {
     "help" { Show-Help }
@@ -628,6 +674,14 @@ switch ($Command) {
     "aidve" { Invoke-InstallAIDev }
     "mdev" { Invoke-InstallMobileDev }
     "android-dev" { Invoke-InstallMobileDev }
+    "wsl" { Invoke-InstallWSL }
+    "cdev" { Invoke-InstallCloudDev }
+    "cloud-dev" { Invoke-InstallCloudDev }
+    "codev" { Invoke-InstallCommonDev }
+    "common-dev" { Invoke-InstallCommonDev }
+    "devops" { Invoke-InstallDevOps }
+    "dscience" { Invoke-InstallDataScience }
+    "datascien" { Invoke-InstallDataScience }
     "pkgm" { Invoke-InstallManagers }
     "pgkm" { Invoke-InstallManagers }
     "remove" { Invoke-Remove -ComponentName $Arguments[0] }
