@@ -13,12 +13,12 @@ iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/
 ### One-Command Installation + Install All Package Managers
 ```powershell
 # Install sx and all package managers with one script
-iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
 ```
 
 Manual equivalent:
 ```powershell
-.\install.ps1; C:\\tools\\setupx\\sx.ps1 pkgm
+.\install.ps1; C:\\tools\\setupx\\sx.ps1 pgkm
 ```
 
 ### Manual Installation

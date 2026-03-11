@@ -1,5 +1,5 @@
 # SetupX One-Script Installer for All Package Managers
-# Installs SetupX, then installs all package managers via: setupx pkgm
+# Installs SetupX, then installs all package managers via: sx pgkm
 
 param(
     [string]$InstallPath = "C:\tools\setupx",
@@ -43,11 +43,11 @@ try {
     }
 
     Write-Host ""
-    Write-Host "Installing all package managers (setupx pkgm)..." -ForegroundColor Cyan
-    & $setupxPath pkgm
+    Write-Host "Installing all package managers (sx pgkm)..." -ForegroundColor Cyan
+    & $setupxPath pgkm
 
     if ($LASTEXITCODE -ne 0) {
-        throw "setupx pkgm exited with code $LASTEXITCODE"
+        throw "sx pgkm exited with code $LASTEXITCODE"
     }
 
     Write-Host ""
