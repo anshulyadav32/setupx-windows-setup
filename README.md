@@ -10,6 +10,17 @@ A clean, modular PowerShell tool for setting up Windows development environments
 iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
+### One-Command Installation + Install All Package Managers
+```powershell
+# Install SetupX and all package managers with one script
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
+```
+
+Manual equivalent:
+```powershell
+.\install.ps1; C:\tools\setupx\setupx.ps1 pkgm
+```
+
 ### Manual Installation
 ```powershell
 # Clone the repository
