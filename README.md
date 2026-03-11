@@ -7,13 +7,13 @@ A clean, modular PowerShell tool for setting up Windows development environments
 ### One-Command Installation
 ```powershell
 # Install SetupX with one command
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
 ### Manual Installation
 ```powershell
 # Clone the repository
-git clone https://github.com/anshulyadav32/setupx-windows-setup.git
+git clone https://github.com/anshulyadav-git/setupx-windows-setup.git
 cd setupx-windows-setup
 
 # Run the installer
@@ -469,7 +469,7 @@ MIT License - see LICENSE file for details
 - **Problem**: Using old `one-cmd-install.ps1` URL
 - **Solution**: Use the new `install.ps1` URL:
   ```powershell
-  Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression
+  Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | Invoke-Expression
   ```
 
 **❌ "setupx command not found"**
@@ -483,14 +483,14 @@ MIT License - see LICENSE file for details
 - **Problem**: Installation didn't complete properly
 - **Solution**: Reinstall with force mode:
   ```powershell
-  iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+  iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex -Force
   ```
 
 **❌ "Installation script not found" errors**
 - **Problem**: Component scripts not downloaded properly
 - **Solution**: Use the latest install.ps1 (now fixed):
   ```powershell
-  iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+  iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex -Force
   ```
 
 **❌ Emoji parsing errors**
@@ -501,19 +501,19 @@ MIT License - see LICENSE file for details
 
 **✅ Recommended (Latest)**
 ```powershell
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
 **✅ Force Installation (No Prompts)**
 ```powershell
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex -Force
 ```
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/anshulyadav32/setupx-windows-setup/issues)
-- **Documentation**: [GitHub Wiki](https://github.com/anshulyadav32/setupx-windows-setup/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/anshulyadav32/setupx-windows-setup/discussions)
+- **Issues**: [GitHub Issues](https://github.com/anshulyadav-git/setupx-windows-setup/issues)
+- **Documentation**: [GitHub Wiki](https://github.com/anshulyadav-git/setupx-windows-setup/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/anshulyadav-git/setupx-windows-setup/discussions)
 
 ---
 

@@ -86,7 +86,7 @@ function Show-Help {
         Write-Host " - $($module.description)" -ForegroundColor Gray
     }
     
-    Write-Host "`nFor more information: https://github.com/anshulyadav32/setupx-windows-setup" -ForegroundColor Cyan
+    Write-Host "`nFor more information: https://github.com/anshulyadav-git/setupx-windows-setup" -ForegroundColor Cyan
 }
 
 function Show-List {
@@ -460,4 +460,5 @@ switch ($Command) {
         }
     }
 }
+
 

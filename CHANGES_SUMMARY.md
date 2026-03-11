@@ -29,7 +29,7 @@
    - Supports force installation mode
 
 2. **Updated README**
-   - Added one-line install command: `iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex`
+   - Added one-line install command: `iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex`
    - Simplified installation instructions
    - Updated quick start section
 
@@ -56,12 +56,12 @@
 
 #### One-Line Install:
 ```powershell
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
 #### Manual Install:
 ```powershell
-git clone https://github.com/anshulyadav32/setupx-windows-setup.git
+git clone https://github.com/anshulyadav-git/setupx-windows-setup.git
 cd setupx-windows-setup
 .\install.ps1
 ```
@@ -122,3 +122,4 @@ The SetupX tool is now fully functional with:
 - ✅ Complete documentation
 
 Users can now install SetupX with a single command and have it automatically added to their PATH!
+
