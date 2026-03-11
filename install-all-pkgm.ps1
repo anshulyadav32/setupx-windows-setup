@@ -3,21 +3,24 @@
 
 param(
     [string]$InstallPath = "C:\tools\setupx",
-    [switch]$Force = $false
+    [switch]$Force = $true
 )
 
 $RepoOwner = "anshulyadav-git"
 $RepoName = "setupx-windows-setup"
 $RepoBranch = "main"
 
-$installScriptPath = Join-Path $PSScriptRoot "install.ps1"
+$installScriptPath = $null
+if (-not [string]::IsNullOrWhiteSpace($PSScriptRoot)) {
+    $installScriptPath = Join-Path $PSScriptRoot "install.ps1"
+}
 
 Write-Host "SetupX All Package Managers Installer" -ForegroundColor Cyan
 Write-Host "====================================" -ForegroundColor Cyan
 Write-Host ""
 
 try {
-    if (Test-Path -LiteralPath $installScriptPath) {
+    if ($installScriptPath -and (Test-Path -LiteralPath $installScriptPath)) {
         Write-Host "Using local install.ps1" -ForegroundColor Gray
         & $installScriptPath -InstallPath $InstallPath -Force:$Force
     }
