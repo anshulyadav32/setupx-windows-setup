@@ -104,18 +104,18 @@ try {
     # Create installation directory
     if (-not (Test-Path $InstallPath)) {
         New-Item -ItemType Directory -Path $InstallPath -Force | Out-Null
-        Write-Host "✓ Created installation directory" -ForegroundColor Green
+        Write-Host "[OK] Created installation directory" -ForegroundColor Green
     }
 
     # Copy all files to installation directory
     $destinationPath = $InstallPath
-    
+
     Write-Host "Copying files..." -ForegroundColor Yellow
-    
+
     # Copy all files and folders from source to destination.
     Copy-Item -Path (Join-Path $sourcePath "*") -Destination $destinationPath -Recurse -Force
-    
-    Write-Host "✓ Files copied successfully" -ForegroundColor Green
+
+    Write-Host "[OK] Files copied successfully" -ForegroundColor Green
 
     # Create setupx.ps1 in installation directory (main entry point)
     $setupxContent = @"
@@ -152,7 +152,7 @@ if (Test-Path `$mainScriptPath) {
 
     $setupxPath = Join-Path $InstallPath "setupx.ps1"
     $setupxContent | Out-File -FilePath $setupxPath -Encoding UTF8
-    Write-Host "✓ Created main entry point" -ForegroundColor Green
+    Write-Host "[OK] Created main entry point" -ForegroundColor Green
 
     # Create wsx.ps1 alias
     $wsxContent = @"
@@ -180,7 +180,7 @@ if (Test-Path `$setupxPath) {
 
     $wsxPath = Join-Path $InstallPath "wsx.ps1"
     $wsxContent | Out-File -FilePath $wsxPath -Encoding UTF8
-    Write-Host "✓ Created wsx alias" -ForegroundColor Green
+    Write-Host "[OK] Created wsx alias" -ForegroundColor Green
 
     # Add to PATH
     Write-Host "Adding SetupX to PATH..." -ForegroundColor Yellow
@@ -191,14 +191,14 @@ if (Test-Path `$setupxPath) {
     if ($currentPath -notlike "*$InstallPath*") {
         $newPath = $currentPath + ";" + $InstallPath
         [System.Environment]::SetEnvironmentVariable("PATH", $newPath, "User")
-        Write-Host "✓ Added to user PATH" -ForegroundColor Green
+        Write-Host "[OK] Added to user PATH" -ForegroundColor Green
     } else {
-        Write-Host "✓ Already in PATH" -ForegroundColor Green
+        Write-Host "[OK] Already in PATH" -ForegroundColor Green
     }
 
     # Update current session PATH
     $env:PATH += ";$InstallPath"
-    Write-Host "✓ Updated current session PATH" -ForegroundColor Green
+    Write-Host "[OK] Updated current session PATH" -ForegroundColor Green
 
     # Test installation
     Write-Host "`nTesting installation..." -ForegroundColor Yellow
@@ -208,16 +208,16 @@ if (Test-Path `$setupxPath) {
         try {
             & $testScript version 2>&1 | Out-Null
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "✓ Installation test successful" -ForegroundColor Green
+                Write-Host "[OK] Installation test successful" -ForegroundColor Green
             } else {
-                Write-Host "⚠ Installation test had issues but files are in place" -ForegroundColor Yellow
+                Write-Host "[WARN] Installation test had issues but files are in place" -ForegroundColor Yellow
             }
         } catch {
-            Write-Host "⚠ Installation test failed but files are in place" -ForegroundColor Yellow
+            Write-Host "[WARN] Installation test failed but files are in place" -ForegroundColor Yellow
         }
     }
 
-    Write-Host "`n🎉 SetupX Installation Complete!" -ForegroundColor Green
+    Write-Host "`nSetupX Installation Complete!" -ForegroundColor Green
     Write-Host "Installation path: $InstallPath" -ForegroundColor Cyan
     Write-Host "`nYou can now use SetupX with:" -ForegroundColor Yellow
     Write-Host "  setupx help" -ForegroundColor White
@@ -229,7 +229,7 @@ if (Test-Path `$setupxPath) {
     }
 
 } catch {
-    Write-Host "`n❌ Installation failed: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "`n[ERROR] Installation failed: $($_.Exception.Message)" -ForegroundColor Red
     Write-Host "Please check the error and try again." -ForegroundColor Yellow
     exit 1
 }

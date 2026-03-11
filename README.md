@@ -26,7 +26,7 @@ setupx help
 ### Available Commands (All in JSON)
 ```powershell
 # Main SetupX interface
-setupx install package-managers
+setupx pkgm
 setupx list
 setupx status
 setupx components web-development
@@ -112,7 +112,7 @@ setupx-windows-setup/
 setupx [command] [options]
 
 # Examples:
-setupx install package-managers
+setupx pkgm
 setupx list
 setupx status
 setupx components web-development
@@ -208,7 +208,7 @@ check-status
 
 ```powershell
 # Package Managers (Foundation - Install First!)
-setupx install package-managers
+setupx pkgm
 
 # Web Development Tools
 setupx install web-development
@@ -233,7 +233,7 @@ setupx install ai-development-tools
 
 **Full Stack Developer:**
 ```powershell
-setupx install package-managers
+setupx pkgm
 setupx install web-development
 setupx install backend-development
 setupx install common-development
@@ -241,14 +241,14 @@ setupx install common-development
 
 **Mobile Developer:**
 ```powershell
-setupx install package-managers
+setupx pkgm
 setupx install mobile-development
 setupx install common-development
 ```
 
 **Cloud Developer:**
 ```powershell
-setupx install package-managers
+setupx pkgm
 setupx install cloud-development
 setupx install backend-development
 setupx install common-development
@@ -256,7 +256,7 @@ setupx install common-development
 
 **AI Developer:**
 ```powershell
-setupx install package-managers
+setupx pkgm
 setupx install ai-development-tools
 setupx install web-development
 setupx install common-development
@@ -266,7 +266,7 @@ setupx install common-development
 
 - **package-managers**: Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip (✅ **Fully Working**)
   ```powershell
-  setupx install package-managers
+  setupx pkgm
   ```
 
 - **web-development**: Node.js, Browsers, React, Vue, Angular, Build Tools (✅ **Fully Working**)
@@ -326,7 +326,7 @@ The **package-managers** module is fully functional and includes all 20 package 
 
 **Install all package managers:**
 ```powershell
-setupx install package-managers
+setupx pkgm
 ```
 
 **Expected output:**
@@ -518,3 +518,4 @@ iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/
 ---
 
 **SetupX** - Making Windows development setup simple and modular! 🚀
+
