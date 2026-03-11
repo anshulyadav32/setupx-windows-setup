@@ -129,67 +129,105 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercont
 
 ## Direct One-Liner Link For Every Component
 
-Each line below uses your exact link style and then installs one specific component.
+Copy one block at a time.
 
+Chocolatey
 ```powershell
-# chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/choco.ps1 | iex
+```
 
-# scoop
+Scoop
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/scoop.ps1 | iex
+```
 
-# winget
+Winget
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/winget.ps1 | iex
+```
 
-# nvm
+NVM
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/nvm.ps1 | iex
+```
 
-# nodejs
+Node.js
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/nodejs.ps1 | iex
+```
 
-# npm
+NPM
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/npm.ps1 | iex
+```
 
-# yarn
+Yarn
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/yarn.ps1 | iex
+```
 
-# pnpm
+PNPM
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/pnpm.ps1 | iex
+```
 
-# bun
+Bun
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/bun.ps1 | iex
+```
 
-# pip
+Pip
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/pip.ps1 | iex
+```
 
-# pipx
+Pipx
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/pipx.ps1 | iex
+```
 
-# conda
+Conda
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/conda.ps1 | iex
+```
 
-# mamba
+Mamba
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/mamba.ps1 | iex
+```
 
-# cargo
+Cargo
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/cargo.ps1 | iex
+```
 
-# go
+Go
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/go.ps1 | iex
+```
 
-# composer
+Composer
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/composer.ps1 | iex
+```
 
-# gem
+Gem
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/gem.ps1 | iex
+```
 
-# dotnet-tool
+Dotnet Tool
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/dotnet-tool.ps1 | iex
+```
 
-# nuget
+Nuget
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/nuget.ps1 | iex
+```
 
-# vcpkg
+Vcpkg
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/pgkm/vcpkg.ps1 | iex
 ```
 
