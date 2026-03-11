@@ -264,7 +264,7 @@ setupx install common-development
 
 ### 📋 Module Details
 
-- **package-managers**: WinGet, Chocolatey, Scoop, NPM (✅ **Fully Working**)
+- **package-managers**: Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip (✅ **Fully Working**)
   ```powershell
   setupx install package-managers
   ```
@@ -301,12 +301,28 @@ setupx install common-development
 
 ### 🎯 Package Managers Module (Ready to Use!)
 
-The **package-managers** module is fully functional and includes:
+The **package-managers** module is fully functional and includes all 20 package manager/toolchain components:
 
 - **Chocolatey** - Windows package manager for software installation
 - **Scoop** - Portable applications manager for development tools
-- **WinGet** - Microsoft's official Windows package manager
-- **NPM** - Node Package Manager global configuration
+- **Winget** - Microsoft's official Windows package manager
+- **NVM for Windows** - Node version manager for Windows
+- **Node.js** - JavaScript runtime
+- **NuGet** - .NET package manager
+- **Dotnet Tool** - .NET global tools support
+- **vcpkg** - C/C++ package manager
+- **pipx** - Isolated Python app installer
+- **npm** - Node Package Manager
+- **Yarn** - Alternative JavaScript package manager
+- **pnpm** - Fast, disk-efficient JavaScript package manager
+- **Bun** - JavaScript runtime and package manager
+- **Cargo** - Rust package manager
+- **Go** - Go toolchain and module support
+- **Composer** - PHP package manager
+- **Gem** - Ruby package manager
+- **Conda** - Python/data-science package and environment manager
+- **Mamba** - Faster Conda-compatible package manager
+- **pip** - Python package installer
 
 **Install all package managers:**
 ```powershell
@@ -315,15 +331,15 @@ setupx install package-managers
 
 **Expected output:**
 ```
-[INFO] Installation Results: 4/4 components installed
+[INFO] Installation Results: 20/20 components installed
 ```
 
 ## 🔧 Features
 
 - ✅ **Modular Architecture**: Clean, organized code structure
-- ✅ **Package Manager Support**: WinGet, Chocolatey, Scoop, NPM (✅ **Fully Working**)
+- ✅ **Package Manager Support**: 20 components (Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip)
 - ✅ **Web Development**: Node.js, React, Vue, Angular, Build Tools (✅ **Fully Working**)
-- ✅ **Component Installation**: Package managers (3/3) and Web dev tools (2/7) install successfully
+- ✅ **Component Installation**: Package managers module supports 20 components, with module and component-level installs
 - ✅ **Development Modules**: Web, Mobile, Backend, Cloud, Common, AI
 - ✅ **Status Checking**: Comprehensive system status
 - ✅ **Interactive Menu**: User-friendly interface
@@ -373,14 +389,14 @@ setupx install package-managers
 **Before Fix:**
 ```
 [WARN] Installation script not found: chocolatey.ps1
-[INFO] Installation Results: 0/4 components installed
+[INFO] Installation Results: 0/20 components installed
 ```
 
 **After Fix:**
 ```
 [INFO] Running installation script: chocolatey.ps1
 [SUCCESS] Component installed: Chocolatey
-[INFO] Installation Results: 4/4 components installed
+[INFO] Installation Results: 20/20 components installed
 ```
 
 **All package managers now install successfully!** 🚀

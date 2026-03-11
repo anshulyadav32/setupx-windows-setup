@@ -7,10 +7,11 @@
   "installPath": "C:\\setupx",
   "logLevel": "INFO",
   "autoUpdate": true,
-  
   "cli": {
     "name": "setupx",
-    "aliases": ["wsx"],
+    "aliases": [
+      "wsx"
+    ],
     "banner": {
       "enabled": true,
       "title": "SetupX",
@@ -18,20 +19,32 @@
       "description": "JSON-Driven Architecture"
     }
   },
-  
   "paths": {
     "modules": "src/config/modules",
     "core": "src/core",
     "utils": "src/utils"
   },
-  
   "statusCheck": {
     "commonTools": [
       "chocolatey",
       "scoop",
       "winget",
       "nvm",
+      "nodejs",
+      "nuget",
+      "dotnet-tool",
+      "vcpkg",
+      "pipx",
       "npm",
+      "yarn",
+      "pnpm",
+      "bun",
+      "cargo",
+      "go",
+      "composer",
+      "gem",
+      "conda",
+      "mamba",
       "pip",
       "git",
       "gh",
@@ -44,13 +57,11 @@
       "powertoys",
       "whatsapp",
       "telegram",
-      "nodejs",
       "python",
       "docker",
       "vscode"
     ]
   },
-  
   "installation": {
     "installPath": "C:\\tools\\setupx",
     "executablePath": "C:\\tools\\setupx\\setupx.ps1",
@@ -60,11 +71,9 @@
       "command": "Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1' | Invoke-Expression"
     }
   },
-  
   "support": {
     "issues": "https://github.com/anshulyadav32/setupx-windows-setup/issues",
     "documentation": "https://github.com/anshulyadav32/setupx-windows-setup/wiki",
     "discussions": "https://github.com/anshulyadav32/setupx-windows-setup/discussions"
   }
 }
-
