@@ -23,6 +23,8 @@ cd setupx-windows-setup
 setupx help
 ```
 
+Need all package managers quickly? [Install all package managers](#install-all-package-managers).
+
 ### Available Commands (All in JSON)
 ```powershell
 # Main SetupX interface
@@ -324,7 +326,9 @@ The **package-managers** module is fully functional and includes all 20 package 
 - **Mamba** - Faster Conda-compatible package manager
 - **pip** - Python package installer
 
-**Install all package managers:**
+### Install All Package Managers
+
+Use this command to install every package manager in the module:
 ```powershell
 setupx pkgm
 ```
