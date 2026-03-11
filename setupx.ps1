@@ -27,6 +27,14 @@ function Resolve-ModuleAlias {
         return "web-development"
     }
 
+    if ($ModuleName -eq "aidev" -or $ModuleName -eq "aidve") {
+        return "ai-development-tools"
+    }
+
+    if ($ModuleName -eq "mdev" -or $ModuleName -eq "android-dev") {
+        return "mobile-development"
+    }
+
     return $ModuleName
 }
 
@@ -81,6 +89,8 @@ function Show-Help {
     Write-Host "    install-module <module>       Install all components in a module" -ForegroundColor White
     Write-Host "    install-managers              Install all package managers module components" -ForegroundColor White
     Write-Host "    wdev                          Install all web-development module components" -ForegroundColor White
+    Write-Host "    aidev                         Install all ai-development-tools module components" -ForegroundColor White
+    Write-Host "    mdev                          Install all mobile-development module components" -ForegroundColor White
     Write-Host "    list-module <module>          List components in a specific module" -ForegroundColor White
     Write-Host "    components <module>           Alias for list-module" -ForegroundColor White
     Write-Host "    install-component <m> <c>     Install a component from a specific module" -ForegroundColor White
@@ -99,6 +109,8 @@ function Show-Help {
     Write-Host "    sx check git                  # Check if Git is installed" -ForegroundColor DarkGray
     Write-Host "    sx install-module web-development  # Install all web dev tools" -ForegroundColor DarkGray
     Write-Host "    sx wdev                       # Install all web-development components" -ForegroundColor DarkGray
+    Write-Host "    sx aidev                      # Install all AI-development components" -ForegroundColor DarkGray
+    Write-Host "    sx mdev                       # Install all mobile-development components" -ForegroundColor DarkGray
     Write-Host "    sx list-module pgkm           # List package managers" -ForegroundColor DarkGray
     Write-Host "    sx pgkm                       # Install all package managers" -ForegroundColor DarkGray
     Write-Host "    sx quick-setup web-dev        # Install web dev preset" -ForegroundColor DarkGray
@@ -592,6 +604,14 @@ function Invoke-InstallWebDev {
     Invoke-InstallModule -ModuleName "wdev"
 }
 
+function Invoke-InstallAIDev {
+    Invoke-InstallModule -ModuleName "aidev"
+}
+
+function Invoke-InstallMobileDev {
+    Invoke-InstallModule -ModuleName "mdev"
+}
+
 # Main command router
 switch ($Command) {
     "help" { Show-Help }
@@ -604,6 +624,10 @@ switch ($Command) {
     "install" { Invoke-Install -ComponentName $Arguments[0] }
     "install-managers" { Invoke-InstallManagers }
     "wdev" { Invoke-InstallWebDev }
+    "aidev" { Invoke-InstallAIDev }
+    "aidve" { Invoke-InstallAIDev }
+    "mdev" { Invoke-InstallMobileDev }
+    "android-dev" { Invoke-InstallMobileDev }
     "pkgm" { Invoke-InstallManagers }
     "pgkm" { Invoke-InstallManagers }
     "remove" { Invoke-Remove -ComponentName $Arguments[0] }
