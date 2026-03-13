@@ -83,10 +83,10 @@ function CommandCard({ title, value, onCopy, copied }) {
   return (
     <article className="command-card">
       <h4>{title}</h4>
-      <pre>
+      <div className="command-inline">
         <code>{value}</code>
-      </pre>
-      <CopyButton value={value} copied={copied} onCopy={onCopy} />
+        <CopyButton value={value} copied={copied} onCopy={onCopy} />
+      </div>
     </article>
   )
 }

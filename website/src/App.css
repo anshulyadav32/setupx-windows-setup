@@ -122,6 +122,22 @@
   margin: 0;
 }
 
+.command-inline {
+  margin-top: 0.55rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: start;
+}
+
+.command-inline code {
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--line-soft);
+  background: rgba(3, 8, 17, 0.9);
+  padding: 0.62rem;
+}
+
 .feature-card p,
 .preset-card p,
 .faq-card p,
@@ -402,6 +418,14 @@ code {
   }
 
   .terminal-line .copy-btn {
+    justify-self: flex-start;
+  }
+
+  .command-inline {
+    grid-template-columns: 1fr;
+  }
+
+  .command-inline .copy-btn {
     justify-self: flex-start;
   }
 }
