@@ -113,8 +113,43 @@ function HomeView({
   copiedInstallLink,
   onCopyInstallLink,
 }) {
+  const installAllManagersCommand =
+    'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex'
+
   return (
     <>
+      <section className="panel">
+        <h2>sx - Modular Windows Development Setup</h2>
+        <p className="panel-copy">A clean, modular PowerShell tool for setting up Windows development environments.</p>
+        <h3 className="component-subtitle">About</h3>
+        <p className="panel-copy">Live Website: https://setupx.vercel.app</p>
+        <h3 className="component-subtitle">Quick Start</h3>
+        <p className="formula-label">One-Command Installation</p>
+        <div className="command-list">
+          <pre>
+            <code># Install sx with one command</code>
+          </pre>
+          <pre>
+            <code>{installOneLiner}</code>
+          </pre>
+        </div>
+        <p className="formula-label">One-Command Installation + Install All Package Managers</p>
+        <div className="command-list">
+          <pre>
+            <code># Install sx and all package managers with one script</code>
+          </pre>
+          <pre>
+            <code>{installAllManagersCommand}</code>
+          </pre>
+        </div>
+        <p className="formula-label">Manual equivalent</p>
+        <div className="command-list">
+          <pre>
+            <code>.\install.ps1; C:\\tools\\setupx\\sx.ps1 pgkm</code>
+          </pre>
+        </div>
+      </section>
+
       <section className="stats-grid">
         <article>
           <strong>9</strong>
