@@ -112,12 +112,21 @@ function HomeView({
   installOneLiner,
   copiedInstallLink,
   onCopyInstallLink,
+  readmeContent,
 }) {
   const installAllManagersCommand =
     'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex'
 
   return (
     <>
+      <section className="panel">
+        <h2>README.md</h2>
+        <p className="panel-copy">Website is synced with README content.</p>
+        <pre className="readme-pre">
+          <code>{readmeContent || 'Loading README...'}</code>
+        </pre>
+      </section>
+
       <section className="panel">
         <h2>sx - Modular Windows Development Setup</h2>
         <p className="panel-copy">A clean, modular PowerShell tool for setting up Windows development environments.</p>
@@ -376,6 +385,7 @@ function App() {
   const [routePath, setRoutePath] = useState(() => window.location.pathname)
   const [copyState, setCopyState] = useState({ command: '', status: 'idle' })
   const [copiedInstallLink, setCopiedInstallLink] = useState(false)
+  const [readmeContent, setReadmeContent] = useState('')
 
   const totalComponents = moduleCards.reduce((sum, module) => sum + module.components.length, 0)
   const routeModuleAlias = useMemo(() => getModuleAliasFromPath(routePath), [routePath])
@@ -401,6 +411,20 @@ function App() {
     window.addEventListener('popstate', handlePopState)
 
     return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  useEffect(() => {
+    const loadReadme = async () => {
+      try {
+        const response = await fetch('/README.md')
+        const text = await response.text()
+        setReadmeContent(text)
+      } catch {
+        setReadmeContent('Unable to load README.md content.')
+      }
+    }
+
+    loadReadme()
   }, [])
 
   const navigateToModule = (moduleAlias) => {
@@ -519,6 +543,7 @@ function App() {
           installOneLiner={installOneLiner}
           copiedInstallLink={copiedInstallLink}
           onCopyInstallLink={handleCopyInstallLink}
+          readmeContent={readmeContent}
         />
       )}
 
