@@ -256,6 +256,14 @@ function HomeView({
             <span>GitHub Repository</span>
             <small>anshulyadav-git/setupx-windows-setup</small>
           </a>
+          <a className="module-page-link" href="/scripts/install.ps1" target="_blank" rel="noreferrer">
+            <span>Install Script</span>
+            <small>/scripts/install.ps1</small>
+          </a>
+          <a className="module-page-link" href="/scripts/install-all-pkgm.ps1" target="_blank" rel="noreferrer">
+            <span>Install-All Package Managers Script</span>
+            <small>/scripts/install-all-pkgm.ps1</small>
+          </a>
         </div>
         <div className="command-list">
           <pre>
