@@ -1,0 +1,31 @@
+# DSCIENCE Module Guide
+
+Copy and run exactly (word to word).
+
+## Install All Data-Science Components
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx dscience
+```
+
+## Per Component One-Liner Links
+
+Jupyter
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/jupyter.ps1 | iex
+```
+
+TensorFlow
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/tensorflow.ps1 | iex
+```
+
+PyTorch
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/pytorch.ps1 | iex
+```
+
+Pandas
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/pandas.ps1 | iex
+```

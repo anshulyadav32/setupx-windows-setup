@@ -1,4 +1,4 @@
-# SetupX - Modular Windows Development Setup
+# sx - Modular Windows Development Setup
 
 A clean, modular PowerShell tool for setting up Windows development environments.
 
@@ -6,42 +6,55 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 ### One-Command Installation
 ```powershell
-# Install SetupX with one command
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+# Install sx with one command
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
+```
+
+### One-Command Installation + Install All Package Managers
+```powershell
+# Install sx and all package managers with one script
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
+```
+
+Manual equivalent:
+```powershell
+.\install.ps1; C:\\tools\\setupx\\sx.ps1 pgkm
 ```
 
 ### Manual Installation
 ```powershell
 # Clone the repository
-git clone https://github.com/anshulyadav32/setupx-windows-setup.git
+git clone https://github.com/anshulyadav-git/setupx-windows-setup.git
 cd setupx-windows-setup
 
 # Run the installer
 .\install.ps1
 
 # Test installation
-setupx help
+sx help
 ```
+
+Need all package managers quickly? [Install all package managers](#install-all-pgkm).
 
 ### Available Commands (All in JSON)
 ```powershell
-# Main SetupX interface
-setupx install package-managers
-setupx list
-setupx status
-setupx components web-development
+# Main sx interface
+sx pkgm
+sx list
+sx status
+sx components web-development
 
 # Direct module installation
-install-module package-managers
+install-module pgkm
 install-module web-development
 
 # Component installation
-install-component package-managers chocolatey
+install-component pgkm chocolatey
 install-component web-development nodejs
 
 # Testing commands
-test-module package-managers
-test-component package-managers chocolatey
+test-module pgkm
+test-component pgkm chocolatey
 check-status
 
 # Quick setup environments
@@ -73,13 +86,13 @@ quick-setup mobile-dev
 ### 🧪 Test Commands
 ```powershell
 # Test all package managers
-test-module package-managers
+test-module pgkm
 
 # Test web development tools
 test-module web-development
 
 # Test specific components
-test-component package-managers chocolatey
+test-component pgkm chocolatey
 test-component web-development nodejs
 
 # Check overall status
@@ -108,21 +121,21 @@ setupx-windows-setup/
 
 ### Core Commands
 ```powershell
-# Main SetupX interface
-setupx [command] [options]
+# Main sx interface
+sx [command] [options]
 
 # Examples:
-setupx install package-managers
-setupx list
-setupx status
-setupx components web-development
-setupx install-component package-managers chocolatey
+sx pkgm
+sx list
+sx status
+sx components web-development
+sx install-component pgkm chocolatey
 ```
 
 ### Module Management
 ```powershell
 # Install complete modules
-install-module package-managers
+install-module pgkm
 install-module web-development
 install-module mobile-development
 install-module backend-development
@@ -140,9 +153,9 @@ install-module wsl-linux
 ### Component Installation
 ```powershell
 # Install specific components
-install-component package-managers chocolatey
-install-component package-managers scoop
-install-component package-managers winget
+install-component pgkm chocolatey
+install-component pgkm scoop
+install-component pgkm winget
 install-component web-development nodejs
 install-component web-development yarn
 install-component web-development browsers
@@ -155,11 +168,11 @@ install-component web-development webpack-tools
 ### Testing & Status
 ```powershell
 # Test modules
-test-module package-managers
+test-module pgkm
 test-module web-development
 
 # Test components
-test-component package-managers chocolatey
+test-component pgkm chocolatey
 test-component web-development nodejs
 
 # Check system status
@@ -190,15 +203,15 @@ list-modules
 list-components web-development
 
 # Install everything for web development
-install-module package-managers
+install-module pgkm
 install-module web-development
 
 # Install specific tools
-install-component package-managers chocolatey
+install-component pgkm chocolatey
 install-component web-development nodejs
 
 # Test your installation
-test-module package-managers
+test-module pgkm
 check-status
 ```
 
@@ -208,129 +221,147 @@ check-status
 
 ```powershell
 # Package Managers (Foundation - Install First!)
-setupx install package-managers
+sx pkgm
 
 # Web Development Tools
-setupx install web-development
+sx install web-development
 
 # Mobile Development Tools  
-setupx install mobile-development
+sx install mobile-development
 
 # Backend Development Tools
-setupx install backend-development
+sx install backend-development
 
 # Cloud Development Tools
-setupx install cloud-development
+sx install cloud-development
 
 # Common Development Tools
-setupx install common-development
+sx install common-development
 
 # AI Development Tools
-setupx install ai-development-tools
+sx install ai-development-tools
 ```
 
 ### 🚀 Quick Installation Workflows
 
 **Full Stack Developer:**
 ```powershell
-setupx install package-managers
-setupx install web-development
-setupx install backend-development
-setupx install common-development
+sx pkgm
+sx install web-development
+sx install backend-development
+sx install common-development
 ```
 
 **Mobile Developer:**
 ```powershell
-setupx install package-managers
-setupx install mobile-development
-setupx install common-development
+sx pkgm
+sx install mobile-development
+sx install common-development
 ```
 
 **Cloud Developer:**
 ```powershell
-setupx install package-managers
-setupx install cloud-development
-setupx install backend-development
-setupx install common-development
+sx pkgm
+sx install cloud-development
+sx install backend-development
+sx install common-development
 ```
 
 **AI Developer:**
 ```powershell
-setupx install package-managers
-setupx install ai-development-tools
-setupx install web-development
-setupx install common-development
+sx pkgm
+sx install ai-development-tools
+sx install web-development
+sx install common-development
 ```
 
 ### 📋 Module Details
 
-- **package-managers**: WinGet, Chocolatey, Scoop, NPM (✅ **Fully Working**)
+- **pgkm**: Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip (✅ **Fully Working**)
   ```powershell
-  setupx install package-managers
+  sx pkgm
   ```
 
 - **web-development**: Node.js, Browsers, React, Vue, Angular, Build Tools (✅ **Fully Working**)
   ```powershell
-  setupx install web-development
+  sx install web-development
   ```
 
 - **mobile-development**: Flutter, Android Studio, Xcode
   ```powershell
-  setupx install mobile-development
+  sx install mobile-development
   ```
 
 - **backend-development**: Python, Node.js, Docker, PostgreSQL
   ```powershell
-  setupx install backend-development
+  sx install backend-development
   ```
 
 - **cloud-development**: AWS CLI, Azure CLI, Docker, Kubernetes
   ```powershell
-  setupx install cloud-development
+  sx install cloud-development
   ```
 
 - **common-development**: Git, VS Code, PowerShell, Terminal
   ```powershell
-  setupx install common-development
+  sx install common-development
   ```
 
 - **ai-development-tools**: Modern AI-powered development tools
   ```powershell
-  setupx install ai-development-tools
+  sx install ai-development-tools
   ```
 
 ### 🎯 Package Managers Module (Ready to Use!)
 
-The **package-managers** module is fully functional and includes:
+The **pgkm** module is fully functional and includes all 20 package manager/toolchain components:
 
 - **Chocolatey** - Windows package manager for software installation
 - **Scoop** - Portable applications manager for development tools
-- **WinGet** - Microsoft's official Windows package manager
-- **NPM** - Node Package Manager global configuration
+- **Winget** - Microsoft's official Windows package manager
+- **NVM for Windows** - Node version manager for Windows
+- **Node.js** - JavaScript runtime
+- **NuGet** - .NET package manager
+- **Dotnet Tool** - .NET global tools support
+- **vcpkg** - C/C++ package manager
+- **pipx** - Isolated Python app installer
+- **npm** - Node Package Manager
+- **Yarn** - Alternative JavaScript package manager
+- **pnpm** - Fast, disk-efficient JavaScript package manager
+- **Bun** - JavaScript runtime and package manager
+- **Cargo** - Rust package manager
+- **Go** - Go toolchain and module support
+- **Composer** - PHP package manager
+- **Gem** - Ruby package manager
+- **Conda** - Python/data-science package and environment manager
+- **Mamba** - Faster Conda-compatible package manager
+- **pip** - Python package installer
 
-**Install all package managers:**
+### Install All Package Managers
+
+Use this command to install every package manager in the module:
 ```powershell
-setupx install package-managers
+sx pkgm
 ```
 
 **Expected output:**
 ```
-[INFO] Installation Results: 4/4 components installed
+[INFO] Installation Results: 20/20 components installed
 ```
 
 ## 🔧 Features
 
 - ✅ **Modular Architecture**: Clean, organized code structure
-- ✅ **Package Manager Support**: WinGet, Chocolatey, Scoop, NPM (✅ **Fully Working**)
+- ✅ **Package Manager Support**: 20 components (Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip)
 - ✅ **Web Development**: Node.js, React, Vue, Angular, Build Tools (✅ **Fully Working**)
-- ✅ **Component Installation**: Package managers (3/3) and Web dev tools (2/7) install successfully
+- ✅ **Component Installation**: Package managers module supports 20 components, with module and component-level installs
 - ✅ **Development Modules**: Web, Mobile, Backend, Cloud, Common, AI
 - ✅ **Status Checking**: Comprehensive system status
 - ✅ **Interactive Menu**: User-friendly interface
 - ✅ **Error Handling**: Robust error handling and logging
 - ✅ **One-Command Install**: Single `install.ps1` downloads everything
 - ✅ **Force Mode**: `-Force` parameter for automated installations
-- ✅ **Existing File Detection**: Handles `C:\setupx` conflicts gracefully
+- ✅ **Existing File Detection**: Handles `C:\sx` conflicts gracefully
 - ✅ **Clean Structure**: Minimal, maintainable codebase
 - ✅ **CLI Syntax Fixed**: Resolved PowerShell parameter issues
 
@@ -353,7 +384,7 @@ setupx install package-managers
 
 ### Standard Installation
 - Downloads all files from GitHub
-- Asks for confirmation if `C:\setupx` exists
+- Asks for confirmation if `C:\sx` exists
 - Safe for first-time installations
 
 ### Force Installation
@@ -373,14 +404,14 @@ setupx install package-managers
 **Before Fix:**
 ```
 [WARN] Installation script not found: chocolatey.ps1
-[INFO] Installation Results: 0/4 components installed
+[INFO] Installation Results: 0/20 components installed
 ```
 
 **After Fix:**
 ```
 [INFO] Running installation script: chocolatey.ps1
 [SUCCESS] Component installed: Chocolatey
-[INFO] Installation Results: 4/4 components installed
+[INFO] Installation Results: 20/20 components installed
 ```
 
 **All package managers now install successfully!** 🚀
@@ -411,7 +442,7 @@ setupx install package-managers
 
 **Install web development tools:**
 ```powershell
-setupx install web-development
+sx install web-development
 ```
 
 **Expected output:**
@@ -453,10 +484,10 @@ MIT License - see LICENSE file for details
 - **Problem**: Using old `one-cmd-install.ps1` URL
 - **Solution**: Use the new `install.ps1` URL:
   ```powershell
-  Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | Invoke-Expression
+  Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | Invoke-Expression
   ```
 
-**❌ "setupx command not found"**
+**❌ "sx command not found"**
 - **Problem**: PATH not updated in current session
 - **Solution**: Restart PowerShell or run:
   ```powershell
@@ -467,14 +498,14 @@ MIT License - see LICENSE file for details
 - **Problem**: Installation didn't complete properly
 - **Solution**: Reinstall with force mode:
   ```powershell
-  iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+  iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex -Force
   ```
 
 **❌ "Installation script not found" errors**
 - **Problem**: Component scripts not downloaded properly
 - **Solution**: Use the latest install.ps1 (now fixed):
   ```powershell
-  iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+  iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex -Force
   ```
 
 **❌ Emoji parsing errors**
@@ -485,20 +516,23 @@ MIT License - see LICENSE file for details
 
 **✅ Recommended (Latest)**
 ```powershell
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
 **✅ Force Installation (No Prompts)**
 ```powershell
-iwr https://raw.githubusercontent.com/anshulyadav32/setupx-windows-setup/main/install.ps1 | iex -Force
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex -Force
 ```
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/anshulyadav32/setupx-windows-setup/issues)
-- **Documentation**: [GitHub Wiki](https://github.com/anshulyadav32/setupx-windows-setup/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/anshulyadav32/setupx-windows-setup/discussions)
+- **Issues**: [GitHub Issues](https://github.com/anshulyadav-git/setupx-windows-setup/issues)
+- **Documentation**: [GitHub Wiki](https://github.com/anshulyadav-git/setupx-windows-setup/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/anshulyadav-git/setupx-windows-setup/discussions)
 
 ---
 
-**SetupX** - Making Windows development setup simple and modular! 🚀
+**sx** - Making Windows development setup simple and modular! 🚀
+
+
+

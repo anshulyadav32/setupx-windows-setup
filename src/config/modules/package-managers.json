@@ -1,7 +1,7 @@
 {
   "name": "package-managers",
   "displayName": "Package Managers",
-  "description": "Essential Windows package managers: Chocolatey, Scoop, and WinGet",
+  "description": "Structured combined package manager definitions from SetupX and docker-choco-installer",
   "category": "foundation",
   "priority": 1,
   "status": "fully-working",
@@ -9,55 +9,65 @@
     "chocolatey": {
       "name": "chocolatey",
       "displayName": "Chocolatey",
-      "description": "Community package manager for Windows",
+      "description": "Combined package manager definition for Chocolatey",
       "installMethod": "powershell",
-      "website": "https://chocolatey.org",
-      "status": "working",
+      "website": "https://community.chocolatey.org",
+      "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
-        "remove": "Remove-Item -Path \"$env:ChocolateyInstall\" -Recurse -Force",
-        "update": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*choco.exe' -and (Test-Path $_) } | ForEach-Object { & $_ upgrade chocolatey -y; break }",
-        "check": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*choco.exe' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "verify": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*lib' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "test": "Get-DynamicPaths -ToolType Chocolatey | Where-Object { $_ -like '*choco.exe' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
-      }
+        "install": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+        "update": "choco upgrade chocolatey -y --no-progress",
+        "check": "choco --version",
+        "verify": "choco --version",
+        "test": "choco --version",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall chocolatey -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^chocolatey\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
     },
     "scoop": {
       "name": "scoop",
       "displayName": "Scoop",
-      "description": "Portable applications manager for development tools",
+      "description": "Combined package manager definition for Scoop",
       "installMethod": "powershell",
       "website": "https://scoop.sh",
-      "status": "working",
+      "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "if (Get-Command scoop -ErrorAction SilentlyContinue) { Write-Host 'Scoop is already installed.' } else { iwr -useb get.scoop.sh | iex }",
-        "remove": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | ForEach-Object { & $_ uninstall scoop; break }",
-        "update": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | ForEach-Object { & $_ update; break }",
-        "check": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "verify": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*apps' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "test": "Get-DynamicPaths -ToolType Scoop | Where-Object { $_ -like '*scoop.ps1' -and (Test-Path $_) } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
-      }
+        "install": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression",
+        "update": "if (Get-Command scoop -ErrorAction SilentlyContinue) { scoop update } elseif (Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") { & \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\" update } else { Write-Host 'scoop not available for update' }",
+        "check": "if (Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") { Write-Host 'scoop-found' } elseif (Get-Command scoop -ErrorAction SilentlyContinue) { Write-Host 'scoop-command-found' } else { throw 'scoop not found' }",
+        "verify": "(Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") -or [bool](Get-Command scoop -ErrorAction SilentlyContinue)",
+        "test": "if (Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") { Write-Host 'scoop-found' } elseif (Get-Command scoop -ErrorAction SilentlyContinue) { Write-Host 'scoop-command-found' } else { throw 'scoop not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "if (Get-Command scoop -ErrorAction SilentlyContinue) { scoop uninstall scoop } else { Write-Host 'scoop not found' }",
+        "outdated": "$true"
+      },
+      "adminRequired": false,
+      "source": "data/win.json"
     },
     "winget": {
       "name": "winget",
-      "displayName": "WinGet",
-      "description": "Microsoft's official Windows package manager",
-      "installMethod": "microsoft-store",
-      "website": "https://docs.microsoft.com/en-us/windows/package-manager/",
-      "status": "working",
+      "displayName": "Winget",
+      "description": "Combined package manager definition for Winget",
+      "installMethod": "powershell",
+      "website": "https://learn.microsoft.com/windows/package-manager/winget/",
+      "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "if (Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Select-Object -First 1) { Write-Host 'WinGet is already installed.' } else { Write-Host 'WinGet (App Installer) must be installed from Microsoft Store. Please install \"App Installer\" to get winget.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 }",
-        "check": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "verify": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "test": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | Measure-Object | Select-Object -ExpandProperty Count | Where-Object { $_ -gt 0 }",
-        "update": "Get-DynamicPaths -ToolType WinGet | Where-Object { Test-Path $_ } | ForEach-Object { & $_ upgrade --all; break }",
-        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
-      }
+        "install": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping install'; } else { choco install winget-cli -y --no-progress }",
+        "update": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping update'; } else { winget upgrade --all --accept-package-agreements --accept-source-agreements --disable-interactivity }",
+        "check": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping check'; } else { winget --version }",
+        "verify": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { $true } else { [bool](Get-Command winget -ErrorAction SilentlyContinue) }",
+        "test": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping check'; } else { winget --version }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "Write-Host 'winget is managed by App Installer; remove App Installer to remove winget.' -ForegroundColor Yellow",
+        "outdated": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { $false } else { ((winget upgrade --disable-interactivity 2>$null | Select-String -Pattern '^\\S+\\s+\\S+\\s+\\S+\\s+\\S+').Length -gt 0) }"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
     },
     "nvm": {
       "name": "nvm",
@@ -95,42 +105,342 @@
         "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
       }
     },
-    "npm": {
-      "name": "npm",
-      "displayName": "NPM",
-      "description": "Node package manager (bundled with Node.js)",
+    "nuget": {
+      "name": "nuget",
+      "displayName": "Nuget",
+      "description": "Combined package manager definition for Nuget",
       "installMethod": "powershell",
-      "website": "https://www.npmjs.com/",
+      "website": "https://www.nuget.org",
       "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "if (Get-Command npm -ErrorAction SilentlyContinue) { npm install -g npm@latest } else { if (Get-Command node -ErrorAction SilentlyContinue) { npm install -g npm@latest } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs-lts -y } else { Write-Host 'Node.js not found and Chocolatey not available. Cannot install npm.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 } }",
-        "remove": "Write-Host 'npm is part of Node.js. Remove Node.js to remove npm.' -ForegroundColor Yellow",
-        "update": "if (Get-Command npm -ErrorAction SilentlyContinue) { npm install -g npm@latest }",
-        "check": "if (Get-Command npm -ErrorAction SilentlyContinue) { 1 } else { 0 }",
+        "install": "choco install nuget.commandline -y --no-progress",
+        "update": "choco upgrade nuget.commandline -y --no-progress",
+        "check": "if (Get-Command nuget -ErrorAction SilentlyContinue) { nuget help | Out-Null } elseif (((choco list --local-only --exact nuget.commandline 2>$null) -match '^nuget\\.commandline\\|').Length -gt 0) { Write-Host 'nuget-installed' } else { throw 'nuget not found' }",
+        "verify": "if (Get-Command nuget -ErrorAction SilentlyContinue) { nuget help | Out-Null } elseif (((choco list --local-only --exact nuget.commandline 2>$null) -match '^nuget\\.commandline\\|').Length -gt 0) { Write-Host 'nuget-installed' } else { throw 'nuget not found' }",
+        "test": "if (Get-Command nuget -ErrorAction SilentlyContinue) { nuget help | Out-Null } elseif (((choco list --local-only --exact nuget.commandline 2>$null) -match '^nuget\\.commandline\\|').Length -gt 0) { Write-Host 'nuget-installed' } else { throw 'nuget not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall nuget.commandline -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^nuget.commandline\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "dotnet-tool": {
+      "name": "dotnet-tool",
+      "displayName": "Dotnet Tool",
+      "description": "Combined package manager definition for Dotnet Tool",
+      "installMethod": "powershell",
+      "website": "https://learn.microsoft.com/dotnet/core/tools/",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install dotnet-sdk -y --no-progress",
+        "update": "choco upgrade dotnet-sdk -y --no-progress",
+        "check": "if (Get-Command dotnet -ErrorAction SilentlyContinue) { dotnet --version } elseif (Test-Path \"$env:ProgramFiles\\dotnet\\dotnet.exe\") { Write-Host 'dotnet-found' } elseif (((choco list --local-only --exact dotnet-sdk 2>$null) -match '^dotnet-sdk\\|').Length -gt 0) { Write-Host 'dotnet-sdk-installed' } else { throw 'dotnet not found' }",
+        "verify": "if (Get-Command dotnet -ErrorAction SilentlyContinue) { dotnet --version } elseif (Test-Path \"$env:ProgramFiles\\dotnet\\dotnet.exe\") { Write-Host 'dotnet-found' } elseif (((choco list --local-only --exact dotnet-sdk 2>$null) -match '^dotnet-sdk\\|').Length -gt 0) { Write-Host 'dotnet-sdk-installed' } else { throw 'dotnet not found' }",
+        "test": "if (Get-Command dotnet -ErrorAction SilentlyContinue) { dotnet --version } elseif (Test-Path \"$env:ProgramFiles\\dotnet\\dotnet.exe\") { Write-Host 'dotnet-found' } elseif (((choco list --local-only --exact dotnet-sdk 2>$null) -match '^dotnet-sdk\\|').Length -gt 0) { Write-Host 'dotnet-sdk-installed' } else { throw 'dotnet not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall dotnet-sdk -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^dotnet-sdk\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "vcpkg": {
+      "name": "vcpkg",
+      "displayName": "Vcpkg",
+      "description": "Combined package manager definition for Vcpkg",
+      "installMethod": "powershell",
+      "website": "https://github.com/microsoft/vcpkg",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "$vcpkgCmd = Get-Command vcpkg -ErrorAction SilentlyContinue; if ($vcpkgCmd) { Write-Host 'vcpkg-command-found' } elseif ((Get-Command winget -ErrorAction SilentlyContinue) -and ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -ge 18362)) { winget install --id Microsoft.Vcpkg -e --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command git -ErrorAction SilentlyContinue) { $vcpkgRoot = Join-Path $env:LOCALAPPDATA 'vcpkg'; if (-not (Test-Path $vcpkgRoot)) { git clone https://github.com/microsoft/vcpkg $vcpkgRoot }; & (Join-Path $vcpkgRoot 'bootstrap-vcpkg.bat') -disableMetrics; if (Test-Path (Join-Path $vcpkgRoot 'vcpkg.exe')) { $env:Path += ';' + $vcpkgRoot } else { throw 'vcpkg bootstrap failed' } } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install vcpkg -y --no-progress } else { throw 'No supported installer found for vcpkg' }",
+        "update": "$vcpkgCmd = Get-Command vcpkg -ErrorAction SilentlyContinue; if ($vcpkgCmd) { & $vcpkgCmd.Source update } elseif (Test-Path (Join-Path $env:LOCALAPPDATA 'vcpkg\\vcpkg.exe')) { & (Join-Path $env:LOCALAPPDATA 'vcpkg\\vcpkg.exe') update } elseif ((Get-Command winget -ErrorAction SilentlyContinue) -and ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -ge 18362)) { winget upgrade --id Microsoft.Vcpkg -e --accept-package-agreements --accept-source-agreements --disable-interactivity } else { throw 'vcpkg not found for update' }",
+        "check": "if (Get-Command vcpkg -ErrorAction SilentlyContinue) { Write-Host 'vcpkg-command-found' } elseif (Test-Path \"$env:LOCALAPPDATA\\vcpkg\\vcpkg.exe\") { Write-Host 'vcpkg-local-found' } elseif (Test-Path \"$env:ProgramFiles\\vcpkg\\vcpkg.exe\") { Write-Host 'vcpkg-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\bin\\vcpkg.exe\") { Write-Host 'vcpkg-found' } elseif ((Get-ChildItem \"$env:ProgramData\\chocolatey\\lib\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'vcpkg*' } | Select-Object -First 1)) { Write-Host 'vcpkg-installed' } else { throw 'vcpkg not found' }",
+        "verify": "(Test-Path \"$env:LOCALAPPDATA\\vcpkg\\vcpkg.exe\") -or (Test-Path \"$env:ProgramFiles\\vcpkg\\vcpkg.exe\") -or (Test-Path \"$env:ProgramData\\chocolatey\\bin\\vcpkg.exe\") -or [bool](Get-Command vcpkg -ErrorAction SilentlyContinue) -or ((Get-ChildItem \"$env:ProgramData\\chocolatey\\lib\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'vcpkg*' } | Select-Object -First 1) -ne $null)",
+        "test": "if (Get-Command vcpkg -ErrorAction SilentlyContinue) { Write-Host 'vcpkg-command-found' } elseif (Test-Path \"$env:LOCALAPPDATA\\vcpkg\\vcpkg.exe\") { Write-Host 'vcpkg-local-found' } elseif (Test-Path \"$env:ProgramFiles\\vcpkg\\vcpkg.exe\") { Write-Host 'vcpkg-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\bin\\vcpkg.exe\") { Write-Host 'vcpkg-found' } elseif ((Get-ChildItem \"$env:ProgramData\\chocolatey\\lib\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'vcpkg*' } | Select-Object -First 1)) { Write-Host 'vcpkg-installed' } else { throw 'vcpkg not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "if (Get-Command winget -ErrorAction SilentlyContinue) { winget uninstall --id Microsoft.Vcpkg -e --disable-interactivity --accept-source-agreements --accept-package-agreements } elseif (Test-Path (Join-Path $env:LOCALAPPDATA 'vcpkg')) { Remove-Item -Path (Join-Path $env:LOCALAPPDATA 'vcpkg') -Recurse -Force } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco uninstall vcpkg -y --no-progress } else { Write-Host 'vcpkg not found' }",
+        "outdated": "$false"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "pipx": {
+      "name": "pipx",
+      "displayName": "Pipx",
+      "description": "Combined package manager definition for Pipx",
+      "installMethod": "powershell",
+      "website": "https://pypa.github.io/pipx/",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "python -m pip install --user pipx; python -m pipx ensurepath",
+        "update": "python -m pip install --user --upgrade pipx",
+        "check": "if (Get-Command pipx -ErrorAction SilentlyContinue) { pipx --version } elseif (Test-Path \"$env:USERPROFILE\\.local\\bin\\pipx.exe\") { Write-Host 'pipx-found' } elseif (Test-Path \"$env:APPDATA\\Python\\Python311\\Scripts\\pipx.exe\") { Write-Host 'pipx-found' } elseif (Test-Path \"$env:APPDATA\\Python\\Python314\\Scripts\\pipx.exe\") { Write-Host 'pipx-found' } elseif (((python -m pip show pipx 2>$null | Out-String).Trim().Length -gt 0)) { Write-Host 'pipx-installed' } else { throw 'pipx not found' }",
+        "verify": "if (Get-Command pipx -ErrorAction SilentlyContinue) { pipx --version } elseif (Test-Path \"$env:USERPROFILE\\.local\\bin\\pipx.exe\") { Write-Host 'pipx-found' } elseif (Test-Path \"$env:APPDATA\\Python\\Python311\\Scripts\\pipx.exe\") { Write-Host 'pipx-found' } elseif (Test-Path \"$env:APPDATA\\Python\\Python314\\Scripts\\pipx.exe\") { Write-Host 'pipx-found' } elseif (((python -m pip show pipx 2>$null | Out-String).Trim().Length -gt 0)) { Write-Host 'pipx-installed' } else { throw 'pipx not found' }",
+        "test": "if (Get-Command pipx -ErrorAction SilentlyContinue) { pipx --version } elseif (Test-Path \"$env:USERPROFILE\\.local\\bin\\pipx.exe\") { Write-Host 'pipx-found' } elseif (Test-Path \"$env:APPDATA\\Python\\Python311\\Scripts\\pipx.exe\") { Write-Host 'pipx-found' } elseif (Test-Path \"$env:APPDATA\\Python\\Python314\\Scripts\\pipx.exe\") { Write-Host 'pipx-found' } elseif (((python -m pip show pipx 2>$null | Out-String).Trim().Length -gt 0)) { Write-Host 'pipx-installed' } else { throw 'pipx not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "python -m pip uninstall pipx -y",
+        "outdated": "$false"
+      },
+      "adminRequired": false,
+      "source": "data/win.json"
+    },
+    "npm": {
+      "name": "npm",
+      "displayName": "Npm",
+      "description": "Combined package manager definition for Npm",
+      "installMethod": "powershell",
+      "website": "https://www.npmjs.com",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install nodejs-lts -y --no-progress",
+        "update": "npm install -g npm",
+        "check": "npm --version",
         "verify": "npm --version",
         "test": "npm --version",
-        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
-      }
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "Write-Host 'npm is bundled with Node.js. Remove Node.js to remove npm.' -ForegroundColor Yellow",
+        "outdated": "((npm outdated -g npm --json 2>$null | Out-String).Trim().Length -gt 0)"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "yarn": {
+      "name": "yarn",
+      "displayName": "Yarn",
+      "description": "Combined package manager definition for Yarn",
+      "installMethod": "powershell",
+      "website": "https://yarnpkg.com",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "npm install -g yarn",
+        "update": "npm install -g yarn",
+        "check": "if (Get-Command yarn -ErrorAction SilentlyContinue) { yarn --version } elseif (Test-Path \"$env:APPDATA\\npm\\yarn.cmd\") { Write-Host 'yarn-found' } elseif (((npm list -g --depth=0 yarn 2>$null | Out-String) -match ' yarn@').Length -gt 0) { Write-Host 'yarn-installed' } else { throw 'yarn not found' }",
+        "verify": "if (Get-Command yarn -ErrorAction SilentlyContinue) { yarn --version } elseif (Test-Path \"$env:APPDATA\\npm\\yarn.cmd\") { Write-Host 'yarn-found' } elseif (((npm list -g --depth=0 yarn 2>$null | Out-String) -match ' yarn@').Length -gt 0) { Write-Host 'yarn-installed' } else { throw 'yarn not found' }",
+        "test": "if (Get-Command yarn -ErrorAction SilentlyContinue) { yarn --version } elseif (Test-Path \"$env:APPDATA\\npm\\yarn.cmd\") { Write-Host 'yarn-found' } elseif (((npm list -g --depth=0 yarn 2>$null | Out-String) -match ' yarn@').Length -gt 0) { Write-Host 'yarn-installed' } else { throw 'yarn not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "npm uninstall -g yarn",
+        "outdated": "$false"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "pnpm": {
+      "name": "pnpm",
+      "displayName": "Pnpm",
+      "description": "Combined package manager definition for Pnpm",
+      "installMethod": "powershell",
+      "website": "https://pnpm.io",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "npm install -g pnpm",
+        "update": "npm install -g pnpm",
+        "check": "if (Get-Command pnpm -ErrorAction SilentlyContinue) { pnpm --version } elseif (Test-Path \"$env:APPDATA\\npm\\pnpm.cmd\") { Write-Host 'pnpm-found' } elseif (((npm list -g --depth=0 pnpm 2>$null | Out-String) -match ' pnpm@').Length -gt 0) { Write-Host 'pnpm-installed' } else { throw 'pnpm not found' }",
+        "verify": "if (Get-Command pnpm -ErrorAction SilentlyContinue) { pnpm --version } elseif (Test-Path \"$env:APPDATA\\npm\\pnpm.cmd\") { Write-Host 'pnpm-found' } elseif (((npm list -g --depth=0 pnpm 2>$null | Out-String) -match ' pnpm@').Length -gt 0) { Write-Host 'pnpm-installed' } else { throw 'pnpm not found' }",
+        "test": "if (Get-Command pnpm -ErrorAction SilentlyContinue) { pnpm --version } elseif (Test-Path \"$env:APPDATA\\npm\\pnpm.cmd\") { Write-Host 'pnpm-found' } elseif (((npm list -g --depth=0 pnpm 2>$null | Out-String) -match ' pnpm@').Length -gt 0) { Write-Host 'pnpm-installed' } else { throw 'pnpm not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "npm uninstall -g pnpm",
+        "outdated": "$false"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "bun": {
+      "name": "bun",
+      "displayName": "Bun",
+      "description": "Combined package manager definition for Bun",
+      "installMethod": "powershell",
+      "website": "https://bun.sh",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install bun -y --no-progress",
+        "update": "choco upgrade bun -y --no-progress",
+        "check": "bun --version",
+        "verify": "bun --version",
+        "test": "bun --version",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall bun -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^bun\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "cargo": {
+      "name": "cargo",
+      "displayName": "Cargo",
+      "description": "Combined package manager definition for Cargo",
+      "installMethod": "powershell",
+      "website": "https://doc.rust-lang.org/cargo/",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install rustup.install -y --no-progress",
+        "update": "choco upgrade rustup.install -y --no-progress",
+        "check": "if (Get-Command cargo -ErrorAction SilentlyContinue) { Write-Host 'cargo-command-found' } elseif (Test-Path \"$env:USERPROFILE\\.cargo\\bin\\cargo.exe\") { Write-Host 'cargo-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\rustup.install\") { Write-Host 'rustup-installed' } else { throw 'cargo not found' }",
+        "verify": "(Test-Path \"$env:USERPROFILE\\.cargo\\bin\\cargo.exe\") -or [bool](Get-Command cargo -ErrorAction SilentlyContinue)",
+        "test": "if (Get-Command cargo -ErrorAction SilentlyContinue) { Write-Host 'cargo-command-found' } elseif (Test-Path \"$env:USERPROFILE\\.cargo\\bin\\cargo.exe\") { Write-Host 'cargo-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\rustup.install\") { Write-Host 'rustup-installed' } else { throw 'cargo not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall rustup.install -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^rustup.install\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "go": {
+      "name": "go",
+      "displayName": "Go",
+      "description": "Combined package manager definition for Go",
+      "installMethod": "powershell",
+      "website": "https://go.dev",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install golang -y --no-progress",
+        "update": "choco upgrade golang -y --no-progress",
+        "check": "if (Get-Command go -ErrorAction SilentlyContinue) { go version } elseif (Test-Path \"$env:ProgramFiles\\Go\\bin\\go.exe\") { Write-Host 'go-found' } elseif (((choco list --local-only --exact golang 2>$null) -match '^golang\\|').Length -gt 0) { Write-Host 'golang-installed' } else { throw 'go not found' }",
+        "verify": "if (Get-Command go -ErrorAction SilentlyContinue) { go version } elseif (Test-Path \"$env:ProgramFiles\\Go\\bin\\go.exe\") { Write-Host 'go-found' } elseif (((choco list --local-only --exact golang 2>$null) -match '^golang\\|').Length -gt 0) { Write-Host 'golang-installed' } else { throw 'go not found' }",
+        "test": "if (Get-Command go -ErrorAction SilentlyContinue) { go version } elseif (Test-Path \"$env:ProgramFiles\\Go\\bin\\go.exe\") { Write-Host 'go-found' } elseif (((choco list --local-only --exact golang 2>$null) -match '^golang\\|').Length -gt 0) { Write-Host 'golang-installed' } else { throw 'go not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall golang -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^golang\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "composer": {
+      "name": "composer",
+      "displayName": "Composer",
+      "description": "Combined package manager definition for Composer",
+      "installMethod": "powershell",
+      "website": "https://getcomposer.org",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install composer -y --no-progress",
+        "update": "choco upgrade composer -y --no-progress",
+        "check": "if (Get-Command composer -ErrorAction SilentlyContinue) { Write-Host 'composer-command-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\bin\\composer.bat\") { Write-Host 'composer-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\composer\") { Write-Host 'composer-installed' } else { throw 'composer not found' }",
+        "verify": "(Test-Path \"$env:ProgramData\\chocolatey\\bin\\composer.bat\") -or [bool](Get-Command composer -ErrorAction SilentlyContinue)",
+        "test": "if (Get-Command composer -ErrorAction SilentlyContinue) { Write-Host 'composer-command-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\bin\\composer.bat\") { Write-Host 'composer-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\composer\") { Write-Host 'composer-installed' } else { throw 'composer not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall composer -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^composer\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "gem": {
+      "name": "gem",
+      "displayName": "Gem",
+      "description": "Combined package manager definition for Gem",
+      "installMethod": "powershell",
+      "website": "https://rubygems.org",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install ruby -y --no-progress",
+        "update": "choco upgrade ruby -y --no-progress",
+        "check": "if (Get-Command gem -ErrorAction SilentlyContinue) { Write-Host 'gem-command-found' } elseif ((Get-ChildItem \"$env:ProgramFiles\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'Ruby*' } | ForEach-Object { Join-Path $_.FullName 'bin\\gem.bat' } | Where-Object { Test-Path $_ } | Select-Object -First 1)) { Write-Host 'gem-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\ruby\") { Write-Host 'ruby-installed' } else { throw 'gem not found' }",
+        "verify": "([bool](Get-Command gem -ErrorAction SilentlyContinue)) -or ((Get-ChildItem \"$env:ProgramFiles\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'Ruby*' } | ForEach-Object { Join-Path $_.FullName 'bin\\gem.bat' } | Where-Object { Test-Path $_ } | Select-Object -First 1) -ne $null)",
+        "test": "if (Get-Command gem -ErrorAction SilentlyContinue) { Write-Host 'gem-command-found' } elseif ((Get-ChildItem \"$env:ProgramFiles\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'Ruby*' } | ForEach-Object { Join-Path $_.FullName 'bin\\gem.bat' } | Where-Object { Test-Path $_ } | Select-Object -First 1)) { Write-Host 'gem-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\ruby\") { Write-Host 'ruby-installed' } else { throw 'gem not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall ruby -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^ruby\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "conda": {
+      "name": "conda",
+      "displayName": "Conda",
+      "description": "Combined package manager definition for Conda",
+      "installMethod": "powershell",
+      "website": "https://docs.conda.io",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "choco install miniconda3 -y --no-progress",
+        "update": "choco upgrade miniconda3 -y --no-progress",
+        "check": "if (Get-Command conda -ErrorAction SilentlyContinue) { Write-Host 'conda-command-found' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-found' } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-found' } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\miniconda3\") { Write-Host 'miniconda3-installed' } else { throw 'conda not found' }",
+        "verify": "(Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") -or (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") -or (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") -or [bool](Get-Command conda -ErrorAction SilentlyContinue)",
+        "test": "if (Get-Command conda -ErrorAction SilentlyContinue) { Write-Host 'conda-command-found' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-found' } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-found' } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\miniconda3\") { Write-Host 'miniconda3-installed' } else { throw 'conda not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "choco uninstall miniconda3 -y --no-progress",
+        "outdated": "((choco outdated --limit-output 2>$null) -match '^miniconda3\\|').Length -gt 0"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
+    },
+    "mamba": {
+      "name": "mamba",
+      "displayName": "Mamba",
+      "description": "Combined package manager definition for Mamba",
+      "installMethod": "powershell",
+      "website": "https://mamba.readthedocs.io",
+      "status": "available",
+      "category": "package-manager",
+      "commands": {
+        "install": "$condaExe = $null; if (Get-Command conda -ErrorAction SilentlyContinue) { $condaExe = 'conda' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\" }; if (-not $condaExe) { if (Get-Command choco -ErrorAction SilentlyContinue) { choco install miniconda3 -y --no-progress }; if (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\" } }; if ($condaExe) { & $condaExe install mamba -n base -c conda-forge -y --freeze-installed } else { throw 'conda not found for mamba install' }",
+        "update": "$condaExe = $null; if (Get-Command conda -ErrorAction SilentlyContinue) { $condaExe = 'conda' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\" }; if ($condaExe) { & $condaExe update mamba -n base -c conda-forge -y --freeze-installed } else { throw 'conda not found for mamba update' }",
+        "check": "if (Get-Command mamba -ErrorAction SilentlyContinue) { Write-Host 'mamba-command-found' } elseif (Get-Command micromamba -ErrorAction SilentlyContinue) { Write-Host 'micromamba-command-found' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\mamba.exe\") { Write-Host 'mamba-found' } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\mamba.exe\") { Write-Host 'mamba-found' } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\mamba.exe\") { Write-Host 'mamba-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\bin\\micromamba.exe\") { Write-Host 'micromamba-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\micromamba\") { Write-Host 'micromamba-installed' } elseif (Get-Command conda -ErrorAction SilentlyContinue) { Write-Host 'conda-available-mamba-optional' } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-available-mamba-optional' } else { throw 'mamba not found' }",
+        "verify": "(Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\mamba.exe\") -or (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\mamba.exe\") -or (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\mamba.exe\") -or (Test-Path \"$env:ProgramData\\chocolatey\\bin\\micromamba.exe\") -or [bool](Get-Command mamba -ErrorAction SilentlyContinue) -or [bool](Get-Command micromamba -ErrorAction SilentlyContinue) -or (Test-Path \"$env:ProgramData\\chocolatey\\lib\\micromamba\") -or [bool](Get-Command conda -ErrorAction SilentlyContinue) -or (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\")",
+        "test": "if (Get-Command mamba -ErrorAction SilentlyContinue) { Write-Host 'mamba-command-found' } elseif (Get-Command micromamba -ErrorAction SilentlyContinue) { Write-Host 'micromamba-command-found' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\mamba.exe\") { Write-Host 'mamba-found' } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\mamba.exe\") { Write-Host 'mamba-found' } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\mamba.exe\") { Write-Host 'mamba-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\bin\\micromamba.exe\") { Write-Host 'micromamba-found' } elseif (Test-Path \"$env:ProgramData\\chocolatey\\lib\\micromamba\") { Write-Host 'micromamba-installed' } elseif (Get-Command conda -ErrorAction SilentlyContinue) { Write-Host 'conda-available-mamba-optional' } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { Write-Host 'conda-available-mamba-optional' } else { throw 'mamba not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "$condaExe = $null; if (Get-Command conda -ErrorAction SilentlyContinue) { $condaExe = 'conda' } elseif (Test-Path \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:ProgramData\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:USERPROFILE\\miniconda3\\Scripts\\conda.exe\" } elseif (Test-Path \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\") { $condaExe = \"$env:SystemDrive\\tools\\miniconda3\\Scripts\\conda.exe\" }; if ($condaExe) { & $condaExe remove mamba -n base -y } else { Write-Host 'mamba not found' }",
+        "outdated": "$false"
+      },
+      "adminRequired": false,
+      "source": "data/win.json"
     },
     "pip": {
       "name": "pip",
-      "displayName": "PIP (Python)",
-      "description": "Python package manager (via Python ensurepip)",
+      "displayName": "Pip",
+      "description": "Combined package manager definition for Pip",
       "installMethod": "powershell",
-      "website": "https://pip.pypa.io/",
+      "website": "https://pip.pypa.io",
       "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m ensurepip --upgrade; py -m pip install --upgrade pip } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m ensurepip --upgrade; python -m pip install --upgrade pip } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install python -y; py -m ensurepip --upgrade; py -m pip install --upgrade pip } else { Write-Host 'Python not found and Chocolatey not available. Cannot install pip.' -ForegroundColor Yellow; $global:LASTEXITCODE = 1 }",
-        "remove": "Write-Host 'pip is part of Python. Remove Python to remove pip.' -ForegroundColor Yellow",
-        "update": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip install --upgrade pip } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip install --upgrade pip }",
-        "check": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip --version } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip --version }",
-        "verify": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip --version } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip --version }",
-        "test": "if (Get-Command py -ErrorAction SilentlyContinue) { py -m pip --version } elseif (Get-Command python -ErrorAction SilentlyContinue) { python -m pip --version }",
-        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')"
-      }
+        "install": "choco install python -y --no-progress",
+        "update": "python -m pip install --upgrade pip",
+        "check": "if (Get-Command pip -ErrorAction SilentlyContinue) { pip --version } elseif (Test-Path \"$env:ProgramFiles\\Python311\\Scripts\\pip.exe\") { Write-Host 'pip-found' } elseif (Test-Path \"$env:PythonHome\\Scripts\\pip.exe\") { Write-Host 'pip-found' } else { throw 'pip not found' }",
+        "verify": "if (Get-Command pip -ErrorAction SilentlyContinue) { pip --version } elseif (Test-Path \"$env:ProgramFiles\\Python311\\Scripts\\pip.exe\") { Write-Host 'pip-found' } elseif (Test-Path \"$env:PythonHome\\Scripts\\pip.exe\") { Write-Host 'pip-found' } else { throw 'pip not found' }",
+        "test": "if (Get-Command pip -ErrorAction SilentlyContinue) { pip --version } elseif (Test-Path \"$env:ProgramFiles\\Python311\\Scripts\\pip.exe\") { Write-Host 'pip-found' } elseif (Test-Path \"$env:PythonHome\\Scripts\\pip.exe\") { Write-Host 'pip-found' } else { throw 'pip not found' }",
+        "path": "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+        "remove": "Write-Host 'pip is bundled with Python. Remove Python to remove pip.' -ForegroundColor Yellow",
+        "outdated": "$false"
+      },
+      "adminRequired": true,
+      "source": "data/win.json"
     }
-  }
+  },
+  "managerOrder": [
+    "chocolatey",
+    "scoop",
+    "winget",
+    "nvm",
+    "nodejs",
+    "nuget",
+    "dotnet-tool",
+    "vcpkg",
+    "pipx",
+    "npm",
+    "yarn",
+    "pnpm",
+    "bun",
+    "cargo",
+    "go",
+    "composer",
+    "gem",
+    "conda",
+    "mamba",
+    "pip"
+  ]
 }
-

@@ -1,7 +1,7 @@
 # SetupX - Windows Development Setup Tool
 
 **Version:** 2.0.0  
-**Author:** anshulyadav32
+**Author:** anshulyadav-git
 
 Individual Component Windows Development Setup Tool with PowerShell commands
 
@@ -227,9 +227,9 @@ A comprehensive test suite is available in `test.json` with:
 
 ## Support
 
-- **Issues:** https://github.com/anshulyadav32/setupx-windows-setup/issues
-- **Documentation:** https://github.com/anshulyadav32/setupx-windows-setup/wiki
-- **Discussions:** https://github.com/anshulyadav32/setupx-windows-setup/discussions
+- **Issues:** https://github.com/anshulyadav-git/setupx-windows-setup/issues
+- **Documentation:** https://github.com/anshulyadav-git/setupx-windows-setup/wiki
+- **Discussions:** https://github.com/anshulyadav-git/setupx-windows-setup/discussions
 
 ## License
 
@@ -237,6 +237,7 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Made with ❤️ by anshulyadav32**
+**Made with ❤️ by anshulyadav-git**
+
 
 
