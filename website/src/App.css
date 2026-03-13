@@ -163,6 +163,30 @@
   width: 100%;
 }
 
+.custom-install-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.custom-install-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.02rem;
+  background: rgba(8, 15, 28, 0.82);
+  border-radius: 10px;
+  border: 1px solid var(--line-soft);
+  padding: 0.45rem 0.7rem;
+}
+
+.custom-install-item input[type="checkbox"] {
+  accent-color: #ffd67a;
+  width: 1.1em;
+  height: 1.1em;
+}
+
 .module-card {
   transition: border-color 140ms ease, transform 140ms ease;
 }

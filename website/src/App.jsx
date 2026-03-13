@@ -1,6 +1,8 @@
 import './App.css'
 import { useMemo, useState } from 'react'
 
+import { moduleCards } from './setupxData.js'
+
 const installOneLiner =
   'iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex'
 const installAllOneLiner =
@@ -96,6 +98,29 @@ function App() {
   const [openModule, setOpenModule] = useState(modules[0].alias)
   const [activeTab, setActiveTab] = useState('core')
 
+  // Custom install state
+  const [selectedComponents, setSelectedComponents] = useState([])
+
+  // Flat list of all components
+  const allComponents = useMemo(() => {
+    return moduleCards.flatMap(mod => mod.components.map(comp => ({
+      module: mod.alias,
+      name: comp,
+    })))
+  }, [])
+
+  // Build install command
+  const customInstallCmd = selectedComponents.length
+    ? `sx install ${selectedComponents.join(' ')}`
+    : 'sx install <component>'
+
+  // Toggle component selection
+  const toggleComponent = (name) => {
+    setSelectedComponents(selectedComponents.includes(name)
+      ? selectedComponents.filter(c => c !== name)
+      : [...selectedComponents, name])
+  }
+
   const totals = useMemo(
     () => ({ modules: modules.length, presets: presets.length, commands: Object.values(commandTabs).flat().length }),
     [],
@@ -124,6 +149,27 @@ function App() {
 
   return (
     <div className="landing-shell">
+      {/* Custom Install Section */}
+      <section className="section" id="custom-install">
+        <h2>Custom Install</h2>
+        <p>Select which components you want to install. The command below updates automatically.</p>
+        <div className="custom-install-list">
+          {allComponents.map(({ module, name }) => (
+            <label key={name} className="custom-install-item">
+              <input
+                type="checkbox"
+                checked={selectedComponents.includes(name)}
+                onChange={() => toggleComponent(name)}
+              />
+              <span>{name} <small style={{ color: '#9ec3cf', fontSize: '0.85em' }}>({module})</small></span>
+            </label>
+          ))}
+        </div>
+        <div className="command-inline" style={{ marginTop: '1rem' }}>
+          <code>{customInstallCmd}</code>
+          <CopyButton value={customInstallCmd} copied={copiedValue === customInstallCmd} onCopy={copyText} />
+        </div>
+      </section>
       <header className="hero" id="top">
         <p className="eyebrow">SetupX / sx</p>
         <h1>Set up your Windows dev environment in one command</h1>
