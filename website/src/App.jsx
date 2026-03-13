@@ -5,6 +5,17 @@ import { getComponentInstallCommand, getModuleAliasFromPath } from './setupxUtil
 
 const COPY_RESET_DELAY = 1600
 
+function CopyIcon() {
+  return (
+    <svg className="copy-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+      <path
+        fill="currentColor"
+        d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+      />
+    </svg>
+  )
+}
+
 function CopyStatusButton({
   command,
   copyState,
@@ -22,9 +33,12 @@ function CopyStatusButton({
       className={`btn btn-copy ${isFailed ? 'btn-copy-failed' : ''}`}
       onClick={onCopy}
     >
-      {isCopied && copiedText}
-      {isFailed && failedText}
-      {!isCopied && !isFailed && idleText}
+      <span className="btn-with-icon">
+        <CopyIcon />
+        {isCopied && copiedText}
+        {isFailed && failedText}
+        {!isCopied && !isFailed && idleText}
+      </span>
     </button>
   )
 }
@@ -161,7 +175,10 @@ function HomeView({
         </div>
         <div className="install-inline-actions">
           <button type="button" className="btn btn-install-link" onClick={onCopyInstallLink}>
-            {copiedInstallLink ? 'Install Command Copied' : 'Copy Install Command'}
+            <span className="btn-with-icon">
+              <CopyIcon />
+              {copiedInstallLink ? 'Install Command Copied' : 'Copy Install Command'}
+            </span>
           </button>
         </div>
       </section>
@@ -185,6 +202,39 @@ function HomeView({
           <li>Run sx &lt;alias&gt; for full setup or sx install &lt;component&gt; for targeted install.</li>
           <li>Use per-component scripts in scripts folders for direct automation workflows.</li>
         </ol>
+      </section>
+
+      <section className="panel">
+        <h2>Links And Commands</h2>
+        <p className="panel-copy">Website link and install command in one place.</p>
+        <div className="module-page-links">
+          <a className="module-page-link" href="https://setupx.vercel.app" target="_blank" rel="noreferrer">
+            <span>Live Website</span>
+            <small>https://setupx.vercel.app</small>
+          </a>
+          <a
+            className="module-page-link"
+            href="https://github.com/anshulyadav-git/setupx-windows-setup"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>GitHub Repository</span>
+            <small>anshulyadav-git/setupx-windows-setup</small>
+          </a>
+        </div>
+        <div className="command-list">
+          <pre>
+            <code>{installOneLiner}</code>
+          </pre>
+        </div>
+        <div className="install-inline-actions">
+          <button type="button" className="btn btn-install-link" onClick={onCopyInstallLink}>
+            <span className="btn-with-icon">
+              <CopyIcon />
+              {copiedInstallLink ? 'Install Command Copied' : 'Copy Install Command'}
+            </span>
+          </button>
+        </div>
       </section>
     </>
   )
@@ -408,7 +458,10 @@ function App() {
             GitHub Repo
           </a>
           <button type="button" className="btn btn-install-link" onClick={handleCopyInstallLink}>
-            {copiedInstallLink ? 'Install Link Copied' : 'Copy Install Link'}
+            <span className="btn-with-icon">
+              <CopyIcon />
+              {copiedInstallLink ? 'Install Link Copied' : 'Copy Install Link'}
+            </span>
           </button>
         </div>
       </header>

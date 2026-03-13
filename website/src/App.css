@@ -49,6 +49,16 @@
   text-decoration: none;
 }
 
+.btn-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.copy-icon {
+  flex: 0 0 auto;
+}
+
 .btn-primary {
   color: #06111a;
   background: linear-gradient(130deg, #ffd67a, #b1f2ff);
