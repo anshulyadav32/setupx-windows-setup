@@ -2,6 +2,10 @@
 
 Frontend site for SetupX, built with React + Vite and deployed on Vercel.
 
+## Live Website
+
+- https://setupx.vercel.app
+
 ## Scripts
 
 ```bash
