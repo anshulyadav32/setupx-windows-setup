@@ -307,6 +307,12 @@ function HomeView({
             onCopy={() => onCopyText('https://setupx.vercel.app/scripts/install-all-pkgm.ps1')}
           />
           <CommandLinkCard
+            title="Winget Install Command"
+            value="sx install winget"
+            copyState={copyState}
+            onCopy={() => onCopyText('sx install winget')}
+          />
+          <CommandLinkCard
             title="Install Command"
             value={installOneLiner}
             copyState={copyState}
