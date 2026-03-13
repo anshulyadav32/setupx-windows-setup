@@ -2,6 +2,10 @@
 
 A clean, modular PowerShell tool for setting up Windows development environments.
 
+## About
+
+- Live Website: https://setupx.vercel.app
+
 ## 🚀 Quick Start
 
 ### One-Command Installation
