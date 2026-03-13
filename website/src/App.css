@@ -1,4 +1,5 @@
 .landing-shell {
+  width: 100%;
   max-width: 1160px;
   margin: 0 auto;
   padding: 2rem 1rem 4rem;
@@ -33,6 +34,7 @@
   margin: 0;
   max-width: 72ch;
   color: var(--ink-muted);
+  overflow-wrap: anywhere;
 }
 
 .sub-tagline {
@@ -49,6 +51,9 @@
 }
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 12px;
   border: 1px solid var(--line);
   padding: 0.7rem 1rem;
@@ -70,7 +75,7 @@
 .hero-terminal {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 0.8rem;
 }
 
@@ -224,6 +229,12 @@
   align-items: center;
 }
 
+.terminal-line code {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .benefits {
   margin: 0;
   padding-left: 1rem;
@@ -284,6 +295,11 @@ pre {
   overflow: auto;
 }
 
+pre code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 code {
   font-family: 'IBM Plex Mono', 'Consolas', monospace;
   font-size: 0.82rem;
@@ -321,11 +337,59 @@ code {
     padding: 1rem 0.7rem 2.3rem;
   }
 
+  .hero-actions {
+    width: 100%;
+  }
+
+  .hero-terminal {
+    grid-template-columns: 1fr;
+  }
+
+  .module-toggle {
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
   .stats-inline {
     grid-template-columns: 1fr;
   }
 
   .terminal-line {
     grid-template-columns: 1fr;
+  }
+
+  .terminal-line .copy-btn {
+    justify-self: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    border-radius: 20px;
+    padding: 1rem 0.9rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.55rem, 8.5vw, 2rem);
+  }
+
+  .section {
+    border-radius: 16px;
+    padding: 0.85rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .feature-grid,
+  .preset-grid,
+  .module-grid,
+  .faq-list {
+    grid-template-columns: 1fr;
+  }
+
+  .copy-btn {
+    width: 100%;
   }
 }
