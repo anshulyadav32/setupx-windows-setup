@@ -71,6 +71,10 @@
   background: rgba(177, 242, 255, 0.28);
 }
 
+.install-inline-actions {
+  margin-top: 0.35rem;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
