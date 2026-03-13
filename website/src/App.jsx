@@ -103,6 +103,31 @@ function ComponentCard({ componentName, moduleAlias, modulePath, copyState, onCo
   )
 }
 
+function CommandLinkCard({ title, value, href, copyState, onCopy }) {
+  return (
+    <article className="command-link-card">
+      <h3>{title}</h3>
+      {href ? (
+        <a className="command-link-url" href={href} target="_blank" rel="noreferrer">
+          {value}
+        </a>
+      ) : (
+        <pre>
+          <code>{value}</code>
+        </pre>
+      )}
+      <CopyStatusButton
+        command={value}
+        copyState={copyState}
+        idleText="Copy"
+        copiedText="Copied"
+        failedText="Copy Failed"
+        onCopy={onCopy}
+      />
+    </article>
+  )
+}
+
 function HomeView({
   totalComponents,
   activeModule,
@@ -113,6 +138,7 @@ function HomeView({
   copiedInstallLink,
   onCopyInstallLink,
   readmeContent,
+  onCopyText,
 }) {
   const installAllManagersCommand =
     'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex'
@@ -251,41 +277,41 @@ function HomeView({
       <section className="panel">
         <h2>Links And Commands</h2>
         <p className="panel-copy">Website link and install command in one place.</p>
-        <div className="module-page-links">
-          <a className="module-page-link" href="https://setupx.vercel.app" target="_blank" rel="noreferrer">
-            <span>Live Website</span>
-            <small>https://setupx.vercel.app</small>
-          </a>
-          <a
-            className="module-page-link"
+        <div className="command-link-grid">
+          <CommandLinkCard
+            title="Live Website"
+            value="https://setupx.vercel.app"
+            href="https://setupx.vercel.app"
+            copyState={copyState}
+            onCopy={() => onCopyText('https://setupx.vercel.app')}
+          />
+          <CommandLinkCard
+            title="GitHub Repository"
+            value="https://github.com/anshulyadav-git/setupx-windows-setup"
             href="https://github.com/anshulyadav-git/setupx-windows-setup"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>GitHub Repository</span>
-            <small>anshulyadav-git/setupx-windows-setup</small>
-          </a>
-          <a className="module-page-link" href="/scripts/install.ps1" target="_blank" rel="noreferrer">
-            <span>Install Script</span>
-            <small>/scripts/install.ps1</small>
-          </a>
-          <a className="module-page-link" href="/scripts/install-all-pkgm.ps1" target="_blank" rel="noreferrer">
-            <span>Install-All Package Managers Script</span>
-            <small>/scripts/install-all-pkgm.ps1</small>
-          </a>
-        </div>
-        <div className="command-list">
-          <pre>
-            <code>{installOneLiner}</code>
-          </pre>
-        </div>
-        <div className="install-inline-actions">
-          <button type="button" className="btn btn-install-link" onClick={onCopyInstallLink}>
-            <span className="btn-with-icon">
-              <CopyIcon />
-              {copiedInstallLink ? 'Install Command Copied' : 'Copy Install Command'}
-            </span>
-          </button>
+            copyState={copyState}
+            onCopy={() => onCopyText('https://github.com/anshulyadav-git/setupx-windows-setup')}
+          />
+          <CommandLinkCard
+            title="Install Script"
+            value="https://setupx.vercel.app/scripts/install.ps1"
+            href="https://setupx.vercel.app/scripts/install.ps1"
+            copyState={copyState}
+            onCopy={() => onCopyText('https://setupx.vercel.app/scripts/install.ps1')}
+          />
+          <CommandLinkCard
+            title="Install-All Script"
+            value="https://setupx.vercel.app/scripts/install-all-pkgm.ps1"
+            href="https://setupx.vercel.app/scripts/install-all-pkgm.ps1"
+            copyState={copyState}
+            onCopy={() => onCopyText('https://setupx.vercel.app/scripts/install-all-pkgm.ps1')}
+          />
+          <CommandLinkCard
+            title="Install Command"
+            value={installOneLiner}
+            copyState={copyState}
+            onCopy={() => onCopyText(installOneLiner)}
+          />
         </div>
       </section>
     </>
@@ -503,6 +529,17 @@ function App() {
     }
   }
 
+  const handleCopyText = async (text) => {
+    try {
+      await copyText(text)
+      setCopyState({ command: text, status: 'copied' })
+      window.setTimeout(() => setCopyState({ command: '', status: 'idle' }), COPY_RESET_DELAY)
+    } catch {
+      setCopyState({ command: text, status: 'failed' })
+      window.setTimeout(() => setCopyState({ command: '', status: 'idle' }), COPY_RESET_DELAY)
+    }
+  }
+
   return (
     <div className="site-shell">
       <header className="hero">
@@ -544,6 +581,7 @@ function App() {
           copiedInstallLink={copiedInstallLink}
           onCopyInstallLink={handleCopyInstallLink}
           readmeContent={readmeContent}
+          onCopyText={handleCopyText}
         />
       )}
 

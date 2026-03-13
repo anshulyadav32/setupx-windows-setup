@@ -155,6 +155,56 @@
   color: var(--ink-muted);
 }
 
+.command-link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.7rem;
+}
+
+.command-link-card {
+  border-radius: 14px;
+  border: 1px solid var(--line-soft);
+  background: rgba(8, 15, 28, 0.78);
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.command-link-card h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.command-link-card pre {
+  margin: 0 0 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--line-soft);
+  background: rgba(3, 8, 17, 0.9);
+  padding: 0.65rem;
+  overflow: auto;
+}
+
+.command-link-card code {
+  font-family: 'IBM Plex Mono', 'Consolas', monospace;
+  font-size: 0.8rem;
+  color: #e8f7ff;
+}
+
+.command-link-url {
+  margin: 0 0 0.75rem;
+  color: #b1f2ff;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.command-link-url:hover {
+  text-decoration: underline;
+}
+
+.command-link-card .btn-copy {
+  margin-top: auto;
+}
+
 .module-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
