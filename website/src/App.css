@@ -143,6 +143,10 @@
   align-items: center;
 }
 
+.feature-row pre {
+  width: 100%;
+}
+
 .module-card {
   transition: border-color 140ms ease, transform 140ms ease;
 }
@@ -284,6 +288,46 @@
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+@media (min-width: 980px) {
+  .landing-shell {
+    max-width: 1240px;
+    padding: 2.2rem 1.4rem 4.2rem;
+  }
+
+  .hero-terminal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .feature-grid,
+  .preset-grid,
+  .faq-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .feature-row {
+    grid-template-columns: minmax(220px, 1fr) minmax(280px, 1.2fr) auto;
+  }
+}
+
+@media (min-width: 1360px) {
+  .landing-shell {
+    max-width: 1320px;
+    padding-inline: 1.8rem;
+  }
+
+  .hero h1 {
+    max-width: 19ch;
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 pre {
