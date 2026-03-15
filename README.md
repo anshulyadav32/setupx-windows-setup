@@ -6,6 +6,33 @@ A clean, modular PowerShell tool for setting up Windows development environments
 
 - Live Website: https://setupx.vercel.app
 
+## 🛠️ Interactive Package Manager Installation
+
+After installing SetupX, you can install package managers in two ways:
+
+### 1. Install All Package Managers At Once
+```powershell
+sx pgkm
+# or
+sx install-module pgkm
+```
+
+### 2. Install Each Package Manager One by One
+```powershell
+# List all package managers
+sx list-components pgkm
+
+# Then install individually:
+sx install-component pgkm choco
+sx install-component pgkm scoop
+sx install-component pgkm winget
+# ...and so on for each manager
+```
+
+You can also build an interactive menu in your own script to prompt for each one.
+
+---
+
 ## 🚀 Quick Start
 
 ### One-Command Installation
