@@ -28,13 +28,13 @@ export const moduleCards = [
     ],
   },
   {
-    alias: 'wdev',
+    alias: 'web-development',
     name: 'Web Development',
     path: 'src/core/wdev',
     components: ['angular-tools', 'browsers', 'nodejs', 'react-tools', 'vite', 'vue-tools', 'yarn'],
   },
   {
-    alias: 'aidve',
+    alias: 'ai-development-tools',
     name: 'AI Development',
     path: 'src/core/aidve',
     components: [
@@ -52,25 +52,25 @@ export const moduleCards = [
     ],
   },
   {
-    alias: 'mdev',
+    alias: 'mobile-development',
     name: 'Mobile Development',
     path: 'src/core/mdev',
     components: ['android-studio', 'flutter', 'react-native-cli'],
   },
   {
-    alias: 'wsl',
+    alias: 'wsl-linux',
     name: 'WSL Linux',
     path: 'src/core/wsl',
     components: ['docker-desktop', 'ubuntu', 'wsl'],
   },
   {
-    alias: 'cdev',
+    alias: 'cloud-development',
     name: 'Cloud Development',
     path: 'src/core/cdev',
     components: ['aws-cli', 'azure-cli', 'gcloud-cli', 'kubectl', 'terraform'],
   },
   {
-    alias: 'codev',
+    alias: 'common-development',
     name: 'Common Development',
     path: 'src/core/codev',
     components: [
@@ -97,12 +97,12 @@ export const moduleCards = [
 export const quickCommands = [
   'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex',
   'stx pgkm',
-  'stx wdev',
-  'stx aidve',
-  'stx mdev',
-  'stx wsl',
-  'stx cdev',
-  'stx codev',
+  'stx install web-development',
+  'stx install ai-development-tools',
+  'stx install mobile-development',
+  'stx install wsl-linux',
+  'stx install cloud-development',
+  'stx install common-development',
   'stx devops',
   'stx dscience',
 ]
