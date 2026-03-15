@@ -2,6 +2,7 @@ import './App.css'
 import { useMemo, useState } from 'react'
 
 import { moduleCards } from './setupxData.js'
+import { getComponentInstallCommand } from './setupxUtils.js'
 
 const installOneLiner =
   'iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex'
@@ -18,12 +19,12 @@ const whyItems = [
 ]
 
 const featureRows = [
-  ['Install package managers', 'stx pkgm'],
-  ['List available commands and modules', 'stx list'],
+  ['Install package managers', 'stx pgkm'],
+  ['List available commands and modules', 'stx ls'],
   ['Check current setup health', 'stx status'],
   ['See module components', 'stx components web-development'],
-  ['Install complete module', 'stx install-module web-development'],
-  ['Install specific component', 'stx install-component pgkm chocolatey'],
+  ['Install complete module', 'stx install web-development'],
+  ['Install specific component', 'stx install pgkm chocolatey'],
   ['Run quick setup profile', 'stx quick-setup full-stack'],
 ]
 
@@ -52,9 +53,9 @@ const presets = [
 ]
 
 const commandTabs = {
-  core: ['stx status', 'stx list', 'stx components web-development'],
-  modules: ['stx install-module pgkm', 'stx install-module web-development', 'stx install-module cloud-development'],
-  components: ['stx install-component pgkm chocolatey', 'stx install-component web-development nodejs', 'stx install-component web-development yarn'],
+  core: ['stx status', 'stx ls', 'stx components web-development'],
+  modules: ['stx install pgkm', 'stx install web-development', 'stx install cloud-development'],
+  components: ['stx install pgkm chocolatey', 'stx install web-development nodejs', 'stx -i web-development yarn'],
   testing: ['stx test-module pgkm', 'stx test-component web-development nodejs', 'stx check-status'],
 }
 
@@ -69,7 +70,7 @@ const benefits = [
 const faqs = [
   ['Is SetupX Windows-only?', 'Yes. SetupX targets Windows environments and integrates with Windows-native tooling.'],
   ['Does it require admin permissions?', 'Some installations need elevated permissions. SetupX handles mixed privilege workflows where possible.'],
-  ['Can I install only selected modules?', 'Yes. Use module and component commands to install only what you need.'],
+  ['Can I install only selected modules?', 'Yes. Use stx install <module> or stx install <module> <component> for targeted installs.'],
   ['How do I test what was installed?', 'Use stx test-module, stx test-component, stx status, and stx check-status commands.'],
 ]
 
@@ -111,8 +112,14 @@ function App() {
 
   // Build install command
   const customInstallCmd = selectedComponents.length
-    ? `stx install ${selectedComponents.join(' ')}`
-    : 'stx install <component>'
+    ? selectedComponents
+        .map((selected) => {
+          const component = allComponents.find(({ name }) => name === selected)
+          return component ? getComponentInstallCommand(component.module, component.name) : null
+        })
+        .filter(Boolean)
+        .join('\n')
+    : 'stx install <module> <component>'
 
   // Toggle component selection
   const toggleComponent = (name) => {
@@ -152,7 +159,7 @@ function App() {
       {/* Custom Install Section */}
       <section className="section" id="custom-install">
         <h2>Custom Install</h2>
-        <p>Select which components you want to install. The command below updates automatically.</p>
+        <p>Select which components you want to install. The commands below update automatically.</p>
         <div className="custom-install-list">
           {allComponents.map(({ module, name }) => (
             <label key={name} className="custom-install-item">
@@ -166,7 +173,7 @@ function App() {
           ))}
         </div>
         <div className="command-inline" style={{ marginTop: '1rem' }}>
-          <code>{customInstallCmd}</code>
+          <code style={{ whiteSpace: 'pre-wrap' }}>{customInstallCmd}</code>
           <CopyButton value={customInstallCmd} copied={copiedValue === customInstallCmd} onCopy={copyText} />
         </div>
       </section>
@@ -232,9 +239,9 @@ function App() {
                 <div className="module-body">
                   <p>{mod.details}</p>
                   <pre>
-                    <code>{`stx install-module ${mod.alias}`}</code>
+                    <code>{`stx install ${mod.alias}`}</code>
                   </pre>
-                  <CopyButton value={`stx install-module ${mod.alias}`} copied={copiedValue === `stx install-module ${mod.alias}`} onCopy={copyText} />
+                  <CopyButton value={`stx install ${mod.alias}`} copied={copiedValue === `stx install ${mod.alias}`} onCopy={copyText} />
                 </div>
               )}
             </article>
