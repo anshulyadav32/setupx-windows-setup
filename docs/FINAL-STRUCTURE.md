@@ -11,17 +11,17 @@ All hardcoded values removed! Everything is now JSON-driven and modular.
 ```
 setupx-windows-setup/
 ├── setupx.ps1                          # Main CLI (fully JSON-driven)
-├── stx.ps1                             # Short alias for setupx
+├── setupx.ps1                             # Short alias for setupx
 ├── config.json                         # Main configuration file
 ├── src/
 │   ├── core/
 │   │   ├── engine.ps1                  # Command executor (reads JSON)
-│   │   └── json-loader.ps1             # JSON configuration loader
-│   ├── utils/
+│   │   ├── json-loader.ps1             # JSON configuration loader
 │   │   ├── logger.ps1                  # Logging utilities
-│   │   └── helpers.ps1                 # Helper functions
+│   │   ├── helpers.ps1                 # Helper functions
+│   │   ├── scripts/                    # Support scripts
+│   │   └── [module folders]            # Component entry scripts by module
 │   └── config/
-│       ├── setupx.json                 # Original flat config (optional)
 │       └── modules/                    # Modular JSON configurations
 │           ├── package-managers.json
 │           ├── web-development.json
@@ -39,7 +39,7 @@ setupx-windows-setup/
     └── FINAL-STRUCTURE.md (this file)
 ```
 
-**Total: 4 core files + 2 utils + 9 JSON modules = 15 essential files**
+**Total: root entry scripts + src/core runtime + modular JSON configs**
 
 ---
 
@@ -90,7 +90,7 @@ Cleaned up old files:
 Both work identically:
 ```powershell
 setupx help        # Full name
-stx help           # Short alias
+setupx help           # Short alias
 ```
 
 ---
@@ -107,13 +107,13 @@ setupx status
 
 ### Using `stx` (short alias)
 ```powershell
-stx help
-stx list
-stx install nodejs
-stx status
+setupx help
+setupx list
+setupx install nodejs
+setupx status
 ```
 
-Both commands are **identical** - `stx` simply calls `setupx` internally.
+Use `setupx` as the primary command. `stx` is only a shorthand alias.
 
 ---
 
@@ -222,60 +222,60 @@ All commands stored in JSON, executed by engine!
 ```powershell
 # Show help
 setupx help
-stx help
+setupx help
 
 # Show version
 setupx version
-stx version
+setupx version
 
 # List all modules
 setupx list
-stx list
+setupx list
 
 # List all components
 setupx list-all
-stx list-all
+setupx list-all
 
 # Show system status
 setupx status
-stx status
+setupx status
 ```
 
 ### Component Operations
 ```powershell
 # Install a component
 setupx install chocolatey
-stx install nodejs
+setupx install nodejs
 
 # Check if installed
 setupx check git
-stx check docker
+setupx check docker
 
 # Remove a component
 setupx remove python
-stx remove vscode
+setupx remove vscode
 
 # Update a component
 setupx update nodejs
-stx update docker
+setupx update docker
 ```
 
 ### Module Operations
 ```powershell
 # List components in a module
 setupx list-module web-development
-stx list-module package-managers
+setupx list-module package-managers
 
 # Install entire module
 setupx install-module web-development
-stx install-module common-development
+setupx install-module common-development
 ```
 
 ### Search
 ```powershell
 # Search for components
 setupx search docker
-stx search python
+setupx search python
 setupx search kubernetes
 ```
 
@@ -439,31 +439,31 @@ It appears automatically in `setupx list`!
 ```powershell
 # Test both commands
 setupx help
-stx help
+setupx help
 
 # Test version (should show from config.json)
 setupx version
-stx version
+setupx version
 
 # Test list (auto-discovers modules)
 setupx list
-stx list
+setupx list
 
 # Test list-all (shows all components)
 setupx list-all
-stx list-all
+setupx list-all
 
 # Test status (uses config.json tools list)
 setupx status
-stx status
+setupx status
 
 # Test search
 setupx search docker
-stx search python
+setupx search python
 
 # Test list-module
 setupx list-module web-development
-stx list-module package-managers
+setupx list-module package-managers
 ```
 
 ---
@@ -505,19 +505,19 @@ cd C:\Users\aypc\setupx-windows-setup
 
 # Show help (either command)
 .\setupx.ps1 help
-.\stx.ps1 help
+.\setupx.ps1 help
 
 # List modules
 .\setupx.ps1 list
-.\stx.ps1 list
+.\setupx.ps1 list
 
 # Install something
 .\setupx.ps1 install chocolatey
-.\stx.ps1 install nodejs
+.\setupx.ps1 install nodejs
 
 # Check status
 .\setupx.ps1 status
-.\stx.ps1 status
+.\setupx.ps1 status
 ```
 
 ---
@@ -542,9 +542,12 @@ cd C:\Users\aypc\setupx-windows-setup
 Start using it now:
 ```powershell
 .\setupx.ps1 help
-.\stx.ps1 help
+.\setupx.ps1 help
 ```
 
 Happy coding! 🎉
+
+
+
 
 

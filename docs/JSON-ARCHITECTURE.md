@@ -144,9 +144,9 @@ Commands are standard PowerShell or system commands stored as strings in JSON.
 .\setupx-new.ps1 list-module web-development
 
 # Install all components in a module
-.\setupx-new.ps1 install-module package-managers
-.\setupx-new.ps1 install-module web-development
-.\setupx-new.ps1 install-module common-development
+.\setupx-new.ps1 setupx install-module package-managers
+.\setupx-new.ps1 setupx install-module web-development
+.\setupx-new.ps1 setupx install-module common-development
 ```
 
 ---
@@ -271,8 +271,8 @@ No PowerShell coding required!
 
 ```powershell
 # Quick setup
-.\setupx-new.ps1 install-module package-managers
-.\setupx-new.ps1 install-module common-development
+.\setupx-new.ps1 setupx install-module package-managers
+.\setupx-new.ps1 setupx install-module common-development
 
 # Full stack developer
 .\setupx-new.ps1 install chocolatey
@@ -455,4 +455,5 @@ cd C:\Users\aypc\setupx-windows-setup
 ```
 
 **That's it! No complex setup, just JSON configuration!** 🎉
+
 

@@ -78,16 +78,16 @@
 
 ### Test Specific Module
 ```powershell
-.\test\test-module.ps1 -ModuleName package-managers
-.\test\test-module.ps1 -ModuleName web-development
-.\test\test-module.ps1 -ModuleName common-development
+.\test\setupx test-module.ps1 -ModuleName package-managers
+.\test\setupx test-module.ps1 -ModuleName web-development
+.\test\setupx test-module.ps1 -ModuleName common-development
 ```
 
 ### Test Specific Component
 ```powershell
-.\test\test-component.ps1 -ComponentName chocolatey
-.\test\test-component.ps1 -ComponentName git
-.\test\test-component.ps1 -ComponentName nodejs
+.\test\setupx test-component.ps1 -ComponentName chocolatey
+.\test\setupx test-component.ps1 -ComponentName git
+.\test\setupx test-component.ps1 -ComponentName nodejs
 ```
 
 ### Run Full Test Suite
@@ -102,8 +102,8 @@
 All test scripts are working correctly:
 
 1. ✅ **test-all-quick.ps1** - Fast overview of all components
-2. ✅ **test-module.ps1** - Tests all components in a module
-3. ✅ **test-component.ps1** - Detailed test of single component
+2. ✅ **setupx test-module.ps1** - Tests all components in a module
+3. ✅ **setupx test-component.ps1** - Detailed test of single component
 4. ✅ **test-install.ps1** - Installation testing
 5. ✅ **test-runner.ps1** - Comprehensive test suite
 6. ✅ **run-all-tests.ps1** - Run all module tests
@@ -114,7 +114,7 @@ All test scripts are working correctly:
 
 ### Example 1: Test Package Managers
 ```powershell
-PS> .\test\test-module.ps1 -ModuleName package-managers
+PS> .\test\setupx test-module.ps1 -ModuleName package-managers
 
 === Testing Module: package-managers ===
 
@@ -140,7 +140,7 @@ Summary:
 
 ### Example 2: Test Specific Component
 ```powershell
-PS> .\test\test-component.ps1 -ComponentName chocolatey
+PS> .\test\setupx test-component.ps1 -ComponentName chocolatey
 
 === Detailed Component Test ===
 
@@ -200,7 +200,7 @@ Summary:
 ```powershell
 # Install Node.js
 setupx install nodejs
-stx install nodejs
+setupx install nodejs
 
 # Install Docker
 setupx install docker
@@ -220,7 +220,7 @@ setupx install-module backend-development
 .\test\test-all-quick.ps1
 
 # Or test specific module
-.\test\test-module.ps1 -ModuleName web-development
+.\test\setupx test-module.ps1 -ModuleName web-development
 ```
 
 ---
@@ -245,5 +245,8 @@ setupx install-module backend-development
 ✅ **Ready for component installations**
 
 Use the test scripts before and after installations to verify everything works correctly!
+
+
+
 
 

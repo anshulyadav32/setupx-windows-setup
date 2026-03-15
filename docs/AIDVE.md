@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All AI-Development Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx aidev
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx aidev
 ```
 
 ## Per Component One-Liner Links
@@ -64,5 +64,6 @@ Grok CLI
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/grok-cli.ps1 | iex
 ```
+
 
 

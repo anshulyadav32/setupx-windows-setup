@@ -22,9 +22,9 @@ const featureRows = [
   ['List available commands and modules', 'setupx list'],
   ['Check current setup health', 'setupx status'],
   ['See module components', 'setupx components web-development'],
-  ['Install complete module', 'install-module web-development'],
-  ['Install specific component', 'install-component pgkm chocolatey'],
-  ['Run quick setup profile', 'quick-setup full-stack'],
+  ['Install complete module', 'setupx install-module web-development'],
+  ['Install specific component', 'setupx install-component pgkm chocolatey'],
+  ['Run quick setup profile', 'setupx quick-setup full-stack'],
 ]
 
 const modules = [
@@ -53,9 +53,9 @@ const presets = [
 
 const commandTabs = {
   core: ['setupx status', 'setupx list', 'setupx components web-development'],
-  modules: ['install-module pgkm', 'install-module web-development', 'install-module cloud-development'],
-  components: ['install-component pgkm chocolatey', 'install-component web-development nodejs', 'install-component web-development yarn'],
-  testing: ['test-module pgkm', 'test-component web-development nodejs', 'check-status'],
+  modules: ['setupx install-module pgkm', 'setupx install-module web-development', 'setupx install-module cloud-development'],
+  components: ['setupx install-component pgkm chocolatey', 'setupx install-component web-development nodejs', 'setupx install-component web-development yarn'],
+  testing: ['setupx test-module pgkm', 'setupx test-component web-development nodejs', 'setupx check-status'],
 }
 
 const benefits = [
@@ -70,7 +70,7 @@ const faqs = [
   ['Is SetupX Windows-only?', 'Yes. SetupX targets Windows environments and integrates with Windows-native tooling.'],
   ['Does it require admin permissions?', 'Some installations need elevated permissions. SetupX handles mixed privilege workflows where possible.'],
   ['Can I install only selected modules?', 'Yes. Use module and component commands to install only what you need.'],
-  ['How do I test what was installed?', 'Use test-module, test-component, setupx status, and check-status commands.'],
+  ['How do I test what was installed?', 'Use setupx test-module, setupx test-component, setupx status, and setupx check-status commands.'],
 ]
 
 function CopyButton({ value, copied, onCopy }) {
@@ -171,7 +171,7 @@ function App() {
         </div>
       </section>
       <header className="hero" id="top">
-        <p className="eyebrow">SetupX / stx</p>
+        <p className="eyebrow">SetupX</p>
         <h1>Set up your Windows dev environment in one command</h1>
         <p className="hero-copy">
           SetupX is a modular PowerShell tool for automating installation of package managers,
@@ -232,9 +232,9 @@ function App() {
                 <div className="module-body">
                   <p>{mod.details}</p>
                   <pre>
-                    <code>{`install-module ${mod.alias}`}</code>
+                    <code>{`setupx install-module ${mod.alias}`}</code>
                   </pre>
-                  <CopyButton value={`install-module ${mod.alias}`} copied={copiedValue === `install-module ${mod.alias}`} onCopy={copyText} />
+                  <CopyButton value={`setupx install-module ${mod.alias}`} copied={copiedValue === `setupx install-module ${mod.alias}`} onCopy={copyText} />
                 </div>
               )}
             </article>
@@ -250,9 +250,9 @@ function App() {
               <h3>{name}</h3>
               <p>{desc}</p>
               <pre>
-                <code>{`quick-setup ${name}`}</code>
+                <code>{`setupx quick-setup ${name}`}</code>
               </pre>
-              <CopyButton value={`quick-setup ${name}`} copied={copiedValue === `quick-setup ${name}`} onCopy={copyText} />
+              <CopyButton value={`setupx quick-setup ${name}`} copied={copiedValue === `setupx quick-setup ${name}`} onCopy={copyText} />
             </article>
           ))}
         </div>
@@ -373,4 +373,5 @@ function App() {
 }
 
 export default App
+
 

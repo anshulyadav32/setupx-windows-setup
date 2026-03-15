@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All Common-Development Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx codev
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx codev
 ```
 
 ## Per Component One-Liner Links
@@ -79,5 +79,6 @@ Telegram
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/codev/telegram.ps1 | iex
 ```
+
 
 
