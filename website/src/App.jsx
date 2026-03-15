@@ -92,7 +92,6 @@ function CommandCard({ title, value, onCopy, copied }) {
 
 function App() {
   const [copiedValue, setCopiedValue] = useState('')
-  const [openModule, setOpenModule] = useState(modules[0].alias)
   const [activeTab, setActiveTab] = useState('core')
 
   // Custom install state
@@ -230,26 +229,23 @@ function App() {
 
       <section className="section" id="modules">
         <h2>Modules / Ecosystem</h2>
+        <p className="section-lead">Pick a full module with the long name, or use the short alias for faster terminal workflows.</p>
         <div className="module-grid">
           {modules.map((mod) => (
-            <article key={mod.alias} className={`module-card ${openModule === mod.alias ? 'open' : ''}`}>
-              <button type="button" className="module-toggle" onClick={() => setOpenModule(openModule === mod.alias ? '' : mod.alias)}>
-                <span>{mod.name}</span>
-                <small>{mod.shortAlias && mod.shortAlias !== mod.alias ? `${mod.alias} / ${mod.shortAlias}` : mod.alias}</small>
-              </button>
-              {openModule === mod.alias && (
-                <div className="module-body">
-                  <p>{mod.details}</p>
-                  <pre>
-                    <code>{mod.shortAlias && mod.shortAlias !== mod.alias ? `stx install ${mod.alias}\nstx ${mod.shortAlias}` : `stx install ${mod.alias}`}</code>
-                  </pre>
-                  <CopyButton
-                    value={mod.shortAlias && mod.shortAlias !== mod.alias ? `stx install ${mod.alias}\nstx ${mod.shortAlias}` : `stx install ${mod.alias}`}
-                    copied={copiedValue === (mod.shortAlias && mod.shortAlias !== mod.alias ? `stx install ${mod.alias}\nstx ${mod.shortAlias}` : `stx install ${mod.alias}`)}
-                    onCopy={copyText}
-                  />
-                </div>
-              )}
+            <article key={mod.alias} className="module-card module-card-expanded">
+              <div className="module-kicker">Module</div>
+              <h3>{mod.name}</h3>
+              <div className="module-aliases">
+                <span>{mod.alias}</span>
+                {mod.shortAlias && mod.shortAlias !== mod.alias ? <span>{mod.shortAlias}</span> : null}
+              </div>
+              <p>{mod.details}</p>
+              <div className="module-body">
+                <pre>
+                  <code>{`stx install ${mod.alias}`}</code>
+                </pre>
+                <CopyButton value={`stx install ${mod.alias}`} copied={copiedValue === `stx install ${mod.alias}`} onCopy={copyText} />
+              </div>
             </article>
           ))}
         </div>
@@ -257,9 +253,11 @@ function App() {
 
       <section className="section" id="presets">
         <h2>Quick Setup Presets</h2>
+        <p className="section-lead">Use presets when you want a ready-made stack instead of choosing individual modules.</p>
         <div className="preset-grid">
           {presets.map(([name, desc]) => (
             <article key={name} className="preset-card">
+              <div className="preset-label">Preset</div>
               <h3>{name}</h3>
               <p>{desc}</p>
               <pre>
@@ -273,16 +271,19 @@ function App() {
 
       <section className="section" id="how">
         <h2>How It Works</h2>
-        <ol className="steps">
+        <ol className="steps steps-grid">
           <li>
+            <span className="step-index">01</span>
             <strong>Install SetupX</strong>
             <span>Run the one-command installer to bootstrap SetupX.</span>
           </li>
           <li>
+            <span className="step-index">02</span>
             <strong>Choose a module or preset</strong>
             <span>Install a targeted stack or a quick setup profile.</span>
           </li>
           <li>
+            <span className="step-index">03</span>
             <strong>Verify with testing commands</strong>
             <span>Confirm your environment with status and test commands.</span>
           </li>
@@ -315,7 +316,7 @@ function App() {
 
       <section className="section" id="benefits">
         <h2>Benefits</h2>
-        <ul className="benefits">
+        <ul className="benefits benefits-grid">
           {benefits.map((item) => (
             <li key={item}>{item}</li>
           ))}
@@ -369,17 +370,25 @@ function App() {
       </section>
 
       <footer className="footer">
-        <a href="https://github.com/anshulyadav-git/setupx-windows-setup" target="_blank" rel="noreferrer">
-          GitHub
-        </a>
-        <a href="https://github.com/anshulyadav-git/setupx-windows-setup#readme" target="_blank" rel="noreferrer">
-          Documentation
-        </a>
-        <a href="https://setupx.vercel.app" target="_blank" rel="noreferrer">
-          Website
-        </a>
-        <span>Maintainer: anshulyadav-git</span>
-        <span>Open source under MIT license</span>
+        <div className="footer-brand">
+          <strong>SetupX</strong>
+          <span>Windows environment setup with modular PowerShell workflows.</span>
+        </div>
+        <div className="footer-links">
+          <a href="https://github.com/anshulyadav-git/setupx-windows-setup" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href="https://github.com/anshulyadav-git/setupx-windows-setup#readme" target="_blank" rel="noreferrer">
+            Documentation
+          </a>
+          <a href="https://setupx.vercel.app" target="_blank" rel="noreferrer">
+            Website
+          </a>
+        </div>
+        <div className="footer-meta">
+          <span>Maintainer: anshulyadav-git</span>
+          <span>Open source under MIT license</span>
+        </div>
       </footer>
     </div>
   )
