@@ -102,8 +102,8 @@ function Show-Help {
     Write-Host "    check <component>             Check if a component is installed" -ForegroundColor White
     Write-Host "    verify <component>            Verify component installation" -ForegroundColor White
     Write-Host "    test <component>              Test component functionality" -ForegroundColor White
-    Write-Host "    install-module <module>       Install all components in a module" -ForegroundColor White
-    Write-Host "    install-managers              Install all package managers module components" -ForegroundColor White
+    Write-Host "    install-module <module> [all] Install module components (pgkm defaults to core set)" -ForegroundColor White
+    Write-Host "    install-managers [all]        Install core package managers or all package managers" -ForegroundColor White
     Write-Host "    wdev                          Install all web-development module components" -ForegroundColor White
     Write-Host "    aidev                         Install all ai-development-tools module components" -ForegroundColor White
     Write-Host "    mdev                          Install all mobile-development module components" -ForegroundColor White
@@ -138,7 +138,8 @@ function Show-Help {
     Write-Host "    setupx devops                 # Install all devops components" -ForegroundColor DarkGray
     Write-Host "    setupx dscience               # Install all data-science components" -ForegroundColor DarkGray
     Write-Host "    setupx list-module pgkm       # List package managers" -ForegroundColor DarkGray
-    Write-Host "    setupx pgkm                   # Install all package managers" -ForegroundColor DarkGray
+    Write-Host "    setupx pgkm                   # Install Chocolatey, Scoop, Winget, and npm" -ForegroundColor DarkGray
+    Write-Host "    setupx pgkm all               # Install every package manager" -ForegroundColor DarkGray
     Write-Host "    setupx quick-setup web-dev    # Install web dev preset" -ForegroundColor DarkGray
     Write-Host "    setupx search docker          # Search for Docker component`n" -ForegroundColor DarkGray
     
@@ -150,6 +151,54 @@ function Show-Help {
     }
     
     Write-Host "`nFor more information: https://github.com/anshulyadav-git/setupx-windows-setup" -ForegroundColor Cyan
+}
+
+function Get-CorePackageManagerNames {
+    return @("chocolatey", "scoop", "winget", "npm")
+}
+
+function Invoke-InstallModuleComponents {
+    param(
+        [Parameter(Mandatory=$true)]
+        [PSCustomObject]$Module,
+        [Parameter(Mandatory=$true)]
+        [string[]]$ComponentNames,
+        [string]$Label = "selected"
+    )
+
+    Write-Host "`nInstalling module: $($Module.displayName)" -ForegroundColor Cyan
+    Write-Host "$($Module.description)" -ForegroundColor Gray
+    Write-Host ""
+
+    Write-Host "Installing $($ComponentNames.Count) $Label component(s)`n" -ForegroundColor Yellow
+
+    $successCount = 0
+    $failCount = 0
+
+    foreach ($componentName in $ComponentNames) {
+        $component = $Module.components.$componentName
+        if (-not $component) {
+            Write-Host "Skipping missing component '$componentName'" -ForegroundColor Yellow
+            $failCount++
+            continue
+        }
+
+        Write-Host "Installing $($component.displayName)..." -ForegroundColor Cyan
+        $result = Invoke-ComponentCommand -Component $component -Action "install"
+
+        if ($result) {
+            $successCount++
+        }
+        else {
+            $failCount++
+        }
+
+        Write-Host ""
+    }
+
+    Write-Host "`nModule installation complete:" -ForegroundColor Cyan
+    Write-Host "  [+] Success: $successCount" -ForegroundColor Green
+    Write-Host "  [-] Failed: $failCount" -ForegroundColor Red
 }
 
 function Show-List {
@@ -361,7 +410,10 @@ function Invoke-Check {
 }
 
 function Invoke-InstallModule {
-    param([string]$ModuleName)
+    param(
+        [string]$ModuleName,
+        [string]$Mode
+    )
     
     if (-not $ModuleName) {
         Write-Host "Error: Module name required" -ForegroundColor Red
@@ -378,35 +430,15 @@ function Invoke-InstallModule {
         return
     }
     
-    Write-Host "`nInstalling module: $($module.displayName)" -ForegroundColor Cyan
-    Write-Host "$($module.description)" -ForegroundColor Gray
-    Write-Host ""
-    
-    $componentCount = ($module.components.PSObject.Properties | Measure-Object).Count
-    Write-Host "This module contains $componentCount components`n" -ForegroundColor Yellow
-    
-    $successCount = 0
-    $failCount = 0
-    
-    foreach ($componentName in $module.components.PSObject.Properties.Name) {
-        $component = $module.components.$componentName
-        Write-Host "Installing $($component.displayName)..." -ForegroundColor Cyan
-        
-        $result = Invoke-ComponentCommand -Component $component -Action "install"
-        
-        if ($result) {
-            $successCount++
-        }
-        else {
-            $failCount++
-        }
-        
-        Write-Host ""
+    if ($resolvedModuleName -eq "package-managers" -and $Mode -ne "all") {
+        $coreManagers = Get-CorePackageManagerNames | Where-Object { $module.components.PSObject.Properties.Name -contains $_ }
+        Invoke-InstallModuleComponents -Module $module -ComponentNames $coreManagers -Label "core package manager"
+        Write-Host "`nRun 'setupx pgkm all' to install every package manager component." -ForegroundColor Yellow
+        return
     }
-    
-    Write-Host "`nModule installation complete:" -ForegroundColor Cyan
-    Write-Host "  [+] Success: $successCount" -ForegroundColor Green
-    Write-Host "  [-] Failed: $failCount" -ForegroundColor Red
+
+    $componentNames = $module.components.PSObject.Properties.Name
+    Invoke-InstallModuleComponents -Module $module -ComponentNames $componentNames -Label "module"
 }
 
 function Invoke-ListModule {
@@ -623,7 +655,9 @@ function Invoke-QuickSetup {
 }
 
 function Invoke-InstallManagers {
-    Invoke-InstallModule -ModuleName "pgkm"
+    param([string]$Mode)
+
+    Invoke-InstallModule -ModuleName "pgkm" -Mode $Mode
 }
 
 function Invoke-InstallWebDev {
@@ -659,6 +693,17 @@ function Invoke-InstallDataScience {
 }
 
 # Main command router
+$firstArgument = $null
+$secondArgument = $null
+
+if ($Arguments.Count -gt 0) {
+    $firstArgument = $Arguments[0]
+}
+
+if ($Arguments.Count -gt 1) {
+    $secondArgument = $Arguments[1]
+}
+
 switch ($Command) {
     "help" { Show-Help }
     "-h" { Show-Help }
@@ -667,8 +712,8 @@ switch ($Command) {
     "list-all" { Show-ListAll }
     "status" { Show-Status }
     "check-status" { Show-Status }
-    "install" { Invoke-Install -ComponentName $Arguments[0] }
-    "install-managers" { Invoke-InstallManagers }
+    "install" { Invoke-Install -ComponentName $firstArgument }
+    "install-managers" { Invoke-InstallManagers -Mode $firstArgument }
     "wdev" { Invoke-InstallWebDev }
     "aidev" { Invoke-InstallAIDev }
     "aidve" { Invoke-InstallAIDev }
@@ -682,36 +727,36 @@ switch ($Command) {
     "devops" { Invoke-InstallDevOps }
     "dscience" { Invoke-InstallDataScience }
     "datascien" { Invoke-InstallDataScience }
-    "pkgm" { Invoke-InstallManagers }
-    "pgkm" { Invoke-InstallManagers }
-    "remove" { Invoke-Remove -ComponentName $Arguments[0] }
+    "pkgm" { Invoke-InstallManagers -Mode $firstArgument }
+    "pgkm" { Invoke-InstallManagers -Mode $firstArgument }
+    "remove" { Invoke-Remove -ComponentName $firstArgument }
     "update" { 
-        $component = Get-ComponentByName -ComponentName $Arguments[0]
+        $component = Get-ComponentByName -ComponentName $firstArgument
         if ($component) {
             Invoke-ComponentCommand -Component $component -Action "update"
         }
     }
-    "check" { Invoke-Check -ComponentName $Arguments[0] }
+    "check" { Invoke-Check -ComponentName $firstArgument }
     "verify" {
-        $component = Get-ComponentByName -ComponentName $Arguments[0]
+        $component = Get-ComponentByName -ComponentName $firstArgument
         if ($component) {
             Invoke-ComponentCommand -Component $component -Action "verify"
         }
     }
     "test" {
-        $component = Get-ComponentByName -ComponentName $Arguments[0]
+        $component = Get-ComponentByName -ComponentName $firstArgument
         if ($component) {
             Invoke-ComponentCommand -Component $component -Action "test"
         }
     }
-    "install-module" { Invoke-InstallModule -ModuleName $Arguments[0] }
-    "list-module" { Invoke-ListModule -ModuleName $Arguments[0] }
-    "components" { Invoke-ListModule -ModuleName $Arguments[0] }
-    "install-component" { Invoke-InstallComponent -ModuleName $Arguments[0] -ComponentName $Arguments[1] }
-    "test-module" { Invoke-TestModule -ModuleName $Arguments[0] }
-    "test-component" { Invoke-TestComponent -ModuleName $Arguments[0] -ComponentName $Arguments[1] }
-    "quick-setup" { Invoke-QuickSetup -Profile $Arguments[0] }
-    "search" { Invoke-Search -Query $Arguments[0] }
+    "install-module" { Invoke-InstallModule -ModuleName $firstArgument -Mode $secondArgument }
+    "list-module" { Invoke-ListModule -ModuleName $firstArgument }
+    "components" { Invoke-ListModule -ModuleName $firstArgument }
+    "install-component" { Invoke-InstallComponent -ModuleName $firstArgument -ComponentName $secondArgument }
+    "test-module" { Invoke-TestModule -ModuleName $firstArgument }
+    "test-component" { Invoke-TestComponent -ModuleName $firstArgument -ComponentName $secondArgument }
+    "quick-setup" { Invoke-QuickSetup -Profile $firstArgument }
+    "search" { Invoke-Search -Query $firstArgument }
     "version" {
         $configPath = Join-Path $PSScriptRoot "config.json"
         $config = Get-Content $configPath -Raw | ConvertFrom-Json

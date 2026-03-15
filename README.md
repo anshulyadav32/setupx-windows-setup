@@ -33,14 +33,21 @@ Copy
 
 After installing SetupX, you can install package managers in two ways:
 
-### 1. Install All Package Managers At Once
+### 1. Install Core Package Managers
 ```powershell
 setupx pgkm
 # or
 setupx install-module pgkm
 ```
 
-### 2. Install Each Package Manager One by One
+This installs `chocolatey`, `scoop`, `winget`, and `npm`.
+
+### 2. Install All Package Managers
+```powershell
+setupx pgkm all
+```
+
+### 3. Install Each Package Manager One by One
 ```powershell
 # List all package managers
 setupx list-components pgkm

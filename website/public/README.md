@@ -29,6 +29,36 @@ Copy
 
 - Live Website: https://setupx.vercel.app
 
+## 🛠️ Interactive Package Manager Installation
+
+After installing SetupX, you can install package managers in two ways:
+
+### 1. Install Core Package Managers
+```powershell
+setupx pgkm
+# or
+setupx install-module pgkm
+```
+
+This installs `chocolatey`, `scoop`, `winget`, and `npm`.
+
+### 2. Install All Package Managers
+```powershell
+setupx pgkm all
+```
+
+### 3. Install Each Package Manager One by One
+```powershell
+# List all package managers
+setupx list-components pgkm
+
+# Then install individually:
+setupx install-component pgkm choco
+setupx install-component pgkm scoop
+setupx install-component pgkm winget
+# ...and so on for each manager
+```
+
 ## 🚀 Quick Start
 
 ### Manual Installation
