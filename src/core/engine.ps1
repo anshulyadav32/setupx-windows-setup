@@ -26,8 +26,12 @@ function Invoke-ComponentCommand {
     Write-Host ""
     
     try {
-        # Execute the command
-        $result = Invoke-Expression $command
+        $global:LASTEXITCODE = $null
+
+        # Execute component commands in a child scope so installer scripts do not
+        # collide with local variables in this function.
+        $scriptBlock = [ScriptBlock]::Create($command)
+        $null = & $scriptBlock
         
         # Check if command was successful
         if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
@@ -36,7 +40,8 @@ function Invoke-ComponentCommand {
             # Execute path refresh if specified
             if ($Component.commands.path) {
                 try {
-                    Invoke-Expression $Component.commands.path
+                    $pathRefreshBlock = [ScriptBlock]::Create($Component.commands.path)
+                    & $pathRefreshBlock
                 }
                 catch {
                     Write-Host "Warning: Path refresh failed: $_" -ForegroundColor Yellow

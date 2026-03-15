@@ -2,6 +2,10 @@
 
 Frontend site for SetupX, built with React + Vite and deployed on Vercel.
 
+## Live Website
+
+- https://setupx.vercel.app
+
 ## Scripts
 
 ```bash
@@ -38,4 +42,6 @@ Vercel settings are defined in `vercel.json`:
 
 - Module cards are interactive and reveal all components on click.
 - Each component provides a copy button for the install command.
-- Component install command format is `sx install <component>`.
+- Component install command format is `setupx install <component>`.
+
+

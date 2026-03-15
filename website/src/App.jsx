@@ -1,465 +1,399 @@
 import './App.css'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-const moduleCards = [
-  {
-    alias: 'pgkm',
-    name: 'Package Managers',
-    path: 'scripts/pgkm',
-    components: [
-      'bun',
-      'cargo',
-      'choco',
-      'chocolatey',
-      'composer',
-      'conda',
-      'dotnet-tool',
-      'gem',
-      'go',
-      'mamba',
-      'nodejs',
-      'npm',
-      'nuget',
-      'nvm',
-      'pip',
-      'pipx',
-      'pnpm',
-      'scoop',
-      'vcpkg',
-      'winget',
-      'yarn',
-    ],
-  },
-  {
-    alias: 'wdev',
-    name: 'Web Development',
-    path: 'scripts/wdev',
-    components: ['angular-tools', 'browsers', 'nodejs', 'react-tools', 'vite', 'vue-tools', 'yarn'],
-  },
-  {
-    alias: 'aidve',
-    name: 'AI Development',
-    path: 'scripts/aidve',
-    components: [
-      'aws-cli',
-      'azure-cli',
-      'codex-cli',
-      'gcloud-cli',
-      'grok-cli',
-      'netlify-cli',
-      'node',
-      'python',
-      'redis',
-      'vercel-cli',
-      'xampp',
-    ],
-  },
-  { alias: 'mdev', name: 'Mobile Development', path: 'scripts/mdev', components: ['android-studio', 'flutter', 'react-native-cli'] },
-  { alias: 'wsl', name: 'WSL Linux', path: 'scripts/wsl', components: ['docker-desktop', 'ubuntu', 'wsl'] },
-  { alias: 'cdev', name: 'Cloud Development', path: 'scripts/cdev', components: ['aws-cli', 'azure-cli', 'gcloud-cli', 'kubectl', 'terraform'] },
-  {
-    alias: 'codev',
-    name: 'Common Development',
-    path: 'scripts/codev',
-    components: [
-      '7zip',
-      'brave',
-      'chrome',
-      'firefox',
-      'gh',
-      'git',
-      'github-desktop',
-      'jdk',
-      'powershell',
-      'powertoys',
-      'telegram',
-      'vscode',
-      'whatsapp',
-      'windows-terminal',
-    ],
-  },
-  { alias: 'devops', name: 'DevOps', path: 'scripts/devops', components: ['ansible', 'jenkins', 'terraform'] },
-  { alias: 'dscience', name: 'Data Science', path: 'scripts/dscience', components: ['jupyter', 'pandas', 'pytorch', 'tensorflow'] },
+import { moduleCards } from './setupxData.js'
+import { getComponentInstallCommand } from './setupxUtils.js'
+
+const installOneLiner =
+  'iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex'
+const installAllOneLiner =
+  'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex'
+
+const whyItems = [
+  ['One-command install', 'Bootstrap your environment with one PowerShell command.'],
+  ['Modular architecture', 'Install only what you need, from one component to full stacks.'],
+  ['JSON-driven config', 'Tool and module definitions are versioned and auditable.'],
+  ['Package manager support', 'Unified flow for Chocolatey, Scoop, WinGet, npm, and more.'],
+  ['Quick setup profiles', 'Use presets for full-stack, web-dev, cloud-dev, and ai-dev.'],
+  ['Testing and status checks', 'Built-in validation commands to verify your setup.'],
 ]
 
-const quickCommands = [
-  'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex',
-  'sx pgkm',
-  'sx wdev',
-  'sx aidve',
-  'sx mdev',
-  'sx wsl',
-  'sx cdev',
-  'sx codev',
-  'sx devops',
-  'sx dscience',
+const featureRows = [
+  ['Install package managers', 'stx pgkm'],
+  ['List available commands and modules', 'stx ls'],
+  ['Check current setup health', 'stx status'],
+  ['See module components', 'stx components web-development'],
+  ['Install complete module', 'stx install web-development'],
+  ['Install specific component', 'stx install pgkm chocolatey'],
+  ['Run quick setup profile', 'stx quick-setup full-stack'],
 ]
 
-const getModuleAliasFromPath = (pathname) => {
-  const match = pathname.match(/^\/module\/([a-z0-9-]+)\/?$/i)
-  return match ? decodeURIComponent(match[1]).toLowerCase() : null
+const modules = [
+  { name: 'Package Managers', alias: 'pgkm', shortAlias: 'pgkm', details: 'Chocolatey, Scoop, Winget, npm, yarn, pnpm and more.' },
+  { name: 'Web Development', alias: 'web-development', shortAlias: 'wdev', details: 'Frontend tooling, browsers, frameworks, and build tools.' },
+  { name: 'Mobile Development', alias: 'mobile-development', shortAlias: 'mdev', details: 'Flutter, mobile CLIs, and mobile-ready dev stack.' },
+  { name: 'Cloud Development', alias: 'cloud-development', shortAlias: 'cdev', details: 'AWS, Azure, GCP, terraform, kubectl workflows.' },
+  { name: 'Common Development', alias: 'common-development', shortAlias: 'codev', details: 'Git, VS Code, terminal, browsers, and daily essentials.' },
+  { name: 'AI Development Tools', alias: 'ai-development-tools', shortAlias: 'aidve', details: 'AI CLIs, model workflows, and inference-friendly setup.' },
+  { name: 'Data Science', alias: 'data-science', shortAlias: 'dscience', details: 'Python stack, notebooks, data tooling, and ML basics.' },
+  { name: 'DevOps', alias: 'devops', shortAlias: 'devops', details: 'Automation, pipelines, infra-as-code, and deployment tools.' },
+  { name: 'WSL/Linux', alias: 'wsl-linux', shortAlias: 'wsl', details: 'WSL, distro setup, and Linux-based development workflows.' },
+]
+
+const presets = [
+  ['full-stack', 'Package managers + web + backend'],
+  ['web-dev', 'Package managers + frontend tooling'],
+  ['mobile-dev', 'Package managers + mobile stack'],
+  ['cloud-dev', 'Package managers + cloud tooling'],
+  ['ai-dev', 'Package managers + AI and ML tooling'],
+]
+
+const commandTabs = {
+  core: ['stx status', 'stx ls', 'stx components web-development'],
+  modules: ['stx install pgkm', 'stx install web-development', 'stx install cloud-development'],
+  components: ['stx install pgkm chocolatey', 'stx install web-development nodejs', 'stx -i web-development yarn'],
+  testing: ['stx test-module pgkm', 'stx test-component web-development nodejs', 'stx check-status'],
+}
+
+const benefits = [
+  'Save setup time from hours to minutes',
+  'Keep environments repeatable and consistent',
+  'Avoid manual configuration mistakes',
+  'Onboard faster on new machines',
+  'Scale your personal or team setup workflow',
+]
+
+const faqs = [
+  ['Is SetupX Windows-only?', 'Yes. SetupX targets Windows environments and integrates with Windows-native tooling.'],
+  ['Does it require admin permissions?', 'Some installations need elevated permissions. SetupX handles mixed privilege workflows where possible.'],
+  ['Can I install only selected modules?', 'Yes. Use stx install <module> or stx install <module> <component> for targeted installs.'],
+  ['How do I test what was installed?', 'Use stx test-module, stx test-component, stx status, and stx check-status commands.'],
+]
+
+function CopyButton({ value, copied, onCopy }) {
+  return (
+    <button type="button" className="copy-btn" onClick={() => onCopy(value)}>
+      {copied ? 'Copied' : 'Copy'}
+    </button>
+  )
+}
+
+function CommandCard({ title, value, onCopy, copied }) {
+  return (
+    <article className="command-card">
+      <h4>{title}</h4>
+      <div className="command-inline">
+        <code>{value}</code>
+        <CopyButton value={value} copied={copied} onCopy={onCopy} />
+      </div>
+    </article>
+  )
 }
 
 function App() {
-  const [routePath, setRoutePath] = useState(() => window.location.pathname)
-  const [copyState, setCopyState] = useState({ command: '', status: 'idle' })
-  const [copiedInstallLink, setCopiedInstallLink] = useState(false)
+  const [copiedValue, setCopiedValue] = useState('')
+  const [activeTab, setActiveTab] = useState('core')
 
-  const installOneLiner =
-    'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex'
+  // Custom install state
+  const [selectedComponents, setSelectedComponents] = useState([])
 
-  const totalComponents = moduleCards.reduce((sum, module) => sum + module.components.length, 0)
-  const routeModuleAlias = useMemo(() => getModuleAliasFromPath(routePath), [routePath])
-  const activeModule = useMemo(
-    () => moduleCards.find((module) => module.alias === routeModuleAlias) ?? null,
-    [routeModuleAlias],
-  )
-  const isModuleRoute = routeModuleAlias !== null
-  const isHomeRoute = !isModuleRoute
-  const isUnknownModuleRoute = isModuleRoute && !activeModule
-
-  useEffect(() => {
-    if (activeModule) {
-      document.title = `SetupX | ${activeModule.name}`
-      return
-    }
-
-    document.title = 'SetupX'
-  }, [activeModule])
-
-  useEffect(() => {
-    const handlePopState = () => setRoutePath(window.location.pathname)
-    window.addEventListener('popstate', handlePopState)
-
-    return () => window.removeEventListener('popstate', handlePopState)
+  // Flat list of all components
+  const allComponents = useMemo(() => {
+    return moduleCards.flatMap(mod => mod.components.map(comp => ({
+      module: mod.alias,
+      name: comp,
+    })))
   }, [])
 
-  const navigateToModule = (moduleAlias) => {
-    const nextPath = `/module/${moduleAlias}`
-    window.location.assign(nextPath)
+  // Build install command
+  const customInstallCmd = selectedComponents.length
+    ? selectedComponents
+        .map((selected) => {
+          const component = allComponents.find(({ name }) => name === selected)
+          return component ? getComponentInstallCommand(component.module, component.name) : null
+        })
+        .filter(Boolean)
+        .join('\n')
+    : 'stx install <module> <component>'
+
+  // Toggle component selection
+  const toggleComponent = (name) => {
+    setSelectedComponents(selectedComponents.includes(name)
+      ? selectedComponents.filter(c => c !== name)
+      : [...selectedComponents, name])
   }
 
-  const navigateHome = () => {
-    if (window.location.pathname === '/') {
-      return
-    }
+  const totals = useMemo(
+    () => ({ modules: modules.length, presets: presets.length, commands: Object.values(commandTabs).flat().length }),
+    [],
+  )
 
-    window.history.pushState({}, '', '/')
-    setRoutePath('/')
-  }
-
-  const getInstallTarget = (moduleAlias, componentName) => {
-    const overrides = {
-      pgkm: {
-        choco: 'chocolatey',
-      },
-    }
-
-    return overrides[moduleAlias]?.[componentName] ?? componentName
-  }
-
-  const getComponentInstallCommand = (moduleAlias, componentName) => `sx install ${getInstallTarget(moduleAlias, componentName)}`
-
-  const fallbackCopyText = (text) => {
-    const textarea = document.createElement('textarea')
-    textarea.value = text
-    textarea.setAttribute('readonly', '')
-    textarea.style.position = 'absolute'
-    textarea.style.left = '-9999px'
-    document.body.appendChild(textarea)
-    textarea.select()
-    const copied = document.execCommand('copy')
-    document.body.removeChild(textarea)
-    return copied
-  }
-
-  const copyText = async (text) => {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text)
-      return
-    }
-
-    const copied = fallbackCopyText(text)
-    if (!copied) {
-      throw new Error('Clipboard copy failed')
-    }
-  }
-
-  const handleCopyCommand = async (moduleAlias, componentName) => {
-    const command = getComponentInstallCommand(moduleAlias, componentName)
-
+  const copyText = async (value) => {
     try {
-      await copyText(command)
-
-      setCopyState({ command, status: 'copied' })
-      window.setTimeout(() => setCopyState({ command: '', status: 'idle' }), 1600)
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value)
+      } else {
+        const ta = document.createElement('textarea')
+        ta.value = value
+        ta.style.position = 'absolute'
+        ta.style.left = '-9999px'
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+      }
+      setCopiedValue(value)
+      window.setTimeout(() => setCopiedValue(''), 1400)
     } catch {
-      setCopyState({ command, status: 'failed' })
-      window.setTimeout(() => setCopyState({ command: '', status: 'idle' }), 1600)
-    }
-  }
-
-  const handleCopyModuleCommand = async (moduleAlias) => {
-    const command = `sx ${moduleAlias}`
-
-    try {
-      await copyText(command)
-      setCopyState({ command, status: 'copied' })
-      window.setTimeout(() => setCopyState({ command: '', status: 'idle' }), 1600)
-    } catch {
-      setCopyState({ command, status: 'failed' })
-      window.setTimeout(() => setCopyState({ command: '', status: 'idle' }), 1600)
-    }
-  }
-
-  const handleCopyInstallLink = async () => {
-    try {
-      await copyText(installOneLiner)
-      setCopiedInstallLink(true)
-      window.setTimeout(() => setCopiedInstallLink(false), 1600)
-    } catch {
-      setCopiedInstallLink(false)
+      setCopiedValue('')
     }
   }
 
   return (
-    <div className="site-shell">
-      <header className="hero">
-        <p className="eyebrow">Windows Automation Platform</p>
-        <h1>SetupX</h1>
+    <div className="landing-shell">
+      {/* Custom Install Section */}
+      <section className="section" id="custom-install">
+        <h2>Custom Install</h2>
+        <p>Select which components you want to install. The commands below update automatically.</p>
+        <div className="custom-install-list">
+          {allComponents.map(({ module, name }) => {
+            const moduleMeta = moduleCards.find((item) => item.alias === module)
+            const moduleLabel = moduleMeta?.shortAlias && moduleMeta.shortAlias !== moduleMeta.alias
+              ? `${moduleMeta.alias} / ${moduleMeta.shortAlias}`
+              : module
+            return (
+            <label key={name} className="custom-install-item">
+              <input
+                type="checkbox"
+                checked={selectedComponents.includes(name)}
+                onChange={() => toggleComponent(name)}
+              />
+              <span>{name} <small style={{ color: '#9ec3cf', fontSize: '0.85em' }}>({moduleLabel})</small></span>
+            </label>
+            )
+          })}
+        </div>
+        <div className="command-inline" style={{ marginTop: '1rem' }}>
+          <code style={{ whiteSpace: 'pre-wrap' }}>{customInstallCmd}</code>
+          <CopyButton value={customInstallCmd} copied={copiedValue === customInstallCmd} onCopy={copyText} />
+        </div>
+      </section>
+      <header className="hero" id="top">
+        <p className="eyebrow">SetupX / stx</p>
+        <h1>Set up your Windows dev environment in one command</h1>
         <p className="hero-copy">
-          One command setup for full developer environments. Built for speed, scriptability,
-          and repeatable team onboarding.
+          SetupX is a modular PowerShell tool for automating installation of package managers,
+          frameworks, and developer tools using a clean JSON-driven workflow.
         </p>
+        <p className="sub-tagline">Automate your Windows dev environment with one command.</p>
         <div className="hero-actions">
-          <a className="btn btn-primary" href="https://setupx.vercel.app" target="_blank" rel="noreferrer">
-            Live Site
+          <a className="btn btn-primary" href="#quick-start">Get Started</a>
+          <a className="btn btn-ghost" href="https://github.com/anshulyadav-git/setupx-windows-setup" target="_blank" rel="noreferrer">
+            View on GitHub
           </a>
-          <a
-            className="btn btn-ghost"
-            href="https://github.com/anshulyadav-git/setupx-windows-setup"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub Repo
-          </a>
-          <button type="button" className="btn btn-install-link" onClick={handleCopyInstallLink}>
-            {copiedInstallLink ? 'Install Link Copied' : 'Copy Install Link'}
-          </button>
+        </div>
+        <div className="hero-terminal">
+          <CommandCard title="Install SetupX" value={installOneLiner} onCopy={copyText} copied={copiedValue === installOneLiner} />
+          <CommandCard title="Install SetupX + Package Managers" value={installAllOneLiner} onCopy={copyText} copied={copiedValue === installAllOneLiner} />
         </div>
       </header>
 
-      {isHomeRoute && (
-        <section className="stats-grid">
-          <article>
-            <strong>9</strong>
-            <span>Modules</span>
-          </article>
-          <article>
-            <strong>{totalComponents}</strong>
-            <span>Total Components</span>
-          </article>
-          <article>
-            <strong>1</strong>
-            <span>Unified CLI: sx</span>
-          </article>
-        </section>
-      )}
-
-      {isHomeRoute && (
-        <section className="panel">
-          <h2>Module Pages</h2>
-          <p className="panel-copy">Open any module page directly:</p>
-          <div className="module-page-links">
-            {moduleCards.map((module) => (
-              <a key={module.alias} className="module-page-link" href={`/module/${module.alias}`}>
-                <span>{module.name}</span>
-                <small>/module/{module.alias}</small>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {isHomeRoute && (
-        <section className="panel">
-          <h2>Module Aliases</h2>
-          <p className="panel-copy">Click a module to open its page and view all components with copy buttons.</p>
-          <div className="module-grid">
-            {moduleCards.map((module) => (
-              <article
-                key={module.alias}
-                className={`module-card ${activeModule?.alias === module.alias ? 'module-card-active' : ''}`}
-                role="button"
-                tabIndex={0}
-                onClick={() => navigateToModule(module.alias)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault()
-                    navigateToModule(module.alias)
-                  }
-                }}
-              >
-                <h3>{module.name}</h3>
-                <p>Alias: {module.alias}</p>
-                <p>Scripts: {module.path}</p>
-                <p>Components: {module.components.length}</p>
-                <p>Page: /module/{module.alias}</p>
-                <div className="module-card-actions">
-                  <pre>
-                    <code>{`sx ${module.alias}`}</code>
-                  </pre>
-                  <button
-                    type="button"
-                    className={`btn btn-copy ${copyState.command === `sx ${module.alias}` && copyState.status === 'failed' ? 'btn-copy-failed' : ''}`}
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      handleCopyModuleCommand(module.alias)
-                    }}
-                  >
-                    {copyState.command === `sx ${module.alias}` && copyState.status === 'copied' && 'Copied'}
-                    {copyState.command === `sx ${module.alias}` && copyState.status === 'failed' && 'Copy Failed'}
-                    {(copyState.command !== `sx ${module.alias}` || copyState.status === 'idle') && 'Copy Module Install'}
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {activeModule && (
-        <section className="panel">
-          <p className="eyebrow module-page-eyebrow">Dedicated Module Page</p>
-          <div className="component-heading-row">
-            <h2>{activeModule.name}</h2>
-            <span className="badge">{activeModule.components.length} items</span>
-          </div>
-          <p className="panel-copy">Alias: {activeModule.alias}</p>
-          <p className="panel-copy">Path: {activeModule.path}</p>
-          <p className="panel-copy">Module page: /module/{activeModule.alias}</p>
-          <div className="module-details-grid">
-            <article>
-              <strong>Module Name</strong>
-              <p>{activeModule.name}</p>
+      <section className="section" id="why">
+        <h2>Why SetupX</h2>
+        <div className="feature-grid">
+          {whyItems.map(([title, text]) => (
+            <article key={title} className="feature-card">
+              <h3>{title}</h3>
+              <p>{text}</p>
             </article>
-            <article>
-              <strong>Module Alias</strong>
-              <p>{activeModule.alias}</p>
-            </article>
-            <article>
-              <strong>Components</strong>
-              <p>{activeModule.components.length}</p>
-            </article>
-            <article>
-              <strong>Scripts Path</strong>
-              <p>{activeModule.path}</p>
-            </article>
-          </div>
-          <div className="formula-box">
-            <h3>Installation Formula</h3>
-            <p>Install full module</p>
-            <pre>
-              <code>{`sx ${activeModule.alias}`}</code>
-            </pre>
-            <p>Install a component from this module</p>
-            <pre>
-              <code>sx install &lt;component-name&gt;</code>
-            </pre>
-          </div>
-          <div className="module-page-command-bar">
-            <pre>
-              <code>{`sx ${activeModule.alias}`}</code>
-            </pre>
-            <button
-              type="button"
-              className={`btn btn-copy ${copyState.command === `sx ${activeModule.alias}` && copyState.status === 'failed' ? 'btn-copy-failed' : ''}`}
-              onClick={() => handleCopyModuleCommand(activeModule.alias)}
-            >
-              {copyState.command === `sx ${activeModule.alias}` && copyState.status === 'copied' && 'Copied'}
-              {copyState.command === `sx ${activeModule.alias}` && copyState.status === 'failed' && 'Copy Failed'}
-              {(copyState.command !== `sx ${activeModule.alias}` || copyState.status === 'idle') && 'Copy Module Install'}
-            </button>
-          </div>
-          <h3 className="component-subtitle">Components</h3>
-          <button type="button" className="btn btn-ghost btn-back" onClick={navigateHome}>
-            Back To Home
-          </button>
-          <div className="component-grid">
-            {activeModule.components.map((componentName) => {
-              const command = getComponentInstallCommand(activeModule.alias, componentName)
+          ))}
+        </div>
+      </section>
 
-              return (
-                <article key={`${activeModule.alias}-${componentName}`} className="component-card">
-                  <h3>{componentName}</h3>
-                  <p className="formula-label">Script: {activeModule.path}/{componentName}.ps1</p>
-                  <p className="formula-label">Component install formula</p>
-                  <pre>
-                    <code>{command}</code>
-                  </pre>
-                  <button
-                    type="button"
-                    className={`btn btn-copy ${copyState.command === command && copyState.status === 'failed' ? 'btn-copy-failed' : ''}`}
-                    onClick={() => handleCopyCommand(activeModule.alias, componentName)}
-                  >
-                    {copyState.command === command && copyState.status === 'copied' && 'Copied'}
-                    {copyState.command === command && copyState.status === 'failed' && 'Copy Failed'}
-                    {(copyState.command !== command || copyState.status === 'idle') && 'Copy Install Command'}
-                  </button>
-                </article>
-              )
-            })}
-          </div>
-        </section>
-      )}
-
-      {!isModuleRoute && (
-        <section className="panel">
-          <h2>Select A Module</h2>
-          <p className="panel-copy">Choose any module card above to open its dedicated module page and list all components.</p>
-        </section>
-      )}
-
-      {isUnknownModuleRoute && (
-        <section className="panel">
-          <h2>Module Not Found</h2>
-          <p className="panel-copy">This module page does not exist. Pick a module from the list above.</p>
-          <button type="button" className="btn btn-ghost btn-back" onClick={navigateHome}>
-            Back To Home
-          </button>
-        </section>
-      )}
-
-      {isHomeRoute && (
-        <section className="panel">
-          <h2>Quick Commands</h2>
-          <div className="command-list">
-            {quickCommands.map((command) => (
-              <pre key={command}>
+      <section className="section" id="features">
+        <h2>Core Features</h2>
+        <div className="feature-list">
+          {featureRows.map(([label, command]) => (
+            <article key={label} className="feature-row">
+              <div>
+                <h3>{label}</h3>
+              </div>
+              <pre>
                 <code>{command}</code>
               </pre>
-            ))}
-          </div>
-        </section>
-      )}
+              <CopyButton value={command} copied={copiedValue === command} onCopy={copyText} />
+            </article>
+          ))}
+        </div>
+      </section>
 
-      {isHomeRoute && (
-        <section className="panel timeline">
-          <h2>How SetupX Works</h2>
-          <ol>
-            <li>Install once with PowerShell one-liner.</li>
-            <li>Pick a module alias like pgkm, wdev, or dscience.</li>
-            <li>Run sx &lt;alias&gt; for full setup or sx install &lt;component&gt; for targeted install.</li>
-            <li>Use per-component scripts in scripts folders for direct automation workflows.</li>
-          </ol>
-        </section>
-      )}
+      <section className="section" id="modules">
+        <h2>Modules / Ecosystem</h2>
+        <p className="section-lead">Pick a full module with the long name, or use the short alias for faster terminal workflows.</p>
+        <div className="module-grid">
+          {modules.map((mod) => (
+            <article key={mod.alias} className="module-card module-card-expanded">
+              <div className="module-kicker">Module</div>
+              <h3>{mod.name}</h3>
+              <div className="module-aliases">
+                <span>{mod.alias}</span>
+                {mod.shortAlias && mod.shortAlias !== mod.alias ? <span>{mod.shortAlias}</span> : null}
+              </div>
+              <p>{mod.details}</p>
+              <div className="module-body">
+                <pre>
+                  <code>{`stx install ${mod.alias}`}</code>
+                </pre>
+                <CopyButton value={`stx install ${mod.alias}`} copied={copiedValue === `stx install ${mod.alias}`} onCopy={copyText} />
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section" id="presets">
+        <h2>Quick Setup Presets</h2>
+        <p className="section-lead">Use presets when you want a ready-made stack instead of choosing individual modules.</p>
+        <div className="preset-grid">
+          {presets.map(([name, desc]) => (
+            <article key={name} className="preset-card">
+              <div className="preset-label">Preset</div>
+              <h3>{name}</h3>
+              <p>{desc}</p>
+              <pre>
+                <code>{`stx quick-setup ${name}`}</code>
+              </pre>
+              <CopyButton value={`stx quick-setup ${name}`} copied={copiedValue === `stx quick-setup ${name}`} onCopy={copyText} />
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section" id="how">
+        <h2>How It Works</h2>
+        <ol className="steps steps-grid">
+          <li>
+            <span className="step-index">01</span>
+            <strong>Install SetupX</strong>
+            <span>Run the one-command installer to bootstrap SetupX.</span>
+          </li>
+          <li>
+            <span className="step-index">02</span>
+            <strong>Choose a module or preset</strong>
+            <span>Install a targeted stack or a quick setup profile.</span>
+          </li>
+          <li>
+            <span className="step-index">03</span>
+            <strong>Verify with testing commands</strong>
+            <span>Confirm your environment with status and test commands.</span>
+          </li>
+        </ol>
+      </section>
+
+      <section className="section" id="commands">
+        <h2>Command Showcase</h2>
+        <div className="tabs">
+          {[
+            ['core', 'Core Commands'],
+            ['modules', 'Module Installs'],
+            ['components', 'Component Installs'],
+            ['testing', 'Status / Testing'],
+          ].map(([key, label]) => (
+            <button key={key} type="button" className={`tab ${activeTab === key ? 'active' : ''}`} onClick={() => setActiveTab(key)}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <div className="terminal-showcase">
+          {commandTabs[activeTab].map((cmd) => (
+            <div key={cmd} className="terminal-line">
+              <code>{cmd}</code>
+              <CopyButton value={cmd} copied={copiedValue === cmd} onCopy={copyText} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section" id="benefits">
+        <h2>Benefits</h2>
+        <ul className="benefits benefits-grid">
+          {benefits.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="section" id="open-source">
+        <h2>Open Source</h2>
+        <p>
+          SetupX is open source and hosted on GitHub. Explore the code, review the scripts,
+          and contribute improvements.
+        </p>
+        <div className="hero-actions">
+          <a className="btn btn-primary" href="https://github.com/anshulyadav-git/setupx-windows-setup" target="_blank" rel="noreferrer">
+            Star on GitHub
+          </a>
+          <a className="btn btn-ghost" href="https://github.com/anshulyadav-git/setupx-windows-setup#readme" target="_blank" rel="noreferrer">
+            Explore Docs
+          </a>
+          <a className="btn btn-ghost" href="https://github.com/anshulyadav-git/setupx-windows-setup/pulls" target="_blank" rel="noreferrer">
+            Contribute
+          </a>
+        </div>
+      </section>
+
+      <section className="section" id="faq">
+        <h2>FAQ</h2>
+        <div className="faq-list">
+          {faqs.map(([q, a]) => (
+            <article key={q} className="faq-card">
+              <h3>{q}</h3>
+              <p>{a}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section stats-inline" id="quick-start">
+        <article>
+          <strong>{totals.modules}</strong>
+          <span>Modules</span>
+        </article>
+        <article>
+          <strong>{totals.presets}</strong>
+          <span>Presets</span>
+        </article>
+        <article>
+          <strong>{totals.commands}</strong>
+          <span>Showcased Commands</span>
+        </article>
+      </section>
 
       <footer className="footer">
-        <p>SetupX • JSON-driven Windows setup automation</p>
+        <div className="footer-brand">
+          <strong>SetupX</strong>
+          <span>Windows environment setup with modular PowerShell workflows.</span>
+        </div>
+        <div className="footer-links">
+          <a href="https://github.com/anshulyadav-git/setupx-windows-setup" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href="https://github.com/anshulyadav-git/setupx-windows-setup#readme" target="_blank" rel="noreferrer">
+            Documentation
+          </a>
+          <a href="https://setupx.vercel.app" target="_blank" rel="noreferrer">
+            Website
+          </a>
+        </div>
+        <div className="footer-meta">
+          <span>Maintainer: anshulyadav-git</span>
+          <span>Open source under MIT license</span>
+        </div>
       </footer>
     </div>
   )
 }
 
 export default App
+
+

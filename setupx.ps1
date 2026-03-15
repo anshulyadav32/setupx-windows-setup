@@ -3,6 +3,8 @@
 # Version: 2.0.0
 
 param(
+    [switch]$i,
+
     [Parameter(Position=0)]
     [string]$Command,
     
@@ -10,9 +12,9 @@ param(
     [string[]]$Arguments
 )
 
-# Import core modules
-. "$PSScriptRoot\src\utils\logger.ps1"
-. "$PSScriptRoot\src\utils\helpers.ps1"
+# Import runtime modules
+. "$PSScriptRoot\src\core\logger.ps1"
+. "$PSScriptRoot\src\core\helpers.ps1"
 . "$PSScriptRoot\src\core\engine.ps1"
 . "$PSScriptRoot\src\core\json-loader.ps1"
 
@@ -89,21 +91,24 @@ function Show-Help {
     Show-Banner
     
     Write-Host "USAGE:" -ForegroundColor Yellow
-    Write-Host "    sx <command> [arguments]`n" -ForegroundColor White
+    Write-Host "    setupx <command> [arguments]`n" -ForegroundColor White
     
     Write-Host "COMMANDS:" -ForegroundColor Yellow
     Write-Host "    help                          Show this help message" -ForegroundColor White
     Write-Host "    list                          List all available modules" -ForegroundColor White
+    Write-Host "    ls                            Alias for list" -ForegroundColor White
     Write-Host "    list-all                      List all components from all modules" -ForegroundColor White
     Write-Host "    status                        Show system status and installed components" -ForegroundColor White
-    Write-Host "    install <component>           Install a specific component" -ForegroundColor White
+    Write-Host "    install <target> [component]  Install a component or module" -ForegroundColor White
+    Write-Host "    instal <target> [component]   Alias for install" -ForegroundColor White
+    Write-Host "    -i <target> [component]       Short alias for install" -ForegroundColor White
     Write-Host "    remove <component>            Remove/uninstall a component" -ForegroundColor White
     Write-Host "    update <component>            Update a component" -ForegroundColor White
     Write-Host "    check <component>             Check if a component is installed" -ForegroundColor White
     Write-Host "    verify <component>            Verify component installation" -ForegroundColor White
     Write-Host "    test <component>              Test component functionality" -ForegroundColor White
-    Write-Host "    install-module <module>       Install all components in a module" -ForegroundColor White
-    Write-Host "    install-managers              Install all package managers module components" -ForegroundColor White
+    Write-Host "    install-module <module> [all] Install module components (pgkm defaults to core set)" -ForegroundColor White
+    Write-Host "    install-managers [all]        Install core package managers or all package managers" -ForegroundColor White
     Write-Host "    wdev                          Install all web-development module components" -ForegroundColor White
     Write-Host "    aidev                         Install all ai-development-tools module components" -ForegroundColor White
     Write-Host "    mdev                          Install all mobile-development module components" -ForegroundColor White
@@ -123,24 +128,29 @@ function Show-Help {
     Write-Host "    version                       Show SetupX version`n" -ForegroundColor White
     
     Write-Host "EXAMPLES:" -ForegroundColor Yellow
-    Write-Host "    sx list                       # List all modules" -ForegroundColor DarkGray
-    Write-Host "    sx list-all                   # List all components" -ForegroundColor DarkGray
-    Write-Host "    sx install chocolatey         # Install Chocolatey" -ForegroundColor DarkGray
-    Write-Host "    sx install nodejs             # Install Node.js" -ForegroundColor DarkGray
-    Write-Host "    sx check git                  # Check if Git is installed" -ForegroundColor DarkGray
-    Write-Host "    sx install-module web-development  # Install all web dev tools" -ForegroundColor DarkGray
-    Write-Host "    sx wdev                       # Install all web-development components" -ForegroundColor DarkGray
-    Write-Host "    sx aidev                      # Install all AI-development components" -ForegroundColor DarkGray
-    Write-Host "    sx mdev                       # Install all mobile-development components" -ForegroundColor DarkGray
-    Write-Host "    sx wsl                        # Install all WSL/Linux components" -ForegroundColor DarkGray
-    Write-Host "    sx cdev                       # Install all cloud-development components" -ForegroundColor DarkGray
-    Write-Host "    sx codev                      # Install all common-development components" -ForegroundColor DarkGray
-    Write-Host "    sx devops                     # Install all devops components" -ForegroundColor DarkGray
-    Write-Host "    sx dscience                   # Install all data-science components" -ForegroundColor DarkGray
-    Write-Host "    sx list-module pgkm           # List package managers" -ForegroundColor DarkGray
-    Write-Host "    sx pgkm                       # Install all package managers" -ForegroundColor DarkGray
-    Write-Host "    sx quick-setup web-dev        # Install web dev preset" -ForegroundColor DarkGray
-    Write-Host "    sx search docker              # Search for Docker component`n" -ForegroundColor DarkGray
+    Write-Host "    setupx list                   # List all modules" -ForegroundColor DarkGray
+    Write-Host "    setupx ls                     # List all modules" -ForegroundColor DarkGray
+    Write-Host "    setupx list-all               # List all components" -ForegroundColor DarkGray
+    Write-Host "    setupx install chocolatey     # Install Chocolatey" -ForegroundColor DarkGray
+    Write-Host "    setupx instal chocolatey      # Typo-tolerant install alias" -ForegroundColor DarkGray
+    Write-Host "    setupx -i pgkm chocolatey     # Install Chocolatey from pgkm" -ForegroundColor DarkGray
+    Write-Host "    setupx install nodejs         # Install Node.js" -ForegroundColor DarkGray
+    Write-Host "    stx install web-development nodejs  # Install Node.js from web-development" -ForegroundColor DarkGray
+    Write-Host "    setupx check git              # Check if Git is installed" -ForegroundColor DarkGray
+    Write-Host "    setupx install-module web-development  # Install all web dev tools" -ForegroundColor DarkGray
+    Write-Host "    setupx wdev                   # Install all web-development components" -ForegroundColor DarkGray
+    Write-Host "    setupx aidev                  # Install all AI-development components" -ForegroundColor DarkGray
+    Write-Host "    setupx mdev                   # Install all mobile-development components" -ForegroundColor DarkGray
+    Write-Host "    setupx wsl                    # Install all WSL/Linux components" -ForegroundColor DarkGray
+    Write-Host "    setupx cdev                   # Install all cloud-development components" -ForegroundColor DarkGray
+    Write-Host "    setupx codev                  # Install all common-development components" -ForegroundColor DarkGray
+    Write-Host "    setupx devops                 # Install all devops components" -ForegroundColor DarkGray
+    Write-Host "    setupx dscience               # Install all data-science components" -ForegroundColor DarkGray
+    Write-Host "    setupx list-module pgkm       # List package managers" -ForegroundColor DarkGray
+    Write-Host "    setupx pgkm                   # Install Chocolatey, Scoop, Winget, and npm" -ForegroundColor DarkGray
+    Write-Host "    setupx pgkm all               # Install every package manager" -ForegroundColor DarkGray
+    Write-Host "    setupx quick-setup web-dev    # Install web dev preset" -ForegroundColor DarkGray
+    Write-Host "    setupx search docker          # Search for Docker component`n" -ForegroundColor DarkGray
     
     Write-Host "AVAILABLE MODULES:" -ForegroundColor Yellow
     $modules = Get-AllModuleConfigs
@@ -150,6 +160,54 @@ function Show-Help {
     }
     
     Write-Host "`nFor more information: https://github.com/anshulyadav-git/setupx-windows-setup" -ForegroundColor Cyan
+}
+
+function Get-CorePackageManagerNames {
+    return @("chocolatey", "scoop", "winget", "npm")
+}
+
+function Invoke-InstallModuleComponents {
+    param(
+        [Parameter(Mandatory=$true)]
+        [PSCustomObject]$Module,
+        [Parameter(Mandatory=$true)]
+        [string[]]$ComponentNames,
+        [string]$Label = "selected"
+    )
+
+    Write-Host "`nInstalling module: $($Module.displayName)" -ForegroundColor Cyan
+    Write-Host "$($Module.description)" -ForegroundColor Gray
+    Write-Host ""
+
+    Write-Host "Installing $($ComponentNames.Count) $Label component(s)`n" -ForegroundColor Yellow
+
+    $successCount = 0
+    $failCount = 0
+
+    foreach ($componentName in $ComponentNames) {
+        $component = $Module.components.$componentName
+        if (-not $component) {
+            Write-Host "Skipping missing component '$componentName'" -ForegroundColor Yellow
+            $failCount++
+            continue
+        }
+
+        Write-Host "Installing $($component.displayName)..." -ForegroundColor Cyan
+        $result = Invoke-ComponentCommand -Component $component -Action "install"
+
+        if ($result) {
+            $successCount++
+        }
+        else {
+            $failCount++
+        }
+
+        Write-Host ""
+    }
+
+    Write-Host "`nModule installation complete:" -ForegroundColor Cyan
+    Write-Host "  [+] Success: $successCount" -ForegroundColor Green
+    Write-Host "  [-] Failed: $failCount" -ForegroundColor Red
 }
 
 function Show-List {
@@ -173,7 +231,7 @@ function Show-List {
     }
     
     Write-Host "Total modules: $($modules.Count)" -ForegroundColor Green
-    Write-Host "Use 'sx list-module <module-name>' to see components in a module" -ForegroundColor Yellow
+    Write-Host "Use 'setupx list-module <module-name>' to see components in a module" -ForegroundColor Yellow
 }
 
 function Show-ListAll {
@@ -254,34 +312,103 @@ function Show-Status {
 }
 
 function Invoke-Install {
-    param([string]$ComponentName)
-    
-    if (-not $ComponentName) {
-        Write-Host "Error: Component name required" -ForegroundColor Red
-        Write-Host "Usage: sx install <component-name>" -ForegroundColor Yellow
+    param(
+        [string]$TargetName,
+        [string]$ComponentName,
+        [string]$Mode
+    )
+
+    if (-not $TargetName) {
+        Write-Host "Error: Install target required" -ForegroundColor Red
+        Write-Host "Usage: setupx install <component-name>" -ForegroundColor Yellow
+        Write-Host "   or: setupx install <module-name> [component-name|all]" -ForegroundColor Yellow
         return
     }
 
-    if ($ComponentName -eq "pgkm") {
+    $resolvedTargetName = Resolve-ModuleAlias -ModuleName $TargetName
+
+    if ($resolvedTargetName -eq "package-managers" -and -not $ComponentName -and $Mode -ne "all") {
         Invoke-InstallManagers
         return
     }
-    
-    $component = Get-ComponentByName -ComponentName $ComponentName
-    
-    if (-not $component) {
-        # Backward-compatible behavior: treat module names as install-module targets.
-        $module = Get-ModuleConfig -ModuleName $ComponentName
-        if ($module) {
-            Invoke-InstallModule -ModuleName $ComponentName
+
+    if ($TargetName -in @("component", "compenent", "component-name")) {
+        if (-not $ComponentName) {
+            Write-Host "Error: Component name required" -ForegroundColor Red
+            Write-Host "Usage: setupx install component <component-name>" -ForegroundColor Yellow
             return
         }
 
-        Write-Host "Component '$ComponentName' not found" -ForegroundColor Red
-        Write-Host "Use 'sx list-all' to see available components" -ForegroundColor Yellow
+        $component = Get-ComponentByName -ComponentName $ComponentName
+        if (-not $component) {
+            Write-Host "Component '$ComponentName' not found" -ForegroundColor Red
+            Write-Host "Use 'setupx list-all' to see available components" -ForegroundColor Yellow
+            return
+        }
+
+        Write-Host "`nInstalling: $($component.displayName)" -ForegroundColor Cyan
+        Write-Host "Description: $($component.description)" -ForegroundColor Gray
+        Write-Host ""
+
+        $result = Invoke-ComponentCommand -Component $component -Action "install"
+        if ($result) {
+            Write-Host "`n[SUCCESS] $($component.displayName) installed successfully!" -ForegroundColor Green
+        }
+        else {
+            Write-Host "`n[FAILED] Failed to install $($component.displayName)" -ForegroundColor Red
+        }
         return
     }
-    
+
+    if ($TargetName -in @("module", "mod", "module-name")) {
+        if (-not $ComponentName) {
+            Write-Host "Error: Module name required" -ForegroundColor Red
+            Write-Host "Usage: setupx install module <module-name>" -ForegroundColor Yellow
+            return
+        }
+
+        Invoke-InstallModule -ModuleName $ComponentName -Mode $Mode
+        return
+    }
+
+    if ($ComponentName) {
+        if ($ComponentName -eq "all" -and -not $Mode) {
+            Invoke-InstallModule -ModuleName $TargetName -Mode "all"
+            return
+        }
+
+        $module = Get-ModuleConfig -ModuleName $resolvedTargetName
+        if ($module -and $module.components.$ComponentName) {
+            Invoke-InstallComponent -ModuleName $TargetName -ComponentName $ComponentName
+            return
+        }
+
+        if ($module) {
+            if ($Mode -eq "all") {
+                Invoke-InstallModule -ModuleName $TargetName -Mode "all"
+                return
+            }
+
+            Write-Host "Component '$ComponentName' not found in module '$TargetName'" -ForegroundColor Red
+            Write-Host "Use 'setupx components $TargetName' to see available components" -ForegroundColor Yellow
+            return
+        }
+    }
+
+    $component = Get-ComponentByName -ComponentName $TargetName
+    if (-not $component) {
+        # Backward-compatible behavior: treat module names as install-module targets.
+        $module = Get-ModuleConfig -ModuleName $resolvedTargetName
+        if ($module) {
+            Invoke-InstallModule -ModuleName $TargetName -Mode $Mode
+            return
+        }
+
+        Write-Host "Component or module '$TargetName' not found" -ForegroundColor Red
+        Write-Host "Use 'setupx list' to see modules or 'setupx list-all' to see components" -ForegroundColor Yellow
+        return
+    }
+
     Write-Host "`nInstalling: $($component.displayName)" -ForegroundColor Cyan
     Write-Host "Description: $($component.description)" -ForegroundColor Gray
     Write-Host ""
@@ -301,7 +428,7 @@ function Invoke-Remove {
     
     if (-not $ComponentName) {
         Write-Host "Error: Component name required" -ForegroundColor Red
-        Write-Host "Usage: sx remove <component-name>" -ForegroundColor Yellow
+        Write-Host "Usage: setupx remove <component-name>" -ForegroundColor Yellow
         return
     }
     
@@ -330,7 +457,7 @@ function Invoke-Check {
     
     if (-not $ComponentName) {
         Write-Host "Error: Component name required" -ForegroundColor Red
-        Write-Host "Usage: sx check <component-name>" -ForegroundColor Yellow
+        Write-Host "Usage: setupx check <component-name>" -ForegroundColor Yellow
         return
     }
     
@@ -356,12 +483,15 @@ function Invoke-Check {
     }
     else {
         Write-Host "[-] $($component.displayName) is not installed" -ForegroundColor Red
-        Write-Host "Install with: sx install $($component.name)" -ForegroundColor Yellow
+        Write-Host "Install with: setupx install $($component.name)" -ForegroundColor Yellow
     }
 }
 
 function Invoke-InstallModule {
-    param([string]$ModuleName)
+    param(
+        [string]$ModuleName,
+        [string]$Mode
+    )
     
     if (-not $ModuleName) {
         Write-Host "Error: Module name required" -ForegroundColor Red
@@ -374,39 +504,19 @@ function Invoke-InstallModule {
     
     if (-not $module) {
         Write-Host "Module '$ModuleName' not found" -ForegroundColor Red
-        Write-Host "Use 'sx list' to see available modules" -ForegroundColor Yellow
+        Write-Host "Use 'setupx list' to see available modules" -ForegroundColor Yellow
         return
     }
     
-    Write-Host "`nInstalling module: $($module.displayName)" -ForegroundColor Cyan
-    Write-Host "$($module.description)" -ForegroundColor Gray
-    Write-Host ""
-    
-    $componentCount = ($module.components.PSObject.Properties | Measure-Object).Count
-    Write-Host "This module contains $componentCount components`n" -ForegroundColor Yellow
-    
-    $successCount = 0
-    $failCount = 0
-    
-    foreach ($componentName in $module.components.PSObject.Properties.Name) {
-        $component = $module.components.$componentName
-        Write-Host "Installing $($component.displayName)..." -ForegroundColor Cyan
-        
-        $result = Invoke-ComponentCommand -Component $component -Action "install"
-        
-        if ($result) {
-            $successCount++
-        }
-        else {
-            $failCount++
-        }
-        
-        Write-Host ""
+    if ($resolvedModuleName -eq "package-managers" -and $Mode -ne "all") {
+        $coreManagers = Get-CorePackageManagerNames | Where-Object { $module.components.PSObject.Properties.Name -contains $_ }
+        Invoke-InstallModuleComponents -Module $module -ComponentNames $coreManagers -Label "core package manager"
+        Write-Host "`nRun 'setupx pgkm all' to install every package manager component." -ForegroundColor Yellow
+        return
     }
-    
-    Write-Host "`nModule installation complete:" -ForegroundColor Cyan
-    Write-Host "  [+] Success: $successCount" -ForegroundColor Green
-    Write-Host "  [-] Failed: $failCount" -ForegroundColor Red
+
+    $componentNames = $module.components.PSObject.Properties.Name
+    Invoke-InstallModuleComponents -Module $module -ComponentNames $componentNames -Label "module"
 }
 
 function Invoke-ListModule {
@@ -423,7 +533,7 @@ function Invoke-ListModule {
     
     if (-not $module) {
         Write-Host "Module '$ModuleName' not found" -ForegroundColor Red
-        Write-Host "Use 'sx list' to see available modules" -ForegroundColor Yellow
+        Write-Host "Use 'setupx list' to see available modules" -ForegroundColor Yellow
         return
     }
     
@@ -440,7 +550,7 @@ function Invoke-ListModule {
         Write-Host "  $statusIcon " -ForegroundColor $statusColor -NoNewline
         Write-Host "$($component.displayName)" -ForegroundColor Cyan
         Write-Host "      $($component.description)" -ForegroundColor Gray
-        Write-Host "      Install with: sx install $($component.name)" -ForegroundColor DarkGray
+        Write-Host "      Install with: setupx install $($component.name)" -ForegroundColor DarkGray
         Write-Host ""
     }
 }
@@ -479,7 +589,7 @@ function Invoke-Search {
         Write-Host "$($component.displayName)" -ForegroundColor Cyan
         Write-Host "      $($component.description)" -ForegroundColor Gray
         Write-Host "      Module: $($component.moduleName)" -ForegroundColor DarkGray
-        Write-Host "      Install with: sx install $($component.name)" -ForegroundColor DarkGray
+        Write-Host "      Install with: setupx install $($component.name)" -ForegroundColor DarkGray
         Write-Host ""
     }
 }
@@ -492,7 +602,7 @@ function Invoke-InstallComponent {
 
     if (-not $ModuleName -or -not $ComponentName) {
         Write-Host "Error: Module name and component name required" -ForegroundColor Red
-        Write-Host "Usage: sx install-component <module-name> <component-name>" -ForegroundColor Yellow
+        Write-Host "Usage: setupx install-component <module-name> <component-name>" -ForegroundColor Yellow
         return
     }
 
@@ -506,7 +616,7 @@ function Invoke-InstallComponent {
     $component = $module.components.$ComponentName
     if (-not $component) {
         Write-Host "Component '$ComponentName' not found in module '$ModuleName'" -ForegroundColor Red
-        Write-Host "Use 'sx components $ModuleName' to see available components" -ForegroundColor Yellow
+        Write-Host "Use 'setupx components $ModuleName' to see available components" -ForegroundColor Yellow
         return
     }
 
@@ -526,7 +636,7 @@ function Invoke-TestModule {
 
     if (-not $ModuleName) {
         Write-Host "Error: Module name required" -ForegroundColor Red
-        Write-Host "Usage: sx test-module <module-name>" -ForegroundColor Yellow
+        Write-Host "Usage: setupx test-module <module-name>" -ForegroundColor Yellow
         return
     }
 
@@ -573,7 +683,7 @@ function Invoke-TestComponent {
 
     if (-not $ModuleName -or -not $ComponentName) {
         Write-Host "Error: Module name and component name required" -ForegroundColor Red
-        Write-Host "Usage: sx test-component <module-name> <component-name>" -ForegroundColor Yellow
+        Write-Host "Usage: setupx test-component <module-name> <component-name>" -ForegroundColor Yellow
         return
     }
 
@@ -623,7 +733,25 @@ function Invoke-QuickSetup {
 }
 
 function Invoke-InstallManagers {
-    Invoke-InstallModule -ModuleName "pgkm"
+    param([string]$Mode)
+
+    Invoke-InstallModule -ModuleName "pgkm" -Mode $Mode
+}
+
+function Resolve-CommandAlias {
+    param([string]$CommandName)
+
+    switch ($CommandName) {
+        "ls" { return "list" }
+        "list-modules" { return "list" }
+        "-i" { return "install" }
+        "instal" { return "install" }
+        "install-compenent" { return "install-component" }
+        "install-compnent" { return "install-component" }
+        "installcomponent" { return "install-component" }
+        "list-components" { return "components" }
+        default { return $CommandName }
+    }
 }
 
 function Invoke-InstallWebDev {
@@ -659,6 +787,29 @@ function Invoke-InstallDataScience {
 }
 
 # Main command router
+$firstArgument = $null
+$secondArgument = $null
+$thirdArgument = $null
+
+$effectiveCommand = $Command
+if ($i) {
+    $effectiveCommand = "install"
+}
+
+$Command = Resolve-CommandAlias -CommandName $effectiveCommand
+
+if ($Arguments.Count -gt 0) {
+    $firstArgument = $Arguments[0]
+}
+
+if ($Arguments.Count -gt 1) {
+    $secondArgument = $Arguments[1]
+}
+
+if ($Arguments.Count -gt 2) {
+    $thirdArgument = $Arguments[2]
+}
+
 switch ($Command) {
     "help" { Show-Help }
     "-h" { Show-Help }
@@ -667,8 +818,8 @@ switch ($Command) {
     "list-all" { Show-ListAll }
     "status" { Show-Status }
     "check-status" { Show-Status }
-    "install" { Invoke-Install -ComponentName $Arguments[0] }
-    "install-managers" { Invoke-InstallManagers }
+    "install" { Invoke-Install -TargetName $firstArgument -ComponentName $secondArgument -Mode $thirdArgument }
+    "install-managers" { Invoke-InstallManagers -Mode $firstArgument }
     "wdev" { Invoke-InstallWebDev }
     "aidev" { Invoke-InstallAIDev }
     "aidve" { Invoke-InstallAIDev }
@@ -682,36 +833,36 @@ switch ($Command) {
     "devops" { Invoke-InstallDevOps }
     "dscience" { Invoke-InstallDataScience }
     "datascien" { Invoke-InstallDataScience }
-    "pkgm" { Invoke-InstallManagers }
-    "pgkm" { Invoke-InstallManagers }
-    "remove" { Invoke-Remove -ComponentName $Arguments[0] }
+    "pkgm" { Invoke-InstallManagers -Mode $firstArgument }
+    "pgkm" { Invoke-InstallManagers -Mode $firstArgument }
+    "remove" { Invoke-Remove -ComponentName $firstArgument }
     "update" { 
-        $component = Get-ComponentByName -ComponentName $Arguments[0]
+        $component = Get-ComponentByName -ComponentName $firstArgument
         if ($component) {
             Invoke-ComponentCommand -Component $component -Action "update"
         }
     }
-    "check" { Invoke-Check -ComponentName $Arguments[0] }
+    "check" { Invoke-Check -ComponentName $firstArgument }
     "verify" {
-        $component = Get-ComponentByName -ComponentName $Arguments[0]
+        $component = Get-ComponentByName -ComponentName $firstArgument
         if ($component) {
             Invoke-ComponentCommand -Component $component -Action "verify"
         }
     }
     "test" {
-        $component = Get-ComponentByName -ComponentName $Arguments[0]
+        $component = Get-ComponentByName -ComponentName $firstArgument
         if ($component) {
             Invoke-ComponentCommand -Component $component -Action "test"
         }
     }
-    "install-module" { Invoke-InstallModule -ModuleName $Arguments[0] }
-    "list-module" { Invoke-ListModule -ModuleName $Arguments[0] }
-    "components" { Invoke-ListModule -ModuleName $Arguments[0] }
-    "install-component" { Invoke-InstallComponent -ModuleName $Arguments[0] -ComponentName $Arguments[1] }
-    "test-module" { Invoke-TestModule -ModuleName $Arguments[0] }
-    "test-component" { Invoke-TestComponent -ModuleName $Arguments[0] -ComponentName $Arguments[1] }
-    "quick-setup" { Invoke-QuickSetup -Profile $Arguments[0] }
-    "search" { Invoke-Search -Query $Arguments[0] }
+    "install-module" { Invoke-InstallModule -ModuleName $firstArgument -Mode $secondArgument }
+    "list-module" { Invoke-ListModule -ModuleName $firstArgument }
+    "components" { Invoke-ListModule -ModuleName $firstArgument }
+    "install-component" { Invoke-InstallComponent -ModuleName $firstArgument -ComponentName $secondArgument }
+    "test-module" { Invoke-TestModule -ModuleName $firstArgument }
+    "test-component" { Invoke-TestComponent -ModuleName $firstArgument -ComponentName $secondArgument }
+    "quick-setup" { Invoke-QuickSetup -Profile $firstArgument }
+    "search" { Invoke-Search -Query $firstArgument }
     "version" {
         $configPath = Join-Path $PSScriptRoot "config.json"
         $config = Get-Content $configPath -Raw | ConvertFrom-Json
@@ -725,11 +876,11 @@ switch ($Command) {
     default {
         if ([string]::IsNullOrEmpty($Command)) {
             Show-Banner
-            Write-Host "Run 'sx help' for usage information`n" -ForegroundColor Yellow
+            Write-Host "Run 'setupx help' for usage information`n" -ForegroundColor Yellow
         }
         else {
             Write-Host "Unknown command: $Command" -ForegroundColor Red
-            Write-Host "Run 'sx help' for available commands" -ForegroundColor Yellow
+            Write-Host "Run 'setupx help' for available commands" -ForegroundColor Yellow
         }
     }
 }

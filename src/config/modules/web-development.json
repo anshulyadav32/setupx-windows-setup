@@ -15,7 +15,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "choco install nodejs -y",
+        "install": "if (Get-Command node -ErrorAction SilentlyContinue) { node --version } elseif (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs -y } else { throw 'Node.js requires winget or Chocolatey to install automatically' }",
         "remove": "choco uninstall nodejs -y",
         "update": "choco upgrade nodejs -y",
         "check": "node --version",
@@ -33,7 +33,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "npm install -g yarn",
+        "install": "if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { if (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs -y } else { throw 'Yarn requires npm, and no supported installer (winget/choco) is available for Node.js' } }; npm install -g yarn",
         "remove": "npm uninstall -g yarn",
         "update": "npm update -g yarn",
         "check": "yarn --version",
@@ -50,7 +50,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "choco install googlechrome firefox -y",
+        "install": "if (Get-Command choco -ErrorAction SilentlyContinue) { choco install googlechrome firefox -y } elseif (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id Google.Chrome --accept-package-agreements --accept-source-agreements --disable-interactivity; winget install -e --id Mozilla.Firefox --accept-package-agreements --accept-source-agreements --disable-interactivity } else { throw 'Browsers require Chocolatey or winget to install automatically' }",
         "remove": "choco uninstall googlechrome firefox -y",
         "update": "choco upgrade googlechrome firefox -y",
         "check": "Get-Command chrome -ErrorAction SilentlyContinue",
@@ -66,7 +66,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "npm install -g create-react-app",
+        "install": "if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { if (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs -y } else { throw 'React tools require npm, and no supported installer (winget/choco) is available for Node.js' } }; npm install -g create-react-app",
         "remove": "npm uninstall -g create-react-app",
         "update": "npm update -g create-react-app",
         "check": "create-react-app --version",
@@ -83,7 +83,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "npm install -g @vue/cli",
+        "install": "if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { if (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs -y } else { throw 'Vue tools require npm, and no supported installer (winget/choco) is available for Node.js' } }; npm install -g @vue/cli",
         "remove": "npm uninstall -g @vue/cli",
         "update": "npm update -g @vue/cli",
         "check": "vue --version",
@@ -100,7 +100,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "npm install -g @angular/cli",
+        "install": "if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { if (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs -y } else { throw 'Angular tools require npm, and no supported installer (winget/choco) is available for Node.js' } }; npm install -g @angular/cli",
         "remove": "npm uninstall -g @angular/cli",
         "update": "npm update -g @angular/cli",
         "check": "ng version",
@@ -117,7 +117,7 @@
       "status": "working",
       "category": "web-development",
       "commands": {
-        "install": "npm install -g vite",
+        "install": "if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { if (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs -y } else { throw 'Vite requires npm, and no supported installer (winget/choco) is available for Node.js' } }; npm install -g vite",
         "remove": "npm uninstall -g vite",
         "update": "npm update -g vite",
         "check": "vite --version",

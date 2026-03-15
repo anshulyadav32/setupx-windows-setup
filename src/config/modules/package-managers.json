@@ -15,7 +15,7 @@
       "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+        "install": "if (Get-Command choco -ErrorAction SilentlyContinue) { choco --version } else { Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) }",
         "update": "choco upgrade chocolatey -y --no-progress",
         "check": "choco --version",
         "verify": "choco --version",
@@ -36,7 +36,7 @@
       "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression",
+        "install": "if (Get-Command scoop -ErrorAction SilentlyContinue) { scoop --version } elseif (Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") { & \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\" --version } else { Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression }",
         "update": "if (Get-Command scoop -ErrorAction SilentlyContinue) { scoop update } elseif (Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") { & \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\" update } else { Write-Host 'scoop not available for update' }",
         "check": "if (Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") { Write-Host 'scoop-found' } elseif (Get-Command scoop -ErrorAction SilentlyContinue) { Write-Host 'scoop-command-found' } else { throw 'scoop not found' }",
         "verify": "(Test-Path \"$env:USERPROFILE\\scoop\\shims\\scoop.cmd\") -or [bool](Get-Command scoop -ErrorAction SilentlyContinue)",
@@ -57,7 +57,7 @@
       "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping install'; } else { choco install winget-cli -y --no-progress }",
+        "install": "if (Get-Command winget -ErrorAction SilentlyContinue) { winget --version } elseif ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping install'; } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install winget-cli -y --no-progress } else { throw 'winget is not installed and Chocolatey is unavailable to install winget-cli' }",
         "update": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping update'; } else { winget upgrade --all --accept-package-agreements --accept-source-agreements --disable-interactivity }",
         "check": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { Write-Host 'winget unsupported on this Windows build; skipping check'; } else { winget --version }",
         "verify": "if ([int](Get-CimInstance Win32_OperatingSystem).BuildNumber -lt 18362) { $true } else { [bool](Get-Command winget -ErrorAction SilentlyContinue) }",
@@ -198,7 +198,7 @@
       "status": "available",
       "category": "package-manager",
       "commands": {
-        "install": "choco install nodejs-lts -y --no-progress",
+        "install": "if (Get-Command npm -ErrorAction SilentlyContinue) { npm --version } elseif (Get-Command winget -ErrorAction SilentlyContinue) { winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --disable-interactivity } elseif (Get-Command choco -ErrorAction SilentlyContinue) { choco install nodejs-lts -y --no-progress } else { throw 'npm requires Node.js and no supported installer (winget/choco) is available' }",
         "update": "npm install -g npm",
         "check": "npm --version",
         "verify": "npm --version",

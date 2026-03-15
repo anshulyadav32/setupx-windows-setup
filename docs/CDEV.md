@@ -1,36 +1,29 @@
-# CDEV Module Guide
+# Cloud Development
 
-Copy and run exactly (word to word).
+Module names:
+- long: `cloud-development`
+- short: `cdev`
 
-## Install All Cloud-Development Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx cdev
+setupx install cloud-development
+stx install cloud-development
+stx cdev
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-AWS CLI
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/cdev/aws-cli.ps1 | iex
+setupx components cloud-development
 ```
 
-Azure CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/cdev/azure-cli.ps1 | iex
-```
+## Components
 
-GCloud CLI
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/cdev/gcloud-cli.ps1 | iex
-```
-
-Kubectl
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/cdev/kubectl.ps1 | iex
-```
-
-Terraform
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/cdev/terraform.ps1 | iex
+setupx install cloud-development aws-cli
+setupx install cloud-development azure-cli
+setupx install cloud-development gcloud-cli
+setupx install cloud-development kubectl
+setupx install cloud-development terraform
 ```

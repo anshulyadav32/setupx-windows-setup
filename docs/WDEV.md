@@ -1,46 +1,38 @@
-# WDEV Module Guide
+# Web Development
 
-Copy and run exactly (word to word).
+Module names:
+- long: `web-development`
+- short: `wdev`
 
-## Install All Web-Development Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx wdev
+setupx install web-development
+stx install web-development
+stx wdev
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Node.js
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/nodejs.ps1 | iex
+setupx components web-development
 ```
 
-Yarn
+## Install Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/yarn.ps1 | iex
+setupx install web-development nodejs
+setupx install web-development yarn
+setupx install web-development browsers
+setupx install web-development react-tools
+setupx install web-development vue-tools
+setupx install web-development angular-tools
+setupx install web-development vite
 ```
 
-Browsers
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/browsers.ps1 | iex
-```
+## Test
 
-React Tools
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/react-tools.ps1 | iex
-```
-
-Vue Tools
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/vue-tools.ps1 | iex
-```
-
-Angular Tools
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/angular-tools.ps1 | iex
-```
-
-Vite
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wdev/vite.ps1 | iex
+setupx test-module web-development
+setupx test-component web-development nodejs
 ```
