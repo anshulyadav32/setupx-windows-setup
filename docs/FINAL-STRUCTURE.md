@@ -11,7 +11,7 @@ All hardcoded values removed! Everything is now JSON-driven and modular.
 ```
 setupx-windows-setup/
 ├── setupx.ps1                          # Main CLI (fully JSON-driven)
-├── wsx.ps1                             # Short alias for setupx
+├── stx.ps1                             # Short alias for setupx
 ├── config.json                         # Main configuration file
 ├── src/
 │   ├── core/
@@ -90,7 +90,7 @@ Cleaned up old files:
 Both work identically:
 ```powershell
 setupx help        # Full name
-wsx help           # Short alias
+stx help           # Short alias
 ```
 
 ---
@@ -105,15 +105,15 @@ setupx install nodejs
 setupx status
 ```
 
-### Using `wsx` (short alias)
+### Using `stx` (short alias)
 ```powershell
-wsx help
-wsx list
-wsx install nodejs
-wsx status
+stx help
+stx list
+stx install nodejs
+stx status
 ```
 
-Both commands are **identical** - `wsx` simply calls `setupx` internally.
+Both commands are **identical** - `stx` simply calls `setupx` internally.
 
 ---
 
@@ -127,7 +127,7 @@ Both commands are **identical** - `wsx` simply calls `setupx` internally.
   "version": "2.0.0",
   "cli": {
     "name": "setupx",
-    "aliases": ["wsx"],
+    "aliases": ["stx"],
     "banner": {
       "title": "SetupX",
       "subtitle": "Modular Windows Development Setup Tool",
@@ -222,60 +222,60 @@ All commands stored in JSON, executed by engine!
 ```powershell
 # Show help
 setupx help
-wsx help
+stx help
 
 # Show version
 setupx version
-wsx version
+stx version
 
 # List all modules
 setupx list
-wsx list
+stx list
 
 # List all components
 setupx list-all
-wsx list-all
+stx list-all
 
 # Show system status
 setupx status
-wsx status
+stx status
 ```
 
 ### Component Operations
 ```powershell
 # Install a component
 setupx install chocolatey
-wsx install nodejs
+stx install nodejs
 
 # Check if installed
 setupx check git
-wsx check docker
+stx check docker
 
 # Remove a component
 setupx remove python
-wsx remove vscode
+stx remove vscode
 
 # Update a component
 setupx update nodejs
-wsx update docker
+stx update docker
 ```
 
 ### Module Operations
 ```powershell
 # List components in a module
 setupx list-module web-development
-wsx list-module package-managers
+stx list-module package-managers
 
 # Install entire module
 setupx install-module web-development
-wsx install-module common-development
+stx install-module common-development
 ```
 
 ### Search
 ```powershell
 # Search for components
 setupx search docker
-wsx search python
+stx search python
 setupx search kubernetes
 ```
 
@@ -439,31 +439,31 @@ It appears automatically in `setupx list`!
 ```powershell
 # Test both commands
 setupx help
-wsx help
+stx help
 
 # Test version (should show from config.json)
 setupx version
-wsx version
+stx version
 
 # Test list (auto-discovers modules)
 setupx list
-wsx list
+stx list
 
 # Test list-all (shows all components)
 setupx list-all
-wsx list-all
+stx list-all
 
 # Test status (uses config.json tools list)
 setupx status
-wsx status
+stx status
 
 # Test search
 setupx search docker
-wsx search python
+stx search python
 
 # Test list-module
 setupx list-module web-development
-wsx list-module package-managers
+stx list-module package-managers
 ```
 
 ---
@@ -473,7 +473,7 @@ wsx list-module package-managers
 ### What Changed
 ✅ Removed ALL hardcoded values  
 ✅ Created `config.json` for main settings  
-✅ Both `setupx` and `wsx` commands work  
+✅ Both `setupx` and `stx` commands work  
 ✅ Cleaned up old/extra files  
 ✅ Fixed directory structure  
 ✅ 100% JSON-driven architecture  
@@ -492,7 +492,7 @@ wsx list-module package-managers
 
 ### Commands
 - **Primary:** `setupx` (full name)
-- **Alias:** `wsx` (short name)
+- **Alias:** `stx` (short name)
 - **Both work identically!**
 
 ---
@@ -505,19 +505,19 @@ cd C:\Users\aypc\setupx-windows-setup
 
 # Show help (either command)
 .\setupx.ps1 help
-.\wsx.ps1 help
+.\stx.ps1 help
 
 # List modules
 .\setupx.ps1 list
-.\wsx.ps1 list
+.\stx.ps1 list
 
 # Install something
 .\setupx.ps1 install chocolatey
-.\wsx.ps1 install nodejs
+.\stx.ps1 install nodejs
 
 # Check status
 .\setupx.ps1 status
-.\wsx.ps1 status
+.\stx.ps1 status
 ```
 
 ---
@@ -537,13 +537,14 @@ cd C:\Users\aypc\setupx-windows-setup
 **No more hardcoded values!**  
 **Easy to customize!**  
 **Simple to extend!**  
-**Works with both `setupx` and `wsx`!**
+**Works with both `setupx` and `stx`!**
 
 Start using it now:
 ```powershell
 .\setupx.ps1 help
-.\wsx.ps1 help
+.\stx.ps1 help
 ```
 
 Happy coding! 🎉
+
 

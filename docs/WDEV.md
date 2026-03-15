@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All Web-Development Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx wdev
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx wdev
 ```
 
 ## Per Component One-Liner Links
@@ -44,4 +44,5 @@ Vite
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/vite.ps1 | iex
 ```
+
 

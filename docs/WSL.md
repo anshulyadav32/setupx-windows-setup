@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All WSL-Linux Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx wsl
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx wsl
 ```
 
 ## Per Component One-Liner Links
@@ -24,4 +24,5 @@ Docker Desktop
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/docker-desktop.ps1 | iex
 ```
+
 

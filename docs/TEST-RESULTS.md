@@ -200,7 +200,7 @@ Summary:
 ```powershell
 # Install Node.js
 setupx install nodejs
-wsx install nodejs
+stx install nodejs
 
 # Install Docker
 setupx install docker
@@ -245,4 +245,5 @@ setupx install-module backend-development
 ✅ **Ready for component installations**
 
 Use the test scripts before and after installations to verify everything works correctly!
+
 

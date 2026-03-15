@@ -33,10 +33,10 @@ Individual Component Windows Development Setup Tool with PowerShell commands
 
 ```powershell
 # Same commands with shorter alias
-.\wsx.ps1 list
-.\wsx.ps1 status
-.\wsx.ps1 install nodejs
-.\wsx.ps1 check docker
+.\wstx.ps1 list
+.\wstx.ps1 status
+.\wstx.ps1 install nodejs
+.\wstx.ps1 check docker
 ```
 
 ## Available Commands
@@ -205,7 +205,7 @@ A comprehensive test suite is available in `test.json` with:
 2. **Use** `.\setupx.ps1 refresh` if commands aren't recognized after installation
 3. **Check individual components** with `.\setupx.ps1 check [component]` for detailed version info
 4. **Update components regularly** with `.\setupx.ps1 update [component]`
-5. **Use the short alias** `wsx.ps1` for quicker commands
+5. **Use the short alias** `wstx.ps1` for quicker commands
 
 ## Troubleshooting
 
@@ -238,6 +238,7 @@ MIT License - See LICENSE file for details
 ---
 
 **Made with ❤️ by anshulyadav-git**
+
 
 
 

@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All Cloud-Development Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx cdev
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx cdev
 ```
 
 ## Per Component One-Liner Links
@@ -34,4 +34,5 @@ Terraform
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/cdev/terraform.ps1 | iex
 ```
+
 

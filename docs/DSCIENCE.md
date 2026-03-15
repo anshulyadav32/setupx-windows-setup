@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All Data-Science Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx dscience
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx dscience
 ```
 
 ## Per Component One-Liner Links
@@ -29,4 +29,5 @@ Pandas
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/pandas.ps1 | iex
 ```
+
 

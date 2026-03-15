@@ -42,4 +42,5 @@ Vercel settings are defined in `vercel.json`:
 
 - Module cards are interactive and reveal all components on click.
 - Each component provides a copy button for the install command.
-- Component install command format is `sx install <component>`.
+- Component install command format is `stx install <component>`.
+

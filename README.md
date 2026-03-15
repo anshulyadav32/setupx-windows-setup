@@ -1,4 +1,4 @@
-# sx - Modular Windows Development Setup
+# stx - Modular Windows Development Setup
 
 A clean, modular PowerShell tool for setting up Windows development environments.
 
@@ -12,20 +12,20 @@ After installing SetupX, you can install package managers in two ways:
 
 ### 1. Install All Package Managers At Once
 ```powershell
-sx pgkm
+stx pgkm
 # or
-sx install-module pgkm
+stx install-module pgkm
 ```
 
 ### 2. Install Each Package Manager One by One
 ```powershell
 # List all package managers
-sx list-components pgkm
+stx list-components pgkm
 
 # Then install individually:
-sx install-component pgkm choco
-sx install-component pgkm scoop
-sx install-component pgkm winget
+stx install-component pgkm choco
+stx install-component pgkm scoop
+stx install-component pgkm winget
 # ...and so on for each manager
 ```
 
@@ -37,19 +37,19 @@ You can also build an interactive menu in your own script to prompt for each one
 
 ### One-Command Installation
 ```powershell
-# Install sx with one command
+# Install stx with one command
 iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
 ```
 
 ### One-Command Installation + Install All Package Managers
 ```powershell
-# Install sx and all package managers with one script
+# Install stx and all package managers with one script
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
 ```
 
 Manual equivalent:
 ```powershell
-.\install.ps1; C:\\tools\\setupx\\sx.ps1 pgkm
+.\install.ps1; C:\\tools\\setupx\\stx.ps1 pgkm
 ```
 
 ### Manual Installation
@@ -62,18 +62,18 @@ cd setupx-windows-setup
 .\install.ps1
 
 # Test installation
-sx help
+stx help
 ```
 
 Need all package managers quickly? [Install all package managers](#install-all-pgkm).
 
 ### Available Commands (All in JSON)
 ```powershell
-# Main sx interface
-sx pkgm
-sx list
-sx status
-sx components web-development
+# Main stx interface
+stx pkgm
+stx list
+stx status
+stx components web-development
 
 # Direct module installation
 install-module pgkm
@@ -154,15 +154,15 @@ SetupX uses JSON module definitions under `src/config/modules/` plus PowerShell 
 
 ### Core Commands
 ```powershell
-# Main sx interface
-sx [command] [options]
+# Main stx interface
+stx [command] [options]
 
 # Examples:
-sx pkgm
-sx list
-sx status
-sx components web-development
-sx install-component pgkm chocolatey
+stx pkgm
+stx list
+stx status
+stx components web-development
+stx install-component pgkm chocolatey
 ```
 
 ### Module Management
@@ -254,95 +254,95 @@ check-status
 
 ```powershell
 # Package Managers (Foundation - Install First!)
-sx pkgm
+stx pkgm
 
 # Web Development Tools
-sx install web-development
+stx install web-development
 
 # Mobile Development Tools  
-sx install mobile-development
+stx install mobile-development
 
 # Backend Development Tools
-sx install backend-development
+stx install backend-development
 
 # Cloud Development Tools
-sx install cloud-development
+stx install cloud-development
 
 # Common Development Tools
-sx install common-development
+stx install common-development
 
 # AI Development Tools
-sx install ai-development-tools
+stx install ai-development-tools
 ```
 
 ### 🚀 Quick Installation Workflows
 
 **Full Stack Developer:**
 ```powershell
-sx pkgm
-sx install web-development
-sx install backend-development
-sx install common-development
+stx pkgm
+stx install web-development
+stx install backend-development
+stx install common-development
 ```
 
 **Mobile Developer:**
 ```powershell
-sx pkgm
-sx install mobile-development
-sx install common-development
+stx pkgm
+stx install mobile-development
+stx install common-development
 ```
 
 **Cloud Developer:**
 ```powershell
-sx pkgm
-sx install cloud-development
-sx install backend-development
-sx install common-development
+stx pkgm
+stx install cloud-development
+stx install backend-development
+stx install common-development
 ```
 
 **AI Developer:**
 ```powershell
-sx pkgm
-sx install ai-development-tools
-sx install web-development
-sx install common-development
+stx pkgm
+stx install ai-development-tools
+stx install web-development
+stx install common-development
 ```
 
 ### 📋 Module Details
 
 - **pgkm**: Chocolatey, Scoop, Winget, NVM, Node.js, NuGet, .NET Tooling, vcpkg, pipx, npm, Yarn, pnpm, Bun, Cargo, Go, Composer, Gem, Conda, Mamba, pip (✅ **Fully Working**)
   ```powershell
-  sx pkgm
+  stx pkgm
   ```
 
 - **web-development**: Node.js, Browsers, React, Vue, Angular, Build Tools (✅ **Fully Working**)
   ```powershell
-  sx install web-development
+  stx install web-development
   ```
 
 - **mobile-development**: Flutter, Android Studio, Xcode
   ```powershell
-  sx install mobile-development
+  stx install mobile-development
   ```
 
 - **backend-development**: Python, Node.js, Docker, PostgreSQL
   ```powershell
-  sx install backend-development
+  stx install backend-development
   ```
 
 - **cloud-development**: AWS CLI, Azure CLI, Docker, Kubernetes
   ```powershell
-  sx install cloud-development
+  stx install cloud-development
   ```
 
 - **common-development**: Git, VS Code, PowerShell, Terminal
   ```powershell
-  sx install common-development
+  stx install common-development
   ```
 
 - **ai-development-tools**: Modern AI-powered development tools
   ```powershell
-  sx install ai-development-tools
+  stx install ai-development-tools
   ```
 
 ### 🎯 Package Managers Module (Ready to Use!)
@@ -374,7 +374,7 @@ The **pgkm** module is fully functional and includes all 20 package manager/tool
 
 Use this command to install every package manager in the module:
 ```powershell
-sx pkgm
+stx pkgm
 ```
 
 **Expected output:**
@@ -394,7 +394,7 @@ sx pkgm
 - ✅ **Error Handling**: Robust error handling and logging
 - ✅ **One-Command Install**: Single `install.ps1` downloads everything
 - ✅ **Force Mode**: `-Force` parameter for automated installations
-- ✅ **Existing File Detection**: Handles `C:\sx` conflicts gracefully
+- ✅ **Existing File Detection**: Handles `C:\stx` conflicts gracefully
 - ✅ **Clean Structure**: Minimal, maintainable codebase
 - ✅ **CLI Syntax Fixed**: Resolved PowerShell parameter issues
 
@@ -417,7 +417,7 @@ sx pkgm
 
 ### Standard Installation
 - Downloads all files from GitHub
-- Asks for confirmation if `C:\sx` exists
+- Asks for confirmation if `C:\stx` exists
 - Safe for first-time installations
 
 ### Force Installation
@@ -475,7 +475,7 @@ sx pkgm
 
 **Install web development tools:**
 ```powershell
-sx install web-development
+stx install web-development
 ```
 
 **Expected output:**
@@ -520,7 +520,7 @@ MIT License - see LICENSE file for details
   Invoke-RestMethod -Uri https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | Invoke-Expression
   ```
 
-**❌ "sx command not found"**
+**❌ "stx command not found"**
 - **Problem**: PATH not updated in current session
 - **Solution**: Restart PowerShell or run:
   ```powershell
@@ -565,7 +565,8 @@ iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/
 
 ---
 
-**sx** - Making Windows development setup simple and modular! 🚀
+**stx** - Making Windows development setup simple and modular! 🚀
+
 
 
 

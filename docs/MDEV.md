@@ -5,7 +5,7 @@ Copy and run exactly (word to word).
 ## Install All Mobile-Development Components
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; sx mdev
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; stx mdev
 ```
 
 ## Per Component One-Liner Links
@@ -24,4 +24,5 @@ Android Studio
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/mdev/android-studio.ps1 | iex
 ```
+
 
