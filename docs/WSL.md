@@ -12,15 +12,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercont
 
 WSL
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wsl/wsl.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/wsl.ps1 | iex
 ```
 
 Ubuntu
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wsl/ubuntu.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/ubuntu.ps1 | iex
 ```
 
 Docker Desktop
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/wsl/docker-desktop.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/docker-desktop.ps1 | iex
 ```
+

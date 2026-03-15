@@ -28,7 +28,7 @@ function Get-InstallSourcePath {
         $localRoot = $PSScriptRoot
     }
 
-    if ($localRoot -and (Test-Path -LiteralPath (Join-Path $localRoot "setupx.ps1")) -and (Test-Path -LiteralPath (Join-Path $localRoot "src"))) {
+    if ($localRoot -and (Test-Path -LiteralPath (Join-Path $localRoot "setupx.ps1")) -and (Test-Path -LiteralPath (Join-Path $localRoot "src\core")) -and (Test-Path -LiteralPath (Join-Path $localRoot "src"))) {
         Write-Host "Using local source: $localRoot" -ForegroundColor Gray
         return [PSCustomObject]@{
             SourcePath = $localRoot
@@ -117,74 +117,9 @@ try {
 
     Write-Host "[OK] Files copied successfully" -ForegroundColor Green
 
-    # Create setupx.ps1 in installation directory (main entry point)
-    $setupxContent = @"
-# SetupX Main Entry Point
-# This file is the main entry point for SetupX
-
-param(
-    [Parameter(Position=0)]
-    [string]`$Command,
-    
-    [Parameter(Position=1, ValueFromRemainingArguments=`$true)]
-    [string[]]`$Arguments
-)
-
-# Set the script root to the installation directory
-`$PSScriptRoot = Split-Path -Parent `$MyInvocation.MyCommand.Definition
-
-# Import core modules
-. "`$PSScriptRoot\src\utils\logger.ps1"
-. "`$PSScriptRoot\src\utils\helpers.ps1"
-. "`$PSScriptRoot\src\core\engine.ps1"
-. "`$PSScriptRoot\src\core\json-loader.ps1"
-
-# Call the main setupx.ps1 with all arguments
-`$mainScriptPath = Join-Path `$PSScriptRoot "setupx.ps1"
-
-if (Test-Path `$mainScriptPath) {
-    & `$mainScriptPath `$Command @Arguments
-} else {
-    Write-Host "Error: setupx.ps1 not found in `$PSScriptRoot" -ForegroundColor Red
-    Write-Host "Please ensure SetupX is properly installed." -ForegroundColor Yellow
-}
-"@
-
-    $setupxPath = Join-Path $InstallPath "setupx.ps1"
-    $setupxContent | Out-File -FilePath $setupxPath -Encoding UTF8
-    Write-Host "[OK] Created main entry point" -ForegroundColor Green
-
-    # Create wsx.ps1 alias
-    $wsxContent = @"
-# WSX - Alias for SetupX CLI
-# This is a shorter alternative command name for SetupX
-
-param(
-    [Parameter(Position=0)]
-    [string]`$Command,
-    
-    [Parameter(Position=1, ValueFromRemainingArguments=`$true)]
-    [string[]]`$Arguments
-)
-
-# Call the main SetupX CLI with all arguments
-`$setupxPath = Join-Path `$PSScriptRoot "setupx.ps1"
-
-if (Test-Path `$setupxPath) {
-    & `$setupxPath `$Command @Arguments
-} else {
-    Write-Host "Error: setupx.ps1 not found in `$PSScriptRoot" -ForegroundColor Red
-    Write-Host "Please ensure SetupX is properly installed." -ForegroundColor Yellow
-}
-"@
-
-    $wsxPath = Join-Path $InstallPath "wsx.ps1"
-    $wsxContent | Out-File -FilePath $wsxPath -Encoding UTF8
-    Write-Host "[OK] Created wsx alias" -ForegroundColor Green
-
-    # Create sx.ps1 alias (preferred short command)
-    $sxContent = @"
-# SX - Preferred short alias for SetupX CLI
+    # Create stx.ps1 alias
+    $stxContent = @"
+# STX - Short alias for SetupX CLI
 
 param(
     [Parameter(Position=0)]
@@ -204,9 +139,10 @@ if (Test-Path `$setupxPath) {
 }
 "@
 
-    $sxPath = Join-Path $InstallPath "sx.ps1"
-    $sxContent | Out-File -FilePath $sxPath -Encoding UTF8
-    Write-Host "[OK] Created sx alias" -ForegroundColor Green
+    $stxPath = Join-Path $InstallPath "stx.ps1"
+    $stxContent | Out-File -FilePath $stxPath -Encoding UTF8
+    Write-Host "[OK] Created stx alias" -ForegroundColor Green
+    Write-Host "[OK] Preserved repository setupx.ps1 as main entry point" -ForegroundColor Green
 
     # Add to PATH
     Write-Host "Adding SetupX to PATH..." -ForegroundColor Yellow
@@ -246,9 +182,8 @@ if (Test-Path `$setupxPath) {
     Write-Host "`nSetupX Installation Complete!" -ForegroundColor Green
     Write-Host "Installation path: $InstallPath" -ForegroundColor Cyan
     Write-Host "`nYou can now use SetupX with:" -ForegroundColor Yellow
-    Write-Host "  sx help" -ForegroundColor White
     Write-Host "  setupx help" -ForegroundColor White
-    Write-Host "  wsx help" -ForegroundColor White
+    Write-Host "  stx help" -ForegroundColor White
     Write-Host "`nNote: You may need to restart your terminal for PATH changes to take effect." -ForegroundColor Yellow
 
     if ($sourceInfo.TempPath -and (Test-Path -LiteralPath $sourceInfo.TempPath)) {

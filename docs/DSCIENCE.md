@@ -12,20 +12,21 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercont
 
 Jupyter
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/jupyter.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/jupyter.ps1 | iex
 ```
 
 TensorFlow
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/tensorflow.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/tensorflow.ps1 | iex
 ```
 
 PyTorch
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/pytorch.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/pytorch.ps1 | iex
 ```
 
 Pandas
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/scripts/dscience/pandas.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/pandas.ps1 | iex
 ```
+

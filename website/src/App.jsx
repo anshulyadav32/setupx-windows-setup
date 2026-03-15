@@ -18,10 +18,10 @@ const whyItems = [
 ]
 
 const featureRows = [
-  ['Install package managers', 'sx pkgm'],
-  ['List available commands and modules', 'sx list'],
-  ['Check current setup health', 'sx status'],
-  ['See module components', 'sx components web-development'],
+  ['Install package managers', 'setupx pkgm'],
+  ['List available commands and modules', 'setupx list'],
+  ['Check current setup health', 'setupx status'],
+  ['See module components', 'setupx components web-development'],
   ['Install complete module', 'install-module web-development'],
   ['Install specific component', 'install-component pgkm chocolatey'],
   ['Run quick setup profile', 'quick-setup full-stack'],
@@ -52,7 +52,7 @@ const presets = [
 ]
 
 const commandTabs = {
-  core: ['sx status', 'sx list', 'sx components web-development'],
+  core: ['setupx status', 'setupx list', 'setupx components web-development'],
   modules: ['install-module pgkm', 'install-module web-development', 'install-module cloud-development'],
   components: ['install-component pgkm chocolatey', 'install-component web-development nodejs', 'install-component web-development yarn'],
   testing: ['test-module pgkm', 'test-component web-development nodejs', 'check-status'],
@@ -70,7 +70,7 @@ const faqs = [
   ['Is SetupX Windows-only?', 'Yes. SetupX targets Windows environments and integrates with Windows-native tooling.'],
   ['Does it require admin permissions?', 'Some installations need elevated permissions. SetupX handles mixed privilege workflows where possible.'],
   ['Can I install only selected modules?', 'Yes. Use module and component commands to install only what you need.'],
-  ['How do I test what was installed?', 'Use test-module, test-component, sx status, and check-status commands.'],
+  ['How do I test what was installed?', 'Use test-module, test-component, setupx status, and check-status commands.'],
 ]
 
 function CopyButton({ value, copied, onCopy }) {
@@ -111,8 +111,8 @@ function App() {
 
   // Build install command
   const customInstallCmd = selectedComponents.length
-    ? `sx install ${selectedComponents.join(' ')}`
-    : 'sx install <component>'
+    ? `setupx install ${selectedComponents.join(' ')}`
+    : 'setupx install <component>'
 
   // Toggle component selection
   const toggleComponent = (name) => {
@@ -171,7 +171,7 @@ function App() {
         </div>
       </section>
       <header className="hero" id="top">
-        <p className="eyebrow">SetupX / sx</p>
+        <p className="eyebrow">SetupX / stx</p>
         <h1>Set up your Windows dev environment in one command</h1>
         <p className="hero-copy">
           SetupX is a modular PowerShell tool for automating installation of package managers,
@@ -263,7 +263,7 @@ function App() {
         <ol className="steps">
           <li>
             <strong>Install SetupX</strong>
-            <span>Run the one-command installer to bootstrap sx.</span>
+            <span>Run the one-command installer to bootstrap SetupX.</span>
           </li>
           <li>
             <strong>Choose a module or preset</strong>
@@ -373,3 +373,4 @@ function App() {
 }
 
 export default App
+

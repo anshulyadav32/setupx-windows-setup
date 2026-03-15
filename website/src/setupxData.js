@@ -2,7 +2,7 @@ export const moduleCards = [
   {
     alias: 'pgkm',
     name: 'Package Managers',
-    path: 'scripts/pgkm',
+    path: 'src/core/pgkm',
     components: [
       'bun',
       'cargo',
@@ -30,13 +30,13 @@ export const moduleCards = [
   {
     alias: 'wdev',
     name: 'Web Development',
-    path: 'scripts/wdev',
+    path: 'src/core/wdev',
     components: ['angular-tools', 'browsers', 'nodejs', 'react-tools', 'vite', 'vue-tools', 'yarn'],
   },
   {
     alias: 'aidve',
     name: 'AI Development',
-    path: 'scripts/aidve',
+    path: 'src/core/aidve',
     components: [
       'aws-cli',
       'azure-cli',
@@ -54,25 +54,25 @@ export const moduleCards = [
   {
     alias: 'mdev',
     name: 'Mobile Development',
-    path: 'scripts/mdev',
+    path: 'src/core/mdev',
     components: ['android-studio', 'flutter', 'react-native-cli'],
   },
   {
     alias: 'wsl',
     name: 'WSL Linux',
-    path: 'scripts/wsl',
+    path: 'src/core/wsl',
     components: ['docker-desktop', 'ubuntu', 'wsl'],
   },
   {
     alias: 'cdev',
     name: 'Cloud Development',
-    path: 'scripts/cdev',
+    path: 'src/core/cdev',
     components: ['aws-cli', 'azure-cli', 'gcloud-cli', 'kubectl', 'terraform'],
   },
   {
     alias: 'codev',
     name: 'Common Development',
-    path: 'scripts/codev',
+    path: 'src/core/codev',
     components: [
       '7zip',
       'brave',
@@ -90,22 +90,24 @@ export const moduleCards = [
       'windows-terminal',
     ],
   },
-  { alias: 'devops', name: 'DevOps', path: 'scripts/devops', components: ['ansible', 'jenkins', 'terraform'] },
-  { alias: 'dscience', name: 'Data Science', path: 'scripts/dscience', components: ['jupyter', 'pandas', 'pytorch', 'tensorflow'] },
+  { alias: 'devops', name: 'DevOps', path: 'src/core/devops', components: ['ansible', 'jenkins', 'terraform'] },
+  { alias: 'dscience', name: 'Data Science', path: 'src/core/dscience', components: ['jupyter', 'pandas', 'pytorch', 'tensorflow'] },
 ]
 
 export const quickCommands = [
   'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex',
-  'sx pgkm',
-  'sx wdev',
-  'sx aidve',
-  'sx mdev',
-  'sx wsl',
-  'sx cdev',
-  'sx codev',
-  'sx devops',
-  'sx dscience',
+  'setupx pgkm',
+  'setupx wdev',
+  'setupx aidve',
+  'setupx mdev',
+  'setupx wsl',
+  'setupx cdev',
+  'setupx codev',
+  'setupx devops',
+  'setupx dscience',
 ]
 
 export const installOneLiner =
   'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex'
+
+

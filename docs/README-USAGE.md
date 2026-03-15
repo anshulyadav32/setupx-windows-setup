@@ -173,7 +173,7 @@ After every command, the environment is automatically refreshed to ensure PATH a
 
 ## Configuration
 
-All component configurations are stored in `src/config/setupx.json`
+All component configurations are stored in `src/config/modules/*.json`
 
 Each component includes:
 - Name and display name

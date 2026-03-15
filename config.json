@@ -10,7 +10,7 @@
   "cli": {
     "name": "setupx",
     "aliases": [
-      "wsx"
+      "stx"
     ],
     "banner": {
       "enabled": true,

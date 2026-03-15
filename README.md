@@ -130,21 +130,23 @@ test-component web-development nodejs
 check-status
 ```
 
-## 📁 JSON-Only Structure (New!)
+## 📁 Project Structure
 
-```
+```text
 setupx-windows-setup/
 ├── src/
+│   ├── core/                    # PowerShell runtime, helpers, and installers
 │   └── config/
-│       └── setupx.json          # ALL functionality in JSON!
-├── README.md                    # This file
-└── .git/                        # Git repository
+│       └── modules/             # JSON module definitions
+├── website/                     # Vite-powered docs site
+├── docs/                        # Module documentation
+└── README.md
 ```
 
-**No more PowerShell scripts!** Everything is now defined in `setupx.json`:
-- ✅ All commands and functions
-- ✅ Module definitions
-- ✅ Component configurations  
+SetupX uses JSON module definitions under `src/config/modules/` plus PowerShell runtime scripts under `src/core/`:
+- ✅ Module definitions in JSON
+- ✅ PowerShell runtime and installers
+- ✅ Component configurations
 - ✅ Testing procedures
 - ✅ Installation methods
 
@@ -564,6 +566,7 @@ iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/
 ---
 
 **sx** - Making Windows development setup simple and modular! 🚀
+
 
 
 
