@@ -1,112 +1,62 @@
-# PGKM Module Guide
+# Package Managers
 
-Copy and run exactly (word to word).
+Use `setupx` or `stx` after installation.
+
+## Install SetupX
+
+```powershell
+iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex
+```
+
+## Install Core Package Managers
+
+```powershell
+setupx pgkm
+# or
+stx pgkm
+# or
+setupx install pgkm
+```
+
+This installs:
+- `chocolatey`
+- `scoop`
+- `winget`
+- `npm`
 
 ## Install All Package Managers
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install-all-pkgm.ps1 | iex
+setupx pgkm all
+# or
+setupx install pgkm all
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Chocolatey
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/choco.ps1 | iex
+setupx list-components pgkm
+# or
+setupx components pgkm
 ```
 
-Scoop
+## Install Individual Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/scoop.ps1 | iex
+setupx install pgkm chocolatey
+setupx install pgkm scoop
+setupx install pgkm winget
+setupx install pgkm npm
+
+# aliases
+setupx instal pgkm chocolatey
+setupx -i pgkm chocolatey
 ```
 
-Winget
+## Test
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/winget.ps1 | iex
+setupx test-module pgkm
+setupx test-component pgkm chocolatey
+setupx check-status
 ```
-
-NVM
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/nvm.ps1 | iex
-```
-
-Node.js
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/nodejs.ps1 | iex
-```
-
-NPM
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/npm.ps1 | iex
-```
-
-Yarn
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/yarn.ps1 | iex
-```
-
-PNPM
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/pnpm.ps1 | iex
-```
-
-Bun
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/bun.ps1 | iex
-```
-
-Pip
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/pip.ps1 | iex
-```
-
-Pipx
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/pipx.ps1 | iex
-```
-
-Conda
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/conda.ps1 | iex
-```
-
-Mamba
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/mamba.ps1 | iex
-```
-
-Cargo
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/cargo.ps1 | iex
-```
-
-Go
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/go.ps1 | iex
-```
-
-Composer
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/composer.ps1 | iex
-```
-
-Gem
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/gem.ps1 | iex
-```
-
-Dotnet Tool
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/dotnet-tool.ps1 | iex
-```
-
-Nuget
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/nuget.ps1 | iex
-```
-
-Vcpkg
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/pgkm/vcpkg.ps1 | iex
-```
-

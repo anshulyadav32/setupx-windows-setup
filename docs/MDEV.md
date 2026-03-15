@@ -1,29 +1,27 @@
-# MDEV Module Guide
+# Mobile Development
 
-Copy and run exactly (word to word).
+Module names:
+- long: `mobile-development`
+- short: `mdev`
 
-## Install All Mobile-Development Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx mdev
+setupx install mobile-development
+stx install mobile-development
+stx mdev
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Flutter
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/mdev/flutter.ps1 | iex
+setupx components mobile-development
 ```
 
-React Native CLI
+## Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/mdev/react-native-cli.ps1 | iex
+setupx install mobile-development flutter
+setupx install mobile-development react-native-cli
+setupx install mobile-development android-studio
 ```
-
-Android Studio
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/mdev/android-studio.ps1 | iex
-```
-
-
-

@@ -1,29 +1,27 @@
-# DEVOPS Module Guide
+# DevOps
 
-Copy and run exactly (word to word).
+Module names:
+- long: `devops`
+- short: `devops`
 
-## Install All DevOps Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx devops
+setupx install devops
+stx install devops
+stx devops
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Terraform
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/devops/terraform.ps1 | iex
+setupx components devops
 ```
 
-Ansible
+## Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/devops/ansible.ps1 | iex
+setupx install devops ansible
+setupx install devops jenkins
+setupx install devops terraform
 ```
-
-Jenkins
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/devops/jenkins.ps1 | iex
-```
-
-
-

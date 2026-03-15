@@ -1,69 +1,35 @@
-# AIDVE Module Guide
+# AI Development Tools
 
-Copy and run exactly (word to word).
+Module names:
+- long: `ai-development-tools`
+- short: `aidve`
 
-## Install All AI-Development Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx aidev
+setupx install ai-development-tools
+stx install ai-development-tools
+stx aidve
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Python
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/python.ps1 | iex
+setupx components ai-development-tools
 ```
 
-Node
+## Install Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/node.ps1 | iex
+setupx install ai-development-tools python
+setupx install ai-development-tools node
+setupx install ai-development-tools redis
+setupx install ai-development-tools xampp
+setupx install ai-development-tools vercel-cli
+setupx install ai-development-tools netlify-cli
+setupx install ai-development-tools aws-cli
+setupx install ai-development-tools azure-cli
+setupx install ai-development-tools gcloud-cli
+setupx install ai-development-tools codex-cli
+setupx install ai-development-tools grok-cli
 ```
-
-Redis
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/redis.ps1 | iex
-```
-
-XAMPP
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/xampp.ps1 | iex
-```
-
-Vercel CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/vercel-cli.ps1 | iex
-```
-
-Netlify CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/netlify-cli.ps1 | iex
-```
-
-AWS CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/aws-cli.ps1 | iex
-```
-
-Azure CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/azure-cli.ps1 | iex
-```
-
-GCloud CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/gcloud-cli.ps1 | iex
-```
-
-Codex CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/codex-cli.ps1 | iex
-```
-
-Grok CLI
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/aidve/grok-cli.ps1 | iex
-```
-
-
-

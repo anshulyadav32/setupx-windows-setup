@@ -29,19 +29,15 @@ const featureRows = [
 ]
 
 const modules = [
-  { name: 'Package Managers', alias: 'pgkm', details: 'Chocolatey, Scoop, Winget, npm, yarn, pnpm and more.' },
-  { name: 'Web Development', alias: 'web-development', details: 'Frontend tooling, browsers, frameworks, and build tools.' },
-  { name: 'Mobile Development', alias: 'mobile-development', details: 'Flutter, mobile CLIs, and mobile-ready dev stack.' },
-  { name: 'Backend Development', alias: 'backend-development', details: 'Core backend runtimes, SDKs, and server tooling.' },
-  { name: 'Cloud Development', alias: 'cloud-development', details: 'AWS, Azure, GCP, terraform, kubectl workflows.' },
-  { name: 'Common Development', alias: 'common-development', details: 'Git, VS Code, terminal, browsers, and daily essentials.' },
-  { name: 'AI Development Tools', alias: 'ai-development-tools', details: 'AI CLIs, model workflows, and inference-friendly setup.' },
-  { name: 'Data Science', alias: 'data-science', details: 'Python stack, notebooks, data tooling, and ML basics.' },
-  { name: 'Game Development', alias: 'game-development', details: 'Starter module for game-dev runtime and engine tooling.' },
-  { name: 'DevOps', alias: 'devops', details: 'Automation, pipelines, infra-as-code, and deployment tools.' },
-  { name: 'Security', alias: 'security', details: 'Security analysis and hardening toolchain presets.' },
-  { name: 'Blockchain', alias: 'blockchain', details: 'Web3 tooling, CLIs, and chain development prerequisites.' },
-  { name: 'WSL/Linux', alias: 'wsl-linux', details: 'WSL, distro setup, and Linux-based development workflows.' },
+  { name: 'Package Managers', alias: 'pgkm', shortAlias: 'pgkm', details: 'Chocolatey, Scoop, Winget, npm, yarn, pnpm and more.' },
+  { name: 'Web Development', alias: 'web-development', shortAlias: 'wdev', details: 'Frontend tooling, browsers, frameworks, and build tools.' },
+  { name: 'Mobile Development', alias: 'mobile-development', shortAlias: 'mdev', details: 'Flutter, mobile CLIs, and mobile-ready dev stack.' },
+  { name: 'Cloud Development', alias: 'cloud-development', shortAlias: 'cdev', details: 'AWS, Azure, GCP, terraform, kubectl workflows.' },
+  { name: 'Common Development', alias: 'common-development', shortAlias: 'codev', details: 'Git, VS Code, terminal, browsers, and daily essentials.' },
+  { name: 'AI Development Tools', alias: 'ai-development-tools', shortAlias: 'aidve', details: 'AI CLIs, model workflows, and inference-friendly setup.' },
+  { name: 'Data Science', alias: 'data-science', shortAlias: 'dscience', details: 'Python stack, notebooks, data tooling, and ML basics.' },
+  { name: 'DevOps', alias: 'devops', shortAlias: 'devops', details: 'Automation, pipelines, infra-as-code, and deployment tools.' },
+  { name: 'WSL/Linux', alias: 'wsl-linux', shortAlias: 'wsl', details: 'WSL, distro setup, and Linux-based development workflows.' },
 ]
 
 const presets = [
@@ -161,16 +157,22 @@ function App() {
         <h2>Custom Install</h2>
         <p>Select which components you want to install. The commands below update automatically.</p>
         <div className="custom-install-list">
-          {allComponents.map(({ module, name }) => (
+          {allComponents.map(({ module, name }) => {
+            const moduleMeta = moduleCards.find((item) => item.alias === module)
+            const moduleLabel = moduleMeta?.shortAlias && moduleMeta.shortAlias !== moduleMeta.alias
+              ? `${moduleMeta.alias} / ${moduleMeta.shortAlias}`
+              : module
+            return (
             <label key={name} className="custom-install-item">
               <input
                 type="checkbox"
                 checked={selectedComponents.includes(name)}
                 onChange={() => toggleComponent(name)}
               />
-              <span>{name} <small style={{ color: '#9ec3cf', fontSize: '0.85em' }}>({module})</small></span>
+              <span>{name} <small style={{ color: '#9ec3cf', fontSize: '0.85em' }}>({moduleLabel})</small></span>
             </label>
-          ))}
+            )
+          })}
         </div>
         <div className="command-inline" style={{ marginTop: '1rem' }}>
           <code style={{ whiteSpace: 'pre-wrap' }}>{customInstallCmd}</code>
@@ -233,15 +235,19 @@ function App() {
             <article key={mod.alias} className={`module-card ${openModule === mod.alias ? 'open' : ''}`}>
               <button type="button" className="module-toggle" onClick={() => setOpenModule(openModule === mod.alias ? '' : mod.alias)}>
                 <span>{mod.name}</span>
-                <small>{mod.alias}</small>
+                <small>{mod.shortAlias && mod.shortAlias !== mod.alias ? `${mod.alias} / ${mod.shortAlias}` : mod.alias}</small>
               </button>
               {openModule === mod.alias && (
                 <div className="module-body">
                   <p>{mod.details}</p>
                   <pre>
-                    <code>{`stx install ${mod.alias}`}</code>
+                    <code>{mod.shortAlias && mod.shortAlias !== mod.alias ? `stx install ${mod.alias}\nstx ${mod.shortAlias}` : `stx install ${mod.alias}`}</code>
                   </pre>
-                  <CopyButton value={`stx install ${mod.alias}`} copied={copiedValue === `stx install ${mod.alias}`} onCopy={copyText} />
+                  <CopyButton
+                    value={mod.shortAlias && mod.shortAlias !== mod.alias ? `stx install ${mod.alias}\nstx ${mod.shortAlias}` : `stx install ${mod.alias}`}
+                    copied={copiedValue === (mod.shortAlias && mod.shortAlias !== mod.alias ? `stx install ${mod.alias}\nstx ${mod.shortAlias}` : `stx install ${mod.alias}`)}
+                    onCopy={copyText}
+                  />
                 </div>
               )}
             </article>

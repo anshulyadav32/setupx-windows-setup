@@ -1,6 +1,7 @@
 export const moduleCards = [
   {
     alias: 'pgkm',
+    shortAlias: 'pgkm',
     name: 'Package Managers',
     path: 'src/core/pgkm',
     components: [
@@ -29,12 +30,14 @@ export const moduleCards = [
   },
   {
     alias: 'web-development',
+    shortAlias: 'wdev',
     name: 'Web Development',
     path: 'src/core/wdev',
     components: ['angular-tools', 'browsers', 'nodejs', 'react-tools', 'vite', 'vue-tools', 'yarn'],
   },
   {
     alias: 'ai-development-tools',
+    shortAlias: 'aidve',
     name: 'AI Development',
     path: 'src/core/aidve',
     components: [
@@ -53,24 +56,28 @@ export const moduleCards = [
   },
   {
     alias: 'mobile-development',
+    shortAlias: 'mdev',
     name: 'Mobile Development',
     path: 'src/core/mdev',
     components: ['android-studio', 'flutter', 'react-native-cli'],
   },
   {
     alias: 'wsl-linux',
+    shortAlias: 'wsl',
     name: 'WSL Linux',
     path: 'src/core/wsl',
     components: ['docker-desktop', 'ubuntu', 'wsl'],
   },
   {
     alias: 'cloud-development',
+    shortAlias: 'cdev',
     name: 'Cloud Development',
     path: 'src/core/cdev',
     components: ['aws-cli', 'azure-cli', 'gcloud-cli', 'kubectl', 'terraform'],
   },
   {
     alias: 'common-development',
+    shortAlias: 'codev',
     name: 'Common Development',
     path: 'src/core/codev',
     components: [
@@ -90,21 +97,21 @@ export const moduleCards = [
       'windows-terminal',
     ],
   },
-  { alias: 'devops', name: 'DevOps', path: 'src/core/devops', components: ['ansible', 'jenkins', 'terraform'] },
-  { alias: 'dscience', name: 'Data Science', path: 'src/core/dscience', components: ['jupyter', 'pandas', 'pytorch', 'tensorflow'] },
+  { alias: 'devops', shortAlias: 'devops', name: 'DevOps', path: 'src/core/devops', components: ['ansible', 'jenkins', 'terraform'] },
+  { alias: 'data-science', shortAlias: 'dscience', name: 'Data Science', path: 'src/core/dscience', components: ['jupyter', 'pandas', 'pytorch', 'tensorflow'] },
 ]
 
 export const quickCommands = [
   'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex',
   'stx pgkm',
-  'stx install web-development',
-  'stx install ai-development-tools',
-  'stx install mobile-development',
-  'stx install wsl-linux',
-  'stx install cloud-development',
-  'stx install common-development',
-  'stx devops',
-  'stx dscience',
+  'stx install web-development  # alias: stx wdev',
+  'stx install ai-development-tools  # alias: stx aidve',
+  'stx install mobile-development  # alias: stx mdev',
+  'stx install wsl-linux  # alias: stx wsl',
+  'stx install cloud-development  # alias: stx cdev',
+  'stx install common-development  # alias: stx codev',
+  'stx install devops',
+  'stx install data-science  # alias: stx dscience',
 ]
 
 export const installOneLiner =

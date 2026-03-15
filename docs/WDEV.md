@@ -1,49 +1,38 @@
-# WDEV Module Guide
+# Web Development
 
-Copy and run exactly (word to word).
+Module names:
+- long: `web-development`
+- short: `wdev`
 
-## Install All Web-Development Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx wdev
+setupx install web-development
+stx install web-development
+stx wdev
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Node.js
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/nodejs.ps1 | iex
+setupx components web-development
 ```
 
-Yarn
+## Install Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/yarn.ps1 | iex
+setupx install web-development nodejs
+setupx install web-development yarn
+setupx install web-development browsers
+setupx install web-development react-tools
+setupx install web-development vue-tools
+setupx install web-development angular-tools
+setupx install web-development vite
 ```
 
-Browsers
+## Test
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/browsers.ps1 | iex
+setupx test-module web-development
+setupx test-component web-development nodejs
 ```
-
-React Tools
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/react-tools.ps1 | iex
-```
-
-Vue Tools
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/vue-tools.ps1 | iex
-```
-
-Angular Tools
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/angular-tools.ps1 | iex
-```
-
-Vite
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wdev/vite.ps1 | iex
-```
-
-
-

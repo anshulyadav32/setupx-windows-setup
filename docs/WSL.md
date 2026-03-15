@@ -1,29 +1,27 @@
-# WSL Module Guide
+# WSL Linux
 
-Copy and run exactly (word to word).
+Module names:
+- long: `wsl-linux`
+- short: `wsl`
 
-## Install All WSL-Linux Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx wsl
+setupx install wsl-linux
+stx install wsl-linux
+stx wsl
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-WSL
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/wsl.ps1 | iex
+setupx components wsl-linux
 ```
 
-Ubuntu
+## Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/ubuntu.ps1 | iex
+setupx install wsl-linux wsl
+setupx install wsl-linux ubuntu
+setupx install wsl-linux docker-desktop
 ```
-
-Docker Desktop
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/wsl/docker-desktop.ps1 | iex
-```
-
-
-

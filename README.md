@@ -152,6 +152,13 @@ setupx-windows-setup/
 - `stx` is the short alias.
 - `install`, `instal`, and `-i` are supported install entry points.
 - `list`, `ls`, and `list-modules` are supported list entry points.
+- Module aliases supported in CLI include:
+  - `web-development` / `wdev`
+  - `ai-development-tools` / `aidve`
+  - `common-development` / `codev`
+  - `cloud-development` / `cdev`
+  - `mobile-development` / `mdev`
+  - `wsl-linux` / `wsl`
 
 ## Troubleshooting
 

@@ -1,34 +1,28 @@
-# DSCIENCE Module Guide
+# Data Science
 
-Copy and run exactly (word to word).
+Module names:
+- long: `data-science`
+- short: `dscience`
 
-## Install All Data-Science Components
+## Install Module
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex; setupx dscience
+setupx install data-science
+stx install data-science
+stx dscience
 ```
 
-## Per Component One-Liner Links
+## List Components
 
-Jupyter
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/jupyter.ps1 | iex
+setupx components data-science
 ```
 
-TensorFlow
+## Components
+
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/tensorflow.ps1 | iex
+setupx install data-science jupyter
+setupx install data-science pandas
+setupx install data-science pytorch
+setupx install data-science tensorflow
 ```
-
-PyTorch
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/pytorch.ps1 | iex
-```
-
-Pandas
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/core/dscience/pandas.ps1 | iex
-```
-
-
-
