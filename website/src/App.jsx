@@ -18,13 +18,13 @@ const whyItems = [
 ]
 
 const featureRows = [
-  ['Install package managers', 'setupx pkgm'],
-  ['List available commands and modules', 'setupx list'],
-  ['Check current setup health', 'setupx status'],
-  ['See module components', 'setupx components web-development'],
-  ['Install complete module', 'setupx install-module web-development'],
-  ['Install specific component', 'setupx install-component pgkm chocolatey'],
-  ['Run quick setup profile', 'setupx quick-setup full-stack'],
+  ['Install package managers', 'stx pkgm'],
+  ['List available commands and modules', 'stx list'],
+  ['Check current setup health', 'stx status'],
+  ['See module components', 'stx components web-development'],
+  ['Install complete module', 'stx install-module web-development'],
+  ['Install specific component', 'stx install-component pgkm chocolatey'],
+  ['Run quick setup profile', 'stx quick-setup full-stack'],
 ]
 
 const modules = [
@@ -52,10 +52,10 @@ const presets = [
 ]
 
 const commandTabs = {
-  core: ['setupx status', 'setupx list', 'setupx components web-development'],
-  modules: ['setupx install-module pgkm', 'setupx install-module web-development', 'setupx install-module cloud-development'],
-  components: ['setupx install-component pgkm chocolatey', 'setupx install-component web-development nodejs', 'setupx install-component web-development yarn'],
-  testing: ['setupx test-module pgkm', 'setupx test-component web-development nodejs', 'setupx check-status'],
+  core: ['stx status', 'stx list', 'stx components web-development'],
+  modules: ['stx install-module pgkm', 'stx install-module web-development', 'stx install-module cloud-development'],
+  components: ['stx install-component pgkm chocolatey', 'stx install-component web-development nodejs', 'stx install-component web-development yarn'],
+  testing: ['stx test-module pgkm', 'stx test-component web-development nodejs', 'stx check-status'],
 }
 
 const benefits = [
@@ -70,7 +70,7 @@ const faqs = [
   ['Is SetupX Windows-only?', 'Yes. SetupX targets Windows environments and integrates with Windows-native tooling.'],
   ['Does it require admin permissions?', 'Some installations need elevated permissions. SetupX handles mixed privilege workflows where possible.'],
   ['Can I install only selected modules?', 'Yes. Use module and component commands to install only what you need.'],
-  ['How do I test what was installed?', 'Use setupx test-module, setupx test-component, setupx status, and setupx check-status commands.'],
+  ['How do I test what was installed?', 'Use stx test-module, stx test-component, stx status, and stx check-status commands.'],
 ]
 
 function CopyButton({ value, copied, onCopy }) {
@@ -111,8 +111,8 @@ function App() {
 
   // Build install command
   const customInstallCmd = selectedComponents.length
-    ? `setupx install ${selectedComponents.join(' ')}`
-    : 'setupx install <component>'
+    ? `stx install ${selectedComponents.join(' ')}`
+    : 'stx install <component>'
 
   // Toggle component selection
   const toggleComponent = (name) => {
@@ -171,7 +171,7 @@ function App() {
         </div>
       </section>
       <header className="hero" id="top">
-        <p className="eyebrow">SetupX</p>
+        <p className="eyebrow">SetupX / stx</p>
         <h1>Set up your Windows dev environment in one command</h1>
         <p className="hero-copy">
           SetupX is a modular PowerShell tool for automating installation of package managers,
@@ -232,9 +232,9 @@ function App() {
                 <div className="module-body">
                   <p>{mod.details}</p>
                   <pre>
-                    <code>{`setupx install-module ${mod.alias}`}</code>
+                    <code>{`stx install-module ${mod.alias}`}</code>
                   </pre>
-                  <CopyButton value={`setupx install-module ${mod.alias}`} copied={copiedValue === `setupx install-module ${mod.alias}`} onCopy={copyText} />
+                  <CopyButton value={`stx install-module ${mod.alias}`} copied={copiedValue === `stx install-module ${mod.alias}`} onCopy={copyText} />
                 </div>
               )}
             </article>
@@ -250,9 +250,9 @@ function App() {
               <h3>{name}</h3>
               <p>{desc}</p>
               <pre>
-                <code>{`setupx quick-setup ${name}`}</code>
+                <code>{`stx quick-setup ${name}`}</code>
               </pre>
-              <CopyButton value={`setupx quick-setup ${name}`} copied={copiedValue === `setupx quick-setup ${name}`} onCopy={copyText} />
+              <CopyButton value={`stx quick-setup ${name}`} copied={copiedValue === `stx quick-setup ${name}`} onCopy={copyText} />
             </article>
           ))}
         </div>

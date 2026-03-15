@@ -14,6 +14,6 @@ export const getInstallTarget = (moduleAlias, componentName) => {
 }
 
 export const getComponentInstallCommand = (moduleAlias, componentName) => {
-  return `setupx install ${getInstallTarget(moduleAlias, componentName)}`
+  return `stx install ${getInstallTarget(moduleAlias, componentName)}`
 }
 

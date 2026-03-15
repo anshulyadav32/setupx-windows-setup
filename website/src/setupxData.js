@@ -96,15 +96,15 @@ export const moduleCards = [
 
 export const quickCommands = [
   'Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/anshulyadav-git/setupx-windows-setup/main/install.ps1 | iex',
-  'setupx pgkm',
-  'setupx wdev',
-  'setupx aidve',
-  'setupx mdev',
-  'setupx wsl',
-  'setupx cdev',
-  'setupx codev',
-  'setupx devops',
-  'setupx dscience',
+  'stx pgkm',
+  'stx wdev',
+  'stx aidve',
+  'stx mdev',
+  'stx wsl',
+  'stx cdev',
+  'stx codev',
+  'stx devops',
+  'stx dscience',
 ]
 
 export const installOneLiner =
